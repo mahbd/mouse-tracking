@@ -10,7 +10,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 
 
-features_df = pd.read_csv("features.csv")
+features_df = pd.read_csv("data/features.csv")
 
 X = features_df.drop(columns=['user'])
 X = X.select_dtypes(include=np.number)
