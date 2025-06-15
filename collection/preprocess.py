@@ -166,9 +166,9 @@ def calculate_segment_features(segment_df):
     return features
 
 def main():
-    username = "atiq"
-    output_feature_file = f"{username}_features.csv"
-    data_files = [f"data/{username}/{username}.csv"]
+    username = "zia"
+    output_feature_file = f"processed/{username}.csv"
+    data_files = [f"raw/{username}.csv"]
     segment_length_events = 50
     raw_df = load_data(data_files)
 
