@@ -1,0 +1,391 @@
+<h1 id="abstract">Abstract</h1>
+<p>We study mouse tracking as a behavioral biometric for user
+identification and anomaly detection. Using 76,693 behavioral segments
+from four users, we engineer motion-, speed-, and acceleration-based
+features from fixed 50-event windows. Random Forest reaches 85.36%
+classification accuracy. For single-user anomaly detection, One-Class
+SVM and Isolation Forest calibrated at 5% contamination achieve expected
+self-test anomaly rates and reveal substantial cross-user differences—up
+to 31.6% anomalies—demonstrating distinctive behavioral signatures. We
+detail a practical end-to-end system with cross-platform collectors, a
+feature pipeline, model training scripts, and an optional Windows GUI
+for real-time detection. We discuss limitations and ethical aspects and
+outline directions for scaling, robustness, and privacy-preserving
+deployment.</p>
+<h1 id="introduction">Introduction</h1>
+<p>Behavioral biometrics leverage the unique ways individuals interact
+with computing systems. Mouse tracking—capturing sequences of cursor
+movements, clicks, and scroll events—offers a continuous, unobtrusive
+signal for identifying users and detecting anomalous behavior. Prior
+studies have explored mouse-based authentication and region usage
+patterns in human-computer interaction contexts . This thesis
+investigates mouse tracking as a behavioral biometric for two goals:
+multi-user classification (who is at the computer) and single-user
+anomaly detection (is the current behavior unusual for this user?).</p>
+<h2 id="motivation">Motivation</h2>
+<ul>
+<li>Security: Continuous authentication complements point-in-time
+logins.</li>
+<li>Usability: Passive and privacy-conscious when engineered from motion
+dynamics rather than content.</li>
+<li>Practicality: Mouse signals are ubiquitous across desktop
+environments and inexpensive to collect.</li>
+</ul>
+<h2 id="objectives">Objectives</h2>
+<ol type="1">
+<li>Design and implement a cross-platform data collection and feature
+extraction pipeline for mouse events.</li>
+<li>Engineer robust behavioral features from fixed-length event
+segments.</li>
+<li>Train and compare classification models for user
+identification.</li>
+<li>Train One-Class SVM and Isolation Forest for single-user anomaly
+detection.</li>
+<li>Evaluate cross-user anomaly rates to quantify behavioral
+distinctiveness.</li>
+</ol>
+<h2 id="contributions">Contributions</h2>
+<ul>
+<li>An end-to-end open codebase with C++ collectors (Windows, Linux),
+Python preprocessing, classic ML baselines, and a minimal GUI for
+real-time anomaly detection.</li>
+<li>A curated feature set centered on motion, speed/acceleration
+statistics, and event pattern ratios.</li>
+<li>A comprehensive experimental study on 76,693 behavioral segments
+across four users, achieving 85.36% best classification accuracy (Random
+Forest) and notable cross-user anomaly separation.</li>
+</ul>
+<h2 id="thesis-outline">Thesis Outline</h2>
+<ul>
+<li>Background and Related Work: Behavioral biometrics, mouse dynamics,
+anomaly detection.</li>
+<li>Data and Feature Engineering: Raw signal, segmentation, features,
+scaling, exclusions.</li>
+<li>Methodology: Modeling tasks, algorithms, training protocols,
+validation.</li>
+<li>System Implementation: Collectors, preprocessing, models, GUI app,
+storage layout.</li>
+<li>Experiments and Results: Dataset, metrics, classifier performance,
+anomaly detection analyses.</li>
+<li>Discussion and Future Work: Limitations, threats to validity,
+ethical considerations, next steps.</li>
+<li>Conclusion: Findings, implications, and closing remarks.</li>
+</ul>
+<p>Note: Results summarized here are derived from
+<code>results/results.md</code> and
+<code>results/training_results.txt</code> within this repository;
+reproducibility details are provided in the appendices.</p>
+<h1 id="background-and-related-work">Background and Related Work</h1>
+<p>This section surveys behavioral biometrics with emphasis on mouse
+dynamics, anomaly detection, and user classification.</p>
+<h2 id="behavioral-biometrics">Behavioral Biometrics</h2>
+<p>Behavioral biometrics analyze how people perform actions (typing,
+moving a mouse, swiping, gait). Unlike physiological traits
+(fingerprint, face), behavioral traits can be monitored continuously and
+updated over time, enabling continuous authentication and intrusion
+detection.</p>
+<h2 id="mouse-dynamics">Mouse Dynamics</h2>
+<p>Prior work shows that cursor trajectories, speed/acceleration
+profiles, and click timing can uniquely characterize users . Common
+paradigms include:</p>
+<ul>
+<li>Fixed-task gestures (e.g., target acquisition, drag-and-drop)</li>
+<li>Free-form activity logs during normal computer use</li>
+</ul>
+<p>Feature classes often include trajectory geometry, kinematics,
+frequency of event types, and context (application window, time-of-day).
+Our pipeline focuses on free-form events aggregated into fixed-length
+segments.</p>
+<h2 id="anomaly-detection-techniques">Anomaly Detection Techniques</h2>
+<ul>
+<li>One-Class SVM: Learns a decision boundary around normal data using
+an RBF kernel. Key parameter: nu (anomaly fraction). Pros: solid
+theoretical foundation; Cons: scaling-sensitive.</li>
+<li>Isolation Forest: Isolates anomalies via random partitions. Key
+parameter: contamination. Pros: efficient, less sensitive to scaling;
+Cons: may over-flag in heterogeneous data.</li>
+</ul>
+<h2 id="user-classification">User Classification</h2>
+<p>Classical ML (Random Forest, Decision Trees, KNN, Naive Bayes)
+remains competitive on tabular behavioral features. Ensembles capture
+non-linear interactions and often outperform linear baselines. Neural
+networks can underperform without abundant data and tuning.</p>
+<h2 id="threats-and-considerations">Threats and Considerations</h2>
+<ul>
+<li>Data drift over time (fatigue, device change) threatens
+stability.</li>
+<li>Privacy: mouse dynamics are less sensitive than content, but still
+identifying. Aggregation and differential privacy can mitigate
+risks.</li>
+<li>Adversarial concerns: spoofing trajectories may be possible;
+continuous monitoring and multi-modal fusion improve robustness.</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li>: Mouse movement-driven authentication and region usage (IEEE CCWC
+2021)</li>
+<li>: Additional PDF resource provided with limited metadata; update
+when full details are known</li>
+</ul>
+<h1 id="data-and-feature-engineering">Data and Feature Engineering</h1>
+<h2 id="raw-mouse-event-data">Raw Mouse Event Data</h2>
+<p>Raw CSV events include: WindowTitle (hash or 0), State
+(DM/VM/HM/LD/LU/RD/RU/MW), Time Diff (ms), Day Time (5-min bin), X Pos,
+Y Pos.</p>
+<h2 id="segmentation-strategy">Segmentation Strategy</h2>
+<ul>
+<li>Fixed-length windows of 50 consecutive events per behavioral
+segment.</li>
+<li>Benefits: controls for window size variability; simplifies model
+input.</li>
+<li>Alternatives: time-based windows, overlapping windows (future
+work).</li>
+</ul>
+<h2 id="engineered-features">Engineered Features</h2>
+<p>We compute 36 features and typically select a 16-feature subset for
+modeling:</p>
+<ul>
+<li>Temporal: segment_duration_ms</li>
+<li>Spatial: total_distance_pixels, path_straightness</li>
+<li>Speed: mean_speed, std_dev_speed, median_speed, skewness_speed,
+kurtosis_speed, max_speed, min_speed</li>
+<li>Acceleration: mean_acceleration, std_dev_acceleration,
+max_acceleration</li>
+<li>Movement ratios: ratio_DM, ratio_VM, ratio_HM</li>
+<li>Context/identity: user, most_common_window_title_hash,
+most_common_daytime_bin, std_dev_daytime_bin, event counts (often
+excluded)</li>
+</ul>
+<h2 id="preprocessing">Preprocessing</h2>
+<ul>
+<li>Numeric coercion for timing fields; drop invalid rows.</li>
+<li>Feature exclusions: remove counts and metadata for behavior-only
+models.</li>
+<li>Standardization: StandardScaler fit per training split; scalers
+saved to <code>models/scalers/</code>.</li>
+</ul>
+<h2 id="datasets">Datasets</h2>
+<ul>
+<li>Users: atiq, masum, rakib, zia</li>
+<li>Total segments: 76,693</li>
+<li>Distribution per user given in <code>results/results.md</code>.</li>
+</ul>
+<h2 id="storage-layout">Storage Layout</h2>
+<ul>
+<li>Processed per-user features:
+<code>processed/&lt;username&gt;.csv</code></li>
+<li>Unified features for classification:
+<code>processed/features.csv</code></li>
+</ul>
+<h2 id="reproducibility-notes">Reproducibility Notes</h2>
+<ul>
+<li>Preprocess with <code>collection/preprocess.py</code>.</li>
+<li>Keep segmentation length and feature list consistent between
+training and inference (GUI).</li>
+</ul>
+<h1 id="methodology">Methodology</h1>
+<h2 id="problem-formulations">Problem Formulations</h2>
+<ul>
+<li>Multi-user classification: Predict <code>user</code> label from
+behavioral segment features.</li>
+<li>Single-user anomaly detection: Learn “normal” behavior for a user
+and flag deviations.</li>
+</ul>
+<h2 id="algorithms">Algorithms</h2>
+<ul>
+<li>Classification: Random Forest, Decision Tree, KNN, Naive Bayes,
+PCA+XGBoost, MLP.</li>
+<li>Anomaly Detection: One-Class SVM (RBF, nu=0.05), Isolation Forest
+(n_estimators=100, contamination=0.05, random_state=42).</li>
+</ul>
+<h2 id="training-protocols">Training Protocols</h2>
+<ul>
+<li>Classification: 5-fold stratified cross-validation; report mean
+accuracy and per-user precision/recall/F1 on held-out folds.</li>
+<li>Anomaly: Train on each user’s feature file; validate expected
+anomaly fraction on training set; perform cross-user tests using other
+users’ data.</li>
+</ul>
+<h2 id="feature-selection">Feature Selection</h2>
+<ul>
+<li>Use 16 core behavioral features; exclude counts and direct identity
+cues.</li>
+<li>Scale numerical features with StandardScaler; persist scaler
+alongside model.</li>
+</ul>
+<h2 id="evaluation-metrics">Evaluation Metrics</h2>
+<ul>
+<li>Classification: Accuracy, precision, recall, F1-score.</li>
+<li>Anomaly: Anomaly rate (% flagged) on self and cross-user data.</li>
+</ul>
+<h2 id="validation-and-significance">Validation and Significance</h2>
+<ul>
+<li>Consistent preprocessing across models.</li>
+<li>Repeatability ensured by fixed random seeds where applicable.</li>
+</ul>
+<h2 id="implementation-details">Implementation Details</h2>
+<ul>
+<li>Hyperparameter search: GridSearchCV for RF (trees, depth, features).
+Fixed params for SVM/ISO for comparability.</li>
+<li>Data splitting: Stratified folds preserve per-user class
+balance.</li>
+<li>Scaling: Fit scaler on training folds only; apply to validation
+folds to avoid leakage.</li>
+</ul>
+<h2 id="threats-to-validity-and-mitigation">Threats to Validity and
+Mitigation</h2>
+<ul>
+<li>Small sample of users: address through cross-user tests and
+transparent reporting.</li>
+<li>Potential device variance: note collector environment; future work
+includes device-normalized features.</li>
+<li>Temporal drift: limited in current dataset; propose longitudinal
+validation.</li>
+</ul>
+<h1 id="system-implementation">System Implementation</h1>
+<h2 id="overview">Overview</h2>
+<p>The system integrates data collection, preprocessing/feature
+engineering, model training, and an optional real-time GUI app.</p>
+<h2 id="collectors-c">Collectors (C++)</h2>
+<ul>
+<li>Windows: <code>collection/collector.cpp</code> and
+<code>AnomalyDetectorApp/mouse_logger.cpp</code> (low-level hook).</li>
+<li>Linux/Wayland: <code>collection/collector_linux.cpp</code> using
+libinput/udev; root privileges required.</li>
+</ul>
+<h2 id="preprocessing-python">Preprocessing (Python)</h2>
+<ul>
+<li>Script: <code>collection/preprocess.py</code> segments events (50
+per window) and computes features.</li>
+<li>Outputs: <code>processed/&lt;username&gt;.csv</code> per user;
+merged <code>processed/features.csv</code> for classification.</li>
+</ul>
+<h2 id="modeling-python">Modeling (Python)</h2>
+<ul>
+<li>Classification: <code>classification/*.py</code> scripts implement
+baselines and an MLP.</li>
+<li>Anomaly: <code>abnormal/one_class_svm.py</code>,
+<code>abnormal/isolation_forest.py</code> with predictors.</li>
+<li>Models and scalers saved to <code>models/</code> subfolders.</li>
+</ul>
+<h2 id="real-time-gui">Real-Time GUI</h2>
+<ul>
+<li><code>AnomalyDetectorApp/main_app.py</code> reads events from the
+Windows logger, batches to segments, scales, and applies a trained
+One-Class SVM.</li>
+<li>Configuration: BATCH_SIZE, SEGMENT_LENGTH_EVENTS, and
+TRAINING_FEATURES must match training setup.</li>
+</ul>
+<h2 id="project-structure">Project Structure</h2>
+<p>See repository <code>README.md</code> for a detailed overview of
+folders and scripts.</p>
+<h1 id="experiments-and-results">Experiments and Results</h1>
+<p>This section consolidates findings from
+<code>results/results.md</code> and
+<code>results/training_results.txt</code>.</p>
+<h2 id="dataset-summary">Dataset Summary</h2>
+<ul>
+<li>76,693 segments across 4 users: atiq, masum, rakib, zia.</li>
+<li>36 engineered features; 16 core features used for modeling.</li>
+<li>Segmentation: 50 events per segment.</li>
+</ul>
+<h2 id="classification-performance">Classification Performance</h2>
+<ul>
+<li>Random Forest (best): 85.36% accuracy overall.</li>
+<li>Decision Tree: 77.24%</li>
+<li>PCA + XGBoost: 70.20%</li>
+<li>KNN: 60.30%</li>
+<li>MLP: 44.43%</li>
+<li>Naive Bayes: 38.37%</li>
+</ul>
+<p>Per-user (Random Forest): masum highest precision/recall (≈98%);
+rakib/zia show more confusion.</p>
+<h2 id="anomaly-detection">Anomaly Detection</h2>
+<ul>
+<li>Self-tests: ~5% anomalies for both One-Class SVM and Isolation
+Forest on their training users (nu/contamination=0.05).</li>
+</ul>
+<p>Cross-user anomaly rates (selected):</p>
+<ul>
+<li>Masum’s models: up to 31.6% anomalies on other users (most
+distinctive).</li>
+<li>Atiq’s models: ~1–5% anomalies on others (least distinctive).</li>
+<li>Rakib/Zia: intermediate distinctiveness.</li>
+</ul>
+<p>Isolation Forest generally yields higher cross-user anomaly rates
+than One-Class SVM, indicating greater sensitivity.</p>
+<h2 id="key-findings">Key Findings</h2>
+<ul>
+<li>Mouse dynamics enable feasible user identification (85.36%
+accuracy).</li>
+<li>Behavioral distinctiveness varies by user; useful for continuous
+authentication.</li>
+<li>Ensemble methods outperform simple baselines; deep models need more
+data/tuning.</li>
+</ul>
+<h2 id="reproducibility">Reproducibility</h2>
+<ul>
+<li>See <code>appendices/B-reproducibility.md</code> for environment and
+script details.</li>
+</ul>
+<h2 id="additional-analyses-placeholders">Additional Analyses
+(Placeholders)</h2>
+<h3 id="feature-distributions">Feature Distributions</h3>
+<p>Figure: Histogram/violin plots for key features (e.g., mean_speed,
+path_straightness) per user to visualize separability.</p>
+<h3 id="confusion-matrix-random-forest">Confusion Matrix (Random
+Forest)</h3>
+<p>Figure: 4x4 confusion matrix highlighting misclassifications between
+rakib and zia.</p>
+<h3 id="cross-user-anomaly-roc-style-view">Cross-User Anomaly ROC-style
+View</h3>
+<p>Figure: For each user’s model, plot anomaly rate vs. threshold to
+illustrate sensitivity (proxy ROC since labels are cross-user).</p>
+<h3 id="ablation-study-planned">Ablation Study (Planned)</h3>
+<p>Table: Impact of removing feature groups (speed stats, ratios,
+acceleration) on RF accuracy and ISO cross-user anomaly rates.</p>
+<h1 id="discussion-and-future-work">Discussion and Future Work</h1>
+<h2 id="interpretation">Interpretation</h2>
+<ul>
+<li>High RF accuracy suggests non-linear feature interactions capture
+user-specific kinematics.</li>
+<li>Cross-user anomaly patterns quantify distinctiveness and inform
+threshold selection.</li>
+</ul>
+<h2 id="limitations">Limitations</h2>
+<ul>
+<li>4 users: limited external validity; potential sampling bias.</li>
+<li>Short horizon: temporal stability not assessed.</li>
+<li>Device and environment variability not controlled across diverse
+hardware.</li>
+</ul>
+<h2 id="ethical-and-privacy-considerations">Ethical and Privacy
+Considerations</h2>
+<ul>
+<li>Avoid logging content; focus on dynamics and coarse context.</li>
+<li>Consider consent, transparency, and data minimization.</li>
+<li>Explore privacy-preserving training (federated learning, DP
+mechanisms).</li>
+</ul>
+<h2 id="future-work">Future Work</h2>
+<ul>
+<li>Scale to larger, longitudinal datasets.</li>
+<li>Robustness: domain adaptation across devices and tasks.</li>
+<li>Multi-modal fusion with keystroke dynamics and application
+context.</li>
+<li>Real-time deployment studies; calibration for false positive
+control.</li>
+<li>Explainability: feature attribution to validate behavioral
+hypotheses.</li>
+</ul>
+<h1 id="conclusion">Conclusion</h1>
+<p>This thesis demonstrates that mouse tracking behavioral features
+support both user identification and anomaly detection. On a dataset of
+76,693 segments from four users, Random Forest achieved 85.36% accuracy
+for classification. One-Class SVM and Isolation Forest produced expected
+~5% anomaly rates on self-tests and revealed meaningful cross-user
+differences, with Isolation Forest generally more sensitive.</p>
+<p>These results support the viability of continuous, unobtrusive
+behavioral authentication. With larger and more diverse datasets,
+multi-modal fusion, and longitudinal evaluation, mouse dynamics can
+contribute to practical, privacy-conscious security systems.</p>

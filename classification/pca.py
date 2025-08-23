@@ -6,7 +6,7 @@ from sklearn.decomposition import PCA
 from xgboost import XGBClassifier
 
 # Load data
-features_df = pd.read_csv("features.csv")
+features_df = pd.read_csv("../features.csv")
 if 'user' not in features_df.columns:
     print("Error: 'user' column not found in features_df. Cannot proceed with ML preparation.")
 

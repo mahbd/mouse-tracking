@@ -1,0 +1,78 @@
+
+=== Training models for user: atiq ===
+Training samples for atiq: 20585
+Training One-Class SVM for atiq...
+Training Isolation Forest for atiq...
+SVM detected 1028/20585 anomalies (4.99%)
+Isolation Forest detected 1030/20585 anomalies (5.00%)
+
+=== Training models for user: masum ===
+Training samples for masum: 13447
+Training One-Class SVM for masum...
+Training Isolation Forest for masum...
+SVM detected 673/13447 anomalies (5.00%)
+Isolation Forest detected 673/13447 anomalies (5.00%)
+
+=== Training models for user: rakib ===
+Training samples for rakib: 21269
+Training One-Class SVM for rakib...
+Training Isolation Forest for rakib...
+SVM detected 1057/21269 anomalies (4.97%)
+Isolation Forest detected 1064/21269 anomalies (5.00%)
+
+=== Training models for user: zia ===
+Training samples for zia: 21392
+Training One-Class SVM for zia...
+Training Isolation Forest for zia...
+SVM detected 1055/21392 anomalies (4.93%)
+Isolation Forest detected 1070/21392 anomalies (5.00%)
+
+=== TRAINING SUMMARY ===
+atiq: 20585 samples, SVM: 4.99% anomalies, ISO: 5.00% anomalies
+masum: 13447 samples, SVM: 5.00% anomalies, ISO: 5.00% anomalies
+rakib: 21269 samples, SVM: 4.97% anomalies, ISO: 5.00% anomalies
+zia: 21392 samples, SVM: 4.93% anomalies, ISO: 5.00% anomalies
+
+=== CROSS-USER ANOMALY DETECTION TEST ===
+
+Testing atiq's models on other users:
+  masum: SVM 4.2% anomalies, ISO 1.0% anomalies (13447 samples)
+  rakib: SVM 5.3% anomalies, ISO 1.8% anomalies (21269 samples)
+  zia: SVM 3.6% anomalies, ISO 1.0% anomalies (21392 samples)
+
+Testing masum's models on other users:
+  atiq: SVM 24.0% anomalies, ISO 31.6% anomalies (20585 samples)
+  rakib: SVM 13.3% anomalies, ISO 25.5% anomalies (21269 samples)
+  zia: SVM 11.2% anomalies, ISO 21.4% anomalies (21392 samples)
+
+Testing rakib's models on other users:
+  atiq: SVM 19.3% anomalies, ISO 21.2% anomalies (20585 samples)
+  masum: SVM 4.2% anomalies, ISO 2.2% anomalies (13447 samples)
+  zia: SVM 6.6% anomalies, ISO 8.0% anomalies (21392 samples)
+
+Testing zia's models on other users:
+  atiq: SVM 16.7% anomalies, ISO 18.8% anomalies (20585 samples)
+  masum: SVM 5.5% anomalies, ISO 2.2% anomalies (13447 samples)
+  rakib: SVM 8.3% anomalies, ISO 7.2% anomalies (21269 samples)
+
+=== CROSS-USER ANOMALY DETECTION SUMMARY ===
+
+atiq's models detecting anomalies in other users:
+  masum: SVM 4.2%, ISO 1.0%
+  rakib: SVM 5.3%, ISO 1.8%
+  zia: SVM 3.6%, ISO 1.0%
+
+masum's models detecting anomalies in other users:
+  atiq: SVM 24.0%, ISO 31.6%
+  rakib: SVM 13.3%, ISO 25.5%
+  zia: SVM 11.2%, ISO 21.4%
+
+rakib's models detecting anomalies in other users:
+  atiq: SVM 19.3%, ISO 21.2%
+  masum: SVM 4.2%, ISO 2.2%
+  zia: SVM 6.6%, ISO 8.0%
+
+zia's models detecting anomalies in other users:
+  atiq: SVM 16.7%, ISO 18.8%
+  masum: SVM 5.5%, ISO 2.2%
+  rakib: SVM 8.3%, ISO 7.2%

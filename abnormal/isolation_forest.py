@@ -93,7 +93,7 @@ def train_isolation_forest_model(
 
 username = "atiq"
 train_isolation_forest_model(
-    feature_file="processed/train.csv",
-    user_model_output_path=f"{username}_isoforest_model.joblib",
-    scaler_output_path=f"{username}_scaler.joblib",
+    feature_file="../processed/train.csv",
+    user_model_output_path=f"../models/isolation_forest/{username}_isoforest_model.joblib",
+    scaler_output_path=f"../models/scalers/{username}_isoforest_scaler.joblib",
 )

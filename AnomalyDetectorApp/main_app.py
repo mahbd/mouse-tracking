@@ -229,8 +229,8 @@ class App(ctk.CTk):
 
     def load_ml_assets(self):
         try:
-            self.model = joblib.load(f"{USERNAME}_anomaly_model.joblib")
-            self.scaler = joblib.load(f"{USERNAME}_scaler.joblib")
+            self.model = joblib.load(f"../models/svm/{USERNAME}_anomaly_model.joblib")
+            self.scaler = joblib.load(f"../models/scalers/{USERNAME}_scaler.joblib")
             print("Successfully loaded model and scaler.")
         except Exception as e:
             print(f"ERROR loading model assets: {e}")

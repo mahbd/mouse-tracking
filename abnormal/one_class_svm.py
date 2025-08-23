@@ -104,11 +104,11 @@ def train_anomaly_model_for_user(
 
 if __name__ == "__main__":
     username = "atiq"
-    model_file = f"{username}_anomaly_model.joblib"
-    scaler_file = f"{username}_scaler.joblib"
+    model_file = f"../models/svm/{username}_anomaly_model.joblib"
+    scaler_file = f"../models/scalers/{username}_scaler.joblib"
 
     train_anomaly_model_for_user(
-        feature_file=f"data/processed/train.csv",
+        feature_file=f"../data/processed/train.csv",
         user_model_output_path=model_file,
         scaler_output_path=scaler_file,
     )

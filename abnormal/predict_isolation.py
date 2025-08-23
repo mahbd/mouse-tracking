@@ -63,7 +63,7 @@ def predict_anomalies(
 
 
 predict_anomalies(
-    test_file="processed/rakib.csv",
-    model_path=f"atiq_isoforest_model.joblib",
-    scaler_path=f"atiq_scaler.joblib",
+    test_file="../processed/rakib.csv",
+    model_path=f"../models/isolation_forest/atiq_isoforest_model.joblib",
+    scaler_path=f"../models/scalers/atiq_isoforest_scaler.joblib",
 )

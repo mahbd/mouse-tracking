@@ -6,9 +6,9 @@ from sklearn.preprocessing import StandardScaler
 import joblib
 
 username = "atiq"
-model_file = f"{username}_anomaly_model.joblib"
-scaler_file = f"{username}_scaler.joblib"
-feature_file = f"processed/zia.csv"
+model_file = f"../models/svm/{username}_anomaly_model.joblib"
+scaler_file = f"../models/scalers/{username}_scaler.joblib"
+feature_file = f"../processed/zia.csv"
 loaded_model = joblib.load(model_file)
 loaded_scaler = joblib.load(scaler_file)
 

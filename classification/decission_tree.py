@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 
 # Load data
-features_df = pd.read_csv("features.csv")
+features_df = pd.read_csv("../features.csv")
 if 'user' not in features_df.columns:
     print("Error: 'user' column not found in features_df. Cannot proceed with ML preparation.")
 

@@ -6,7 +6,7 @@ import torch.nn as nn
 import torch.optim as optim
 
 # Prepare the data
-df = pd.read_csv("features.csv")
+df = pd.read_csv("../features.csv")
 X = df.drop(columns=['user', 'most_common_window_title_hash'])  # Drop non-numeric ID-like fields
 X = X.select_dtypes(include='number')
 y = df['user']
