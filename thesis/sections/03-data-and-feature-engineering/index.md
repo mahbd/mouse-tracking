@@ -15,24 +15,34 @@ Raw mouse events are transformed into behavioral signatures through systematic f
 
 ## 3.2 Event Structure
 
-**Event Types**: Movement (cursor changes), clicks (button press/release), scrolling (wheel events), hover/dwell (stability periods).
+### 3.2.1 Event Types
 
-**Attributes**: Temporal (timestamps, intervals), spatial (X/Y coordinates), behavioral (event classifications), contextual (anonymized application data).
+Movement (cursor changes), clicks (button press/release), scrolling (wheel events), hover/dwell (stability periods).
 
-**Quality Assurance**: Temporal consistency, spatial validity, sequence validation, completeness monitoring.
+### 3.2.2 Event Attributes
+
+Temporal (timestamps, intervals), spatial (X/Y coordinates), behavioral (event classifications), contextual (anonymized application data).
+
+### 3.2.3 Quality Assurance
+
+Temporal consistency, spatial validity, sequence validation, completeness monitoring.
 
 ## 3.3 Feature Engineering
 
-**Segmentation**: 50-event windows providing consistent behavioral data.
+### 3.3.1 Segmentation Strategy
 
-**Feature Categories**:
+50-event windows providing consistent behavioral data.
+
+### 3.3.2 Feature Categories
 
 - **Temporal**: Segment duration, inter-event intervals, rhythm patterns
 - **Spatial**: Total distance, path straightness, movement range
 - **Kinematic**: Velocity statistics (mean, median, max, std dev, skewness, kurtosis)
 - **Statistical**: Distribution characteristics and higher-order patterns
 
-**Core Features**: From 36 engineered features, 16 selected based on discrimination power: segment_duration_ms, total_distance_pixels, path_straightness, mean_speed, median_speed, max_speed, std_dev_speed, skewness_speed, kurtosis_speed, plus temporal and spatial statistics.
+### 3.3.3 Core Feature Set
+
+From 36 engineered features, 16 selected based on discrimination power: segment_duration_ms, total_distance_pixels, path_straightness, mean_speed, median_speed, max_speed, std_dev_speed, skewness_speed, kurtosis_speed, plus temporal and spatial statistics.
 
 **Fixed-Time Windows**: Consistent temporal scope but variable behavioral data amounts.
 

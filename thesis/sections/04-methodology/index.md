@@ -29,40 +29,30 @@ Rigorous evaluation of mouse-based behavioral biometrics for user identification
 
 ## 4.3 Experimental Design
 
-**Algorithms Evaluated**:
+### 4.3.1 Algorithm Evaluation
 
 - Classification: Random Forest, Decision Tree, KNN, MLP, Naive Bayes, PCA+XGBoost
 - Anomaly Detection: One-Class SVM, Isolation Forest
 
-**Evaluation Metrics**: Accuracy, precision, recall, F1-score, confusion matrices, anomaly rates
+### 4.3.2 Evaluation Metrics
 
-**Validation**: Cross-validation, per-user analysis, statistical significance testing
+Accuracy, precision, recall, F1-score, confusion matrices, anomaly rates
 
-### 4.3.1 Dataset Organization and Partitioning
+### 4.3.3 Validation Strategy
 
-**User-Stratified Approach**: All experimental procedures maintain user stratification to ensure balanced representation and prevent bias toward users with larger amounts of training data.
+Cross-validation, per-user analysis, statistical significance testing
 
-**Cross-Validation Strategy**: We employ 5-fold stratified cross-validation for all classification experiments to provide robust performance estimates and assess variability in algorithmic performance.
+### 4.3.4 Dataset Organization
 
-**Temporal Considerations**: While our current dataset does not span sufficient time periods for comprehensive temporal analysis, our experimental design accounts for temporal factors and provides frameworks for future longitudinal evaluation.
+User-stratified approach with 5-fold stratified cross-validation, temporal considerations, and strict data partitioning to prevent information leakage.
 
-**Data Integrity**: Strict data partitioning procedures ensure that no information leakage occurs between training and testing phases, maintaining the validity of performance estimates.
+### 4.3.5 Feature Engineering Integration
 
-### 4.3.2 Feature Engineering Integration
+Consistent feature pipeline, feature selection validation within cross-validation folds, and proper scaling and normalization procedures.
 
-**Consistent Feature Pipeline**: All experiments use identical feature engineering procedures to ensure comparable results across different algorithms and experimental conditions.
+### 4.3.6 Algorithm Configuration
 
-**Feature Selection Validation**: Feature selection procedures are applied within each cross-validation fold to prevent information leakage and provide unbiased performance estimates.
-
-**Scaling and Normalization**: Feature scaling procedures are consistently applied across all experiments with scalers fit only on training data and applied to validation data.
-
-### 4.3.3 Algorithm Selection and Configuration
-
-**Comprehensive Algorithm Coverage**: We evaluate multiple algorithm categories including tree-based methods, ensemble approaches, distance-based methods, probabilistic models, and neural networks to provide comprehensive performance comparison.
-
-**Hyperparameter Optimization**: Systematic hyperparameter optimization is employed for algorithms where performance is sensitive to parameter settings, using grid search or random search as appropriate.
-
-**Baseline Comparisons**: Performance comparisons include both sophisticated algorithms and simple baselines to establish performance context and assess the value of complex approaches.
+Comprehensive algorithm coverage, systematic hyperparameter optimization, and baseline comparisons for performance context.
 
 ## 4.4 User Classification Methodology
 

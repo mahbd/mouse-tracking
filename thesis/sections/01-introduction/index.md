@@ -23,13 +23,17 @@ This research addresses user identification ("who is using the system") and anom
 
 ## 1.3 Research Objectives
 
-**System Implementation**: Develop end-to-end mouse-based behavioral biometric systems with cross-platform data collection and preprocessing.
+**1.3.1 System Implementation**
+Develop end-to-end mouse-based behavioral biometric systems with cross-platform data collection and preprocessing.
 
-**Feature Engineering**: Design feature sets capturing essential behavioral characteristics for optimal user discrimination.
+**1.3.2 Feature Engineering**
+Design feature sets capturing essential behavioral characteristics for optimal user discrimination.
 
-**Classification**: Evaluate machine learning algorithms for user identification, comparing traditional and ensemble approaches.
+**1.3.3 Classification**
+Evaluate machine learning algorithms for user identification, comparing traditional and ensemble approaches.
 
-**Anomaly Detection**: Implement algorithms for detecting behavioral deviations indicating unauthorized access.
+**1.3.4 Anomaly Detection**
+Implement algorithms for detecting behavioral deviations indicating unauthorized access.
 
 **1.3.5 Cross-User Analysis**
 Conduct comprehensive analysis of behavioral distinctiveness across different users, quantifying the degree to which individual behavioral patterns can be distinguished from one another. This analysis provides insights into the fundamental discriminative power of mouse dynamics and informs threshold setting for practical deployments.

@@ -11,17 +11,27 @@
 
 ## 2.1 Behavioral Biometrics
 
+### 2.1.1 Fundamental Principles
+
 Behavioral biometrics leverage unique interaction patterns, unlike physiological biometrics relying on static characteristics. Key principles include distinctiveness (unique patterns), consistency (stability over time), collectability (natural interactions), and measurability (quantifiable characteristics).
+
+### 2.1.2 Categories
 
 Categories include keystroke dynamics, mouse dynamics, gait analysis, voice patterns, signature dynamics, and touch gestures.
 
 ## 2.2 Mouse Dynamics
 
+### 2.2.1 Historical Development
+
 Mouse dynamics research evolved from simple proof-of-concept studies (Gamboa and Fred, 2004) to sophisticated real-time systems. Key developments include naturalistic data collection (Pusara and Brodley, 2004), statistical summarization (Ahmed and Traore, 2007), and multi-modal integration (Zheng et al., 2011).
 
-**Technical Characteristics**: Events include movements, clicks, scrolling with millisecond precision in 2D coordinate systems within application contexts.
+### 2.2.2 Technical Characteristics
 
-**Feature Engineering**: Kinematic features (velocity, acceleration), geometric features (path characteristics), temporal features (timing patterns), statistical features (distributions), and frequency domain analysis.
+Events include movements, clicks, scrolling with millisecond precision in 2D coordinate systems within application contexts.
+
+### 2.2.3 Feature Engineering Approaches
+
+Kinematic features (velocity, acceleration), geometric features (path characteristics), temporal features (timing patterns), statistical features (distributions), and frequency domain analysis.
 
 ## 2.3 Anomaly Detection in Behavioral Biometrics
 

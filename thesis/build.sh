@@ -43,11 +43,12 @@ common_args=(
   -s
   -V documentclass=article
   -V geometry:margin=0.6in
-  -V fontsize=10pt
+  -V fontsize=11pt
   -V linestretch=1.1
   -V papersize=a4
+  -V toc-title="TABLE OF CONTENTS"
   --toc
-  --toc-depth=1
+  --toc-depth=2
   --number-sections
   --citeproc
   --resource-path=.
