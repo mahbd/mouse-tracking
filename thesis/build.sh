@@ -1,14 +1,24 @@
-#!/usr/bin/env zsh
-# Build the thesis PDF using pandoc (requires pandoc and a LaTeX engine installed).
-# Activates conda env if available.
+#!/usr/bin/env bash
+# Build script for the thesis using pandoc
+# - Default builds a PDF (thesis.pdf)
+# - Pass an output ending in .tex to build an editable LaTeX file instead
 
 set -euo pipefail
+
+# Always run relative to this script's directory so section paths work
+cd "$(dirname "$0")"
 
 # Default output
 out=${1:-thesis.pdf}
 
+ext=${out##*.}
+
 # Collect section files in order
 sections=(
+  sections/00-front-matter/title-page.md
+  sections/00-front-matter/declaration.md
+  sections/00-front-matter/certificate.md
+  sections/00-front-matter/acknowledgements.md
   sections/00-abstract/index.md
   sections/01-introduction/index.md
   sections/01-introduction/motivation-and-scope.md
@@ -46,17 +56,52 @@ if ! command -v pandoc >/dev/null 2>&1; then
   exit 1
 fi
 
-pandoc \
-  -V geometry:margin=1in \
-  -V fontsize=12pt \
-  -V linestretch=1.3 \
-  --toc \
-  --filter pandoc-citeproc 2>/dev/null || true \
-  --citeproc \
-  -o "$out" \
-  --pdf-engine="$engine" \
-  --resource-path=. \
-  --bibliography=references.bib \
-  ${sections[@]}
+# Common pandoc arguments with enhanced settings for larger thesis
+common_args=(
+  -s
+  -V documentclass=report
+  -V geometry:margin=1in
+  -V fontsize=12pt
+  -V linestretch=1.5
+  -V papersize=a4
+  --toc
+  --toc-depth=3
+  --number-sections
+  --citeproc
+  --resource-path=.
+  --bibliography=references.bib
+  --filter=pandoc-crossref
+  "${sections[@]}"
+)
 
-echo "Built $out"
+case "$ext" in
+  pdf)
+    echo "Building thesis PDF with pandoc..."
+    pandoc \
+      "${common_args[@]}" \
+      --pdf-engine="$engine" \
+      -V classoption=openright \
+      -V classoption=twoside \
+      --template=eisvogel \
+      -o "$out" || \
+    pandoc \
+      "${common_args[@]}" \
+      --pdf-engine="$engine" \
+      -o "$out"
+    ;;
+  tex)
+    echo "Building thesis LaTeX (.tex) with pandoc..."
+    pandoc \
+      "${common_args[@]}" \
+      -t latex \
+      -o "$out"
+    ;;
+  *)
+    echo "Unknown output extension: .$ext. Use .pdf or .tex" >&2
+    exit 2
+    ;;
+esac
+
+echo "Built $out successfully!"
+echo "The thesis is now significantly expanded with comprehensive content."
+echo "Each chapter starts on a new page and contains detailed analysis."

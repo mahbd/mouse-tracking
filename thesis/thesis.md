@@ -2,9 +2,18 @@
 % Thesis Draft
 % August 2025
 
+Authors: Mahmudul Alam (ID: 1905023, Reg. No.: 000012751), Atiqur Rahman (ID: 1905005, Reg. No.: 000012733)
+
 <!-- Use this file to compile or read the thesis in order. Each section also has its own index.md. -->
 
 [TOC]
+
+# Front Matter
+
+- Title Page: sections/00-front-matter/title-page.md
+- Declaration: sections/00-front-matter/declaration.md
+- Certificate: sections/00-front-matter/certificate.md
+- Acknowledgements: sections/00-front-matter/acknowledgements.md
 
 # 1. Introduction
 

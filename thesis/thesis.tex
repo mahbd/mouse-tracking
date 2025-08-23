@@ -1,0 +1,1211 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  12pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{setspace}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\begin{document}
+
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\setstretch{1.3}
+\newpage
+
+hispagestyle\{empty\}
+
+\begin{center}
+extbf{UNDERGRADUATE THESIS}\\[1.5cm]
+
+{\LARGE \textbf{Mouse Tracking --- Behavioral Biometrics and Anomaly Detection}}\\[1.2cm]
+
+Submitted by\\[0.6cm]
+Mahmudul Alam\\
+ID: 1905023 \quad\textbullet\quad Reg. No.: 000012751\\[0.4cm]
+Atiqur Rahman\\
+ID: 1905005 \quad\textbullet\quad Reg. No.: 000012733\\[1cm]
+
+Department of Computer Science and Engineering\\
+[University/Institute Name --- update here]\\
+[City, Country]\\[1cm]
+
+Supervised by\\[0.3cm]
+[Supervisor Name], [Title]\\
+Department of Computer Science and Engineering\\
+[University/Institute Name]\\[1.5cm]
+
+August 2025
+\end{center}
+
+\newpage
+
+\newpage
+
+\subsection{Declaration}\label{declaration}
+
+We, Mahmudul Alam (ID: 1905023, Reg. No.: 000012751) and Atiqur Rahman
+(ID: 1905005, Reg. No.: 000012733), hereby declare that the work
+presented in this thesis titled ``Mouse Tracking --- Behavioral
+Biometrics and Anomaly Detection'' is the outcome of our own research
+carried out under the supervision of the undersigned supervisor(s).
+
+To the best of our knowledge, no part of this thesis has been submitted,
+in whole or in part, for any other degree or qualification at this or
+any other institution. All sources of information have been duly
+acknowledged.
+
+The research adhered to applicable ethical and safety guidelines. Any
+risks to participants were minimized and appropriate consent and data
+protection measures were applied.
+
+Author: Mahmudul Alam\\
+Signature: **********\_\_**********\\
+Date: ************\_\_\_\_************
+
+Author: Atiqur Rahman\\
+Signature: **********\_\_**********\\
+Date: ************\_\_\_\_************
+
+\newpage
+
+\newpage
+
+\subsection{Certificate}\label{certificate}
+
+This is to certify that the thesis entitled ``Mouse Tracking ---
+Behavioral Biometrics and Anomaly Detection'' submitted by Mahmudul Alam
+(ID: 1905023, Reg. No.: 000012751) and Atiqur Rahman (ID: 1905005, Reg.
+No.: 000012733) has been carried out under my supervision. To the best
+of my knowledge, this work is original and has not been submitted in
+whole or in part for any degree or diploma at this or any other
+institution.
+
+The candidates have complied with relevant ethical and safety standards
+during the research.
+
+Supervisor: {[}Name{]}, {[}Title{]}\\
+Department of Computer Science and Engineering\\
+{[}University/Institute Name{]}
+
+Signature: **********\_\_**********\\
+Date: ************\_\_\_\_************
+
+\newpage
+
+\newpage
+
+\subsection{Acknowledgements}\label{acknowledgements}
+
+First and foremost, we are grateful to the Almighty for giving us the
+strength, health, and perseverance to complete this work.
+
+We sincerely thank our supervisor(s) for their guidance, encouragement,
+and constructive feedback throughout this project. Their insights helped
+us refine our research questions and methodology, and their constant
+support made the journey possible.
+
+We are also thankful to the faculty members and staff of the Department
+of Computer Science and Engineering for building the academic foundation
+and providing the resources that enabled this work. We appreciate the
+help of our peers and friends for fruitful discussions, feedback on
+early drafts, and assistance during data collection.
+
+We extend our gratitude to all participants who contributed data for
+this study and to the maintainers of the open-source tools and libraries
+used in our implementation.
+
+Finally, we owe our deepest thanks to our families for their
+unconditional love, patience, and encouragement. Their belief in us has
+been our constant motivation.
+
+\newpage
+
+\section{Abstract}\label{abstract}
+
+We study mouse tracking as a behavioral biometric for user
+identification and anomaly detection. Using 76,693 behavioral segments
+from four users, we engineer motion-, speed-, and acceleration-based
+features from fixed 50-event windows. Random Forest reaches 85.36\%
+classification accuracy. For single-user anomaly detection, One-Class
+SVM and Isolation Forest calibrated at 5\% contamination achieve
+expected self-test anomaly rates and reveal substantial cross-user
+differences---up to 31.6\% anomalies---demonstrating distinctive
+behavioral signatures. We detail a practical end-to-end system with
+cross-platform collectors, a feature pipeline, model training scripts,
+and an optional Windows GUI for real-time detection. We discuss
+limitations and ethical aspects and outline directions for scaling,
+robustness, and privacy-preserving deployment.
+
+\section{Introduction}\label{introduction}
+
+Behavioral biometrics leverage the unique ways individuals interact with
+computing systems. Mouse tracking---capturing sequences of cursor
+movements, clicks, and scroll events---offers a continuous, unobtrusive
+signal for identifying users and detecting anomalous behavior. Prior
+studies have explored mouse-based authentication and region usage
+patterns in human-computer interaction contexts \cite{rahman2021}. This
+thesis investigates mouse tracking as a behavioral biometric for two
+goals: multi-user classification (who is at the computer) and
+single-user anomaly detection (is the current behavior unusual for this
+user?).
+
+\subsection{Motivation}\label{motivation}
+
+\begin{itemize}
+\tightlist
+\item
+  Security: Continuous authentication complements point-in-time logins.
+\item
+  Usability: Passive and privacy-conscious when engineered from motion
+  dynamics rather than content.
+\item
+  Practicality: Mouse signals are ubiquitous across desktop environments
+  and inexpensive to collect.
+\end{itemize}
+
+\subsection{Objectives}\label{objectives}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Design and implement a cross-platform data collection and feature
+  extraction pipeline for mouse events.
+\item
+  Engineer robust behavioral features from fixed-length event segments.
+\item
+  Train and compare classification models for user identification.
+\item
+  Train One-Class SVM and Isolation Forest for single-user anomaly
+  detection.
+\item
+  Evaluate cross-user anomaly rates to quantify behavioral
+  distinctiveness.
+\end{enumerate}
+
+\subsection{Contributions}\label{contributions}
+
+\begin{itemize}
+\tightlist
+\item
+  An end-to-end open codebase with C++ collectors (Windows, Linux),
+  Python preprocessing, classic ML baselines, and a minimal GUI for
+  real-time anomaly detection.
+\item
+  A curated feature set centered on motion, speed/acceleration
+  statistics, and event pattern ratios.
+\item
+  A comprehensive experimental study on 76,693 behavioral segments
+  across four users, achieving 85.36\% best classification accuracy
+  (Random Forest) and notable cross-user anomaly separation.
+\end{itemize}
+
+\subsection{Thesis Outline}\label{thesis-outline}
+
+\begin{itemize}
+\tightlist
+\item
+  Background and Related Work: Behavioral biometrics, mouse dynamics,
+  anomaly detection.
+\item
+  Data and Feature Engineering: Raw signal, segmentation, features,
+  scaling, exclusions.
+\item
+  Methodology: Modeling tasks, algorithms, training protocols,
+  validation.
+\item
+  System Implementation: Collectors, preprocessing, models, GUI app,
+  storage layout.
+\item
+  Experiments and Results: Dataset, metrics, classifier performance,
+  anomaly detection analyses.
+\item
+  Discussion and Future Work: Limitations, threats to validity, ethical
+  considerations, next steps.
+\item
+  Conclusion: Findings, implications, and closing remarks.
+\end{itemize}
+
+Note: Results summarized here are derived from
+\texttt{results/results.md} and \texttt{results/training\_results.txt}
+within this repository; reproducibility details are provided in the
+appendices.
+
+\subsection{Motivation and Scope}\label{motivation-and-scope}
+
+Security systems increasingly rely on continuous authentication to
+supplement one-time logins. Mouse dynamics provide an unobtrusive,
+evergreen signal that can be collected without specialized hardware.
+This work focuses on everyday, free-form computer use rather than
+constrained gestures. The scope includes feature engineering from raw
+events, classical ML baselines for user identification, and single-user
+anomaly detection for continuous authentication.
+
+We center our analysis on a four-user dataset (76,693 segments) with
+fixed 50-event windows, representative of a modest but realistic
+behavioral corpus. The methodology is designed to scale to more users
+and to integrate with additional modalities.
+
+\subsection{Contributions and Outline}\label{contributions-and-outline}
+
+\subsubsection{Contributions}\label{contributions-1}
+
+\begin{itemize}
+\tightlist
+\item
+  End-to-end open implementation: multi-OS collectors, feature pipeline,
+  models, and a lightweight GUI.
+\item
+  Practical feature set capturing speed, acceleration, trajectory
+  geometry, and event ratios.
+\item
+  Empirical study showing 85.36\% classification accuracy and meaningful
+  cross-user anomaly separation.
+\end{itemize}
+
+\subsubsection{Outline}\label{outline}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Background and Related Work
+\item
+  Data and Feature Engineering
+\item
+  Methodology
+\item
+  System Implementation
+\item
+  Experiments and Results
+\item
+  Discussion and Future Work
+\item
+  Conclusion
+\end{enumerate}
+
+\section{Background and Related Work}\label{background-and-related-work}
+
+This section surveys behavioral biometrics with emphasis on mouse
+dynamics, anomaly detection, and user classification.
+
+\subsection{Behavioral Biometrics}\label{behavioral-biometrics}
+
+Behavioral biometrics analyze how people perform actions (typing, moving
+a mouse, swiping, gait). Unlike physiological traits (fingerprint,
+face), behavioral traits can be monitored continuously and updated over
+time, enabling continuous authentication and intrusion detection.
+
+\subsection{Mouse Dynamics}\label{mouse-dynamics}
+
+Prior work shows that cursor trajectories, speed/acceleration profiles,
+and click timing can uniquely characterize users \cite{rahman2021}.
+Common paradigms include:
+
+\begin{itemize}
+\tightlist
+\item
+  Fixed-task gestures (e.g., target acquisition, drag-and-drop)
+\item
+  Free-form activity logs during normal computer use
+\end{itemize}
+
+Feature classes often include trajectory geometry, kinematics, frequency
+of event types, and context (application window, time-of-day). Our
+pipeline focuses on free-form events aggregated into fixed-length
+segments.
+
+\subsection{Anomaly Detection
+Techniques}\label{anomaly-detection-techniques}
+
+\begin{itemize}
+\tightlist
+\item
+  One-Class SVM: Learns a decision boundary around normal data using an
+  RBF kernel. Key parameter: nu (anomaly fraction). Pros: solid
+  theoretical foundation; Cons: scaling-sensitive.
+\item
+  Isolation Forest: Isolates anomalies via random partitions. Key
+  parameter: contamination. Pros: efficient, less sensitive to scaling;
+  Cons: may over-flag in heterogeneous data.
+\end{itemize}
+
+\subsection{User Classification}\label{user-classification}
+
+Classical ML (Random Forest, Decision Trees, KNN, Naive Bayes) remains
+competitive on tabular behavioral features. Ensembles capture non-linear
+interactions and often outperform linear baselines. Neural networks can
+underperform without abundant data and tuning.
+
+\subsection{Threats and
+Considerations}\label{threats-and-considerations}
+
+\begin{itemize}
+\tightlist
+\item
+  Data drift over time (fatigue, device change) threatens stability.
+\item
+  Privacy: mouse dynamics are less sensitive than content, but still
+  identifying. Aggregation and differential privacy can mitigate risks.
+\item
+  Adversarial concerns: spoofing trajectories may be possible;
+  continuous monitoring and multi-modal fusion improve robustness.
+\end{itemize}
+
+\subsection{References}\label{references}
+
+\begin{itemize}
+\tightlist
+\item
+  \cite{rahman2021}: Mouse movement-driven authentication and region
+  usage (IEEE CCWC 2021)
+\item
+  \cite{paper_document}: Additional PDF resource provided with limited
+  metadata; update when full details are known
+\end{itemize}
+
+\subsection{Behavioral Biometrics
+Survey}\label{behavioral-biometrics-survey}
+
+Behavioral biometrics encompasses keystroke dynamics, mouse and touch
+gestures, gaze, gait, and stylometry. Strengths include continual
+monitoring and liveness; challenges involve variability due to fatigue,
+stress, or device changes. Mouse dynamics sit at the intersection of
+usability and security, providing a rich signal from routine
+interactions.
+
+\subsection{Mouse Dynamics Literature}\label{mouse-dynamics-literature}
+
+Early work leveraged constrained tasks; more recent studies mine
+free-form usage data. Features typically include kinematics (speed,
+acceleration), curvature/jerk, pause timing, and click sequences.
+Classifiers range from SVM and Random Forests to HMMs and deep models,
+though deep models require large datasets. Our approach favors
+feature-rich, classic ML due to data scale.
+
+See \cite{rahman2021} for an example of authentication and
+region-of-interest inference from mouse movement data.
+
+\section{Data and Feature
+Engineering}\label{data-and-feature-engineering}
+
+\subsection{Raw Mouse Event Data}\label{raw-mouse-event-data}
+
+Raw CSV events include: WindowTitle (hash or 0), State
+(DM/VM/HM/LD/LU/RD/RU/MW), Time Diff (ms), Day Time (5-min bin), X Pos,
+Y Pos.
+
+\subsection{Segmentation Strategy}\label{segmentation-strategy}
+
+\begin{itemize}
+\tightlist
+\item
+  Fixed-length windows of 50 consecutive events per behavioral segment.
+\item
+  Benefits: controls for window size variability; simplifies model
+  input.
+\item
+  Alternatives: time-based windows, overlapping windows (future work).
+\end{itemize}
+
+\subsection{Engineered Features}\label{engineered-features}
+
+We compute 36 features and typically select a 16-feature subset for
+modeling:
+
+\begin{itemize}
+\tightlist
+\item
+  Temporal: segment\_duration\_ms
+\item
+  Spatial: total\_distance\_pixels, path\_straightness
+\item
+  Speed: mean\_speed, std\_dev\_speed, median\_speed, skewness\_speed,
+  kurtosis\_speed, max\_speed, min\_speed
+\item
+  Acceleration: mean\_acceleration, std\_dev\_acceleration,
+  max\_acceleration
+\item
+  Movement ratios: ratio\_DM, ratio\_VM, ratio\_HM
+\item
+  Context/identity: user, most\_common\_window\_title\_hash,
+  most\_common\_daytime\_bin, std\_dev\_daytime\_bin, event counts
+  (often excluded)
+\end{itemize}
+
+\subsection{Preprocessing}\label{preprocessing}
+
+\begin{itemize}
+\tightlist
+\item
+  Numeric coercion for timing fields; drop invalid rows.
+\item
+  Feature exclusions: remove counts and metadata for behavior-only
+  models.
+\item
+  Standardization: StandardScaler fit per training split; scalers saved
+  to \texttt{models/scalers/}.
+\end{itemize}
+
+\subsection{Datasets}\label{datasets}
+
+\begin{itemize}
+\tightlist
+\item
+  Users: atiq, masum, rakib, zia
+\item
+  Total segments: 76,693
+\item
+  Distribution per user given in \texttt{results/results.md}.
+\end{itemize}
+
+\subsection{Storage Layout}\label{storage-layout}
+
+\begin{itemize}
+\tightlist
+\item
+  Processed per-user features:
+  \texttt{processed/\textless{}username\textgreater{}.csv}
+\item
+  Unified features for classification: \texttt{processed/features.csv}
+\end{itemize}
+
+\subsection{Reproducibility Notes}\label{reproducibility-notes}
+
+\begin{itemize}
+\tightlist
+\item
+  Preprocess with \texttt{collection/preprocess.py}.
+\item
+  Keep segmentation length and feature list consistent between training
+  and inference (GUI).
+\end{itemize}
+
+\subsection{Segmentation and Windows}\label{segmentation-and-windows}
+
+We segment raw event streams into fixed 50-event windows to standardize
+sample length and simplify batch processing. Alternatives include
+time-based windows and overlapping strides. Fixed windows reduce
+complexity and encourage consistent feature distributions, at the cost
+of potential boundary effects.
+
+\subsection{Feature Definitions}\label{feature-definitions}
+
+\begin{itemize}
+\tightlist
+\item
+  segment\_duration\_ms: sum of time deltas within the window.
+\item
+  total\_distance\_pixels: cumulative Euclidean distance along cursor
+  positions.
+\item
+  path\_straightness: ratio of end-to-end distance to path length
+  (0,1{]}.
+\item
+  mean\_speed, std\_dev\_speed, median\_speed: first-order kinematics
+  from distance/time.
+\item
+  skewness\_speed, kurtosis\_speed: higher-moment descriptors of speed
+  distribution.
+\item
+  max\_speed, min\_speed: extremes of estimated speed.
+\item
+  mean\_acceleration, std\_dev\_acceleration, max\_acceleration: changes
+  in speed per unit time.
+\item
+  ratio\_DM/VM/HM: fraction of movement events with
+  diagonal/vertical/horizontal components.
+\end{itemize}
+
+Counts and identity-related features (e.g., window title hash) are often
+excluded in modeling to focus on behavior.
+
+\section{Methodology}\label{methodology}
+
+\subsection{Problem Formulations}\label{problem-formulations}
+
+\begin{itemize}
+\tightlist
+\item
+  Multi-user classification: Predict \texttt{user} label from behavioral
+  segment features.
+\item
+  Single-user anomaly detection: Learn ``normal'' behavior for a user
+  and flag deviations.
+\end{itemize}
+
+\subsection{Algorithms}\label{algorithms}
+
+\begin{itemize}
+\tightlist
+\item
+  Classification: Random Forest, Decision Tree, KNN, Naive Bayes,
+  PCA+XGBoost, MLP.
+\item
+  Anomaly Detection: One-Class SVM (RBF, nu=0.05), Isolation Forest
+  (n\_estimators=100, contamination=0.05, random\_state=42).
+\end{itemize}
+
+\subsection{Training Protocols}\label{training-protocols}
+
+\begin{itemize}
+\tightlist
+\item
+  Classification: 5-fold stratified cross-validation; report mean
+  accuracy and per-user precision/recall/F1 on held-out folds.
+\item
+  Anomaly: Train on each user's feature file; validate expected anomaly
+  fraction on training set; perform cross-user tests using other users'
+  data.
+\end{itemize}
+
+\subsection{Feature Selection}\label{feature-selection}
+
+\begin{itemize}
+\tightlist
+\item
+  Use 16 core behavioral features; exclude counts and direct identity
+  cues.
+\item
+  Scale numerical features with StandardScaler; persist scaler alongside
+  model.
+\end{itemize}
+
+\subsection{Evaluation Metrics}\label{evaluation-metrics}
+
+\begin{itemize}
+\tightlist
+\item
+  Classification: Accuracy, precision, recall, F1-score.
+\item
+  Anomaly: Anomaly rate (\% flagged) on self and cross-user data.
+\end{itemize}
+
+\subsection{Validation and
+Significance}\label{validation-and-significance}
+
+\begin{itemize}
+\tightlist
+\item
+  Consistent preprocessing across models.
+\item
+  Repeatability ensured by fixed random seeds where applicable.
+\end{itemize}
+
+\subsection{Implementation Details}\label{implementation-details}
+
+\begin{itemize}
+\tightlist
+\item
+  Hyperparameter search: GridSearchCV for RF (trees, depth, features).
+  Fixed params for SVM/ISO for comparability.
+\item
+  Data splitting: Stratified folds preserve per-user class balance.
+\item
+  Scaling: Fit scaler on training folds only; apply to validation folds
+  to avoid leakage.
+\end{itemize}
+
+\subsection{Threats to Validity and
+Mitigation}\label{threats-to-validity-and-mitigation}
+
+\begin{itemize}
+\tightlist
+\item
+  Small sample of users: address through cross-user tests and
+  transparent reporting.
+\item
+  Potential device variance: note collector environment; future work
+  includes device-normalized features.
+\item
+  Temporal drift: limited in current dataset; propose longitudinal
+  validation.
+\end{itemize}
+
+\subsection{Algorithms and
+Hyperparameters}\label{algorithms-and-hyperparameters}
+
+\begin{itemize}
+\tightlist
+\item
+  Random Forest: n\_estimators, max\_depth, max\_features tuned by CV.
+\item
+  Decision Tree: depth/pruning parameters to manage overfitting.
+\item
+  KNN: k and distance metric; sensitive to scaling.
+\item
+  Naive Bayes: Gaussian assumption on standardized features.
+\item
+  PCA+XGBoost: reduce to \textasciitilde50\% variance dimensions;
+  gradient-boosted trees thereafter.
+\item
+  MLP: modest hidden layers; requires larger datasets for optimal
+  results.
+\item
+  One-Class SVM: RBF kernel, nu=0.05, gamma=scale.
+\item
+  Isolation Forest: n\_estimators=100, contamination=0.05,
+  random\_state=42.
+\end{itemize}
+
+\subsection{Evaluation and Metrics}\label{evaluation-and-metrics}
+
+\begin{itemize}
+\tightlist
+\item
+  Classification: accuracy, precision, recall, F1; per-class support;
+  confusion matrix.
+\item
+  Anomaly detection: fraction flagged anomalous; cross-user anomaly
+  rates.
+\item
+  Calibration: verify self-test anomaly rate matches contamination/nu;
+  adjust thresholds as needed for deployment.
+\item
+  Robustness checks: sensitivity to segmentation length and feature
+  subsets.
+\end{itemize}
+
+\section{System Implementation}\label{system-implementation}
+
+\subsection{Overview}\label{overview}
+
+The system integrates data collection, preprocessing/feature
+engineering, model training, and an optional real-time GUI app.
+
+\subsection{Collectors (C++)}\label{collectors-c}
+
+\begin{itemize}
+\tightlist
+\item
+  Windows: \texttt{collection/collector.cpp} and
+  \texttt{AnomalyDetectorApp/mouse\_logger.cpp} (low-level hook).
+\item
+  Linux/Wayland: \texttt{collection/collector\_linux.cpp} using
+  libinput/udev; root privileges required.
+\end{itemize}
+
+\subsection{Preprocessing (Python)}\label{preprocessing-python}
+
+\begin{itemize}
+\tightlist
+\item
+  Script: \texttt{collection/preprocess.py} segments events (50 per
+  window) and computes features.
+\item
+  Outputs: \texttt{processed/\textless{}username\textgreater{}.csv} per
+  user; merged \texttt{processed/features.csv} for classification.
+\end{itemize}
+
+\subsection{Modeling (Python)}\label{modeling-python}
+
+\begin{itemize}
+\tightlist
+\item
+  Classification: \texttt{classification/*.py} scripts implement
+  baselines and an MLP.
+\item
+  Anomaly: \texttt{abnormal/one\_class\_svm.py},
+  \texttt{abnormal/isolation\_forest.py} with predictors.
+\item
+  Models and scalers saved to \texttt{models/} subfolders.
+\end{itemize}
+
+\subsection{Real-Time GUI}\label{real-time-gui}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{AnomalyDetectorApp/main\_app.py} reads events from the Windows
+  logger, batches to segments, scales, and applies a trained One-Class
+  SVM.
+\item
+  Configuration: BATCH\_SIZE, SEGMENT\_LENGTH\_EVENTS, and
+  TRAINING\_FEATURES must match training setup.
+\end{itemize}
+
+\subsection{Project Structure}\label{project-structure}
+
+See repository \texttt{README.md} for a detailed overview of folders and
+scripts.
+
+\subsection{Collectors}\label{collectors}
+
+\begin{itemize}
+\tightlist
+\item
+  Windows low-level hook logger outputs event streams for the GUI.
+\item
+  Linux/Wayland collector uses libinput/udev to write periodic CSVs.
+\item
+  Design goals: minimal overhead, stable timestamps, and portability.
+\end{itemize}
+
+\subsection{Preprocessing and
+Features}\label{preprocessing-and-features}
+
+The Python pipeline reads raw CSVs, segments windows, and computes
+features. It ensures numeric coercion, handles missing values via row
+drops, and persists per-user feature files. Consistency between training
+and inference is enforced via shared TRAINING\_FEATURES definitions and
+saved scalers.
+
+\section{Experiments and Results}\label{experiments-and-results}
+
+This section consolidates findings from \texttt{results/results.md} and
+\texttt{results/training\_results.txt}.
+
+\subsection{Dataset Summary}\label{dataset-summary}
+
+\begin{itemize}
+\tightlist
+\item
+  76,693 segments across 4 users: atiq, masum, rakib, zia.
+\item
+  36 engineered features; 16 core features used for modeling.
+\item
+  Segmentation: 50 events per segment.
+\end{itemize}
+
+\subsection{Classification
+Performance}\label{classification-performance}
+
+\begin{itemize}
+\tightlist
+\item
+  Random Forest (best): 85.36\% accuracy overall.
+\item
+  Decision Tree: 77.24\%
+\item
+  PCA + XGBoost: 70.20\%
+\item
+  KNN: 60.30\%
+\item
+  MLP: 44.43\%
+\item
+  Naive Bayes: 38.37\%
+\end{itemize}
+
+Per-user (Random Forest): masum highest precision/recall (≈98\%);
+rakib/zia show more confusion.
+
+\subsection{Anomaly Detection}\label{anomaly-detection}
+
+\begin{itemize}
+\tightlist
+\item
+  Self-tests: \textasciitilde5\% anomalies for both One-Class SVM and
+  Isolation Forest on their training users (nu/contamination=0.05).
+\end{itemize}
+
+Cross-user anomaly rates (selected):
+
+\begin{itemize}
+\tightlist
+\item
+  Masum's models: up to 31.6\% anomalies on other users (most
+  distinctive).
+\item
+  Atiq's models: \textasciitilde1--5\% anomalies on others (least
+  distinctive).
+\item
+  Rakib/Zia: intermediate distinctiveness.
+\end{itemize}
+
+Isolation Forest generally yields higher cross-user anomaly rates than
+One-Class SVM, indicating greater sensitivity.
+
+\subsection{Key Findings}\label{key-findings}
+
+\begin{itemize}
+\tightlist
+\item
+  Mouse dynamics enable feasible user identification (85.36\% accuracy).
+\item
+  Behavioral distinctiveness varies by user; useful for continuous
+  authentication.
+\item
+  Ensemble methods outperform simple baselines; deep models need more
+  data/tuning.
+\end{itemize}
+
+\subsection{Reproducibility}\label{reproducibility}
+
+\begin{itemize}
+\tightlist
+\item
+  See \texttt{appendices/B-reproducibility.md} for environment and
+  script details.
+\end{itemize}
+
+\subsection{Additional Analyses
+(Placeholders)}\label{additional-analyses-placeholders}
+
+\subsubsection{Feature Distributions}\label{feature-distributions}
+
+Figure: Histogram/violin plots for key features (e.g., mean\_speed,
+path\_straightness) per user to visualize separability.
+
+\subsubsection{Confusion Matrix (Random
+Forest)}\label{confusion-matrix-random-forest}
+
+Figure: 4x4 confusion matrix highlighting misclassifications between
+rakib and zia.
+
+\subsubsection{Cross-User Anomaly ROC-style
+View}\label{cross-user-anomaly-roc-style-view}
+
+Figure: For each user's model, plot anomaly rate vs.~threshold to
+illustrate sensitivity (proxy ROC since labels are cross-user).
+
+\subsubsection{Ablation Study (Planned)}\label{ablation-study-planned}
+
+Table: Impact of removing feature groups (speed stats, ratios,
+acceleration) on RF accuracy and ISO cross-user anomaly rates.
+
+\subsection{Classification Details}\label{classification-details}
+
+We trained classic classifiers on \texttt{processed/features.csv} using
+stratified 5-fold CV. Random Forest provided the best accuracy
+(85.36\%), consistent with non-linear interactions among kinematic and
+pattern features. KNN showed sensitivity to scaling and feature
+correlation. The MLP underperformed likely due to limited data and
+minimal tuning.
+
+\subsection{Anomaly Detection Details}\label{anomaly-detection-details}
+
+For each user, we trained One-Class SVM and Isolation Forest on that
+user's segments with 5\% contamination (nu=0.05). Self-tests confirmed
+calibration (\textasciitilde5\% anomalies). Cross-user tests quantified
+distinctiveness, with Masum's models flagging 11--31.6\% anomalies for
+other users, while Atiq's models flagged \textasciitilde1--5\%.
+
+These results indicate varying uniqueness in behavioral patterns and
+justify personalized thresholds in deployment.
+
+\section{Tables and Figures}\label{tables-and-figures}
+
+\subsection{Classification Summary
+Table}\label{classification-summary-table}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Algorithm & Accuracy \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Random Forest & 85.36\% \\
+Decision Tree & 77.24\% \\
+PCA + XGBoost & 70.20\% \\
+KNN & 60.30\% \\
+MLP & 44.43\% \\
+Naive Bayes & 38.37\% \\
+\end{longtable}
+
+\subsection{Random Forest Per-User
+Metrics}\label{random-forest-per-user-metrics}
+
+\begin{longtable}[]{@{}llll@{}}
+\toprule\noalign{}
+User & Precision & Recall & F1-Score \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+atiq & 0.89 & 0.86 & 0.87 \\
+masum & 0.98 & 0.98 & 0.98 \\
+rakib & 0.79 & 0.82 & 0.81 \\
+zia & 0.81 & 0.80 & 0.80 \\
+\end{longtable}
+
+\subsection{Anomaly Detection Cross-User
+Summary}\label{anomaly-detection-cross-user-summary}
+
+Isolation Forest generally shows higher anomaly rates than One-Class
+SVM.
+
+\begin{itemize}
+\tightlist
+\item
+  Masum's models: 11--31.6\% anomalies on others.
+\item
+  Rakib's models: 2--21.2\%.
+\item
+  Zia's models: 2--19\%.
+\item
+  Atiq's models: 1--5.3\%.
+\end{itemize}
+
+\begin{quote}
+Source: results/training\_results.txt
+\end{quote}
+
+\section{Discussion and Future Work}\label{discussion-and-future-work}
+
+\subsection{Interpretation}\label{interpretation}
+
+\begin{itemize}
+\tightlist
+\item
+  High RF accuracy suggests non-linear feature interactions capture
+  user-specific kinematics.
+\item
+  Cross-user anomaly patterns quantify distinctiveness and inform
+  threshold selection.
+\end{itemize}
+
+\subsection{Limitations}\label{limitations}
+
+\begin{itemize}
+\tightlist
+\item
+  4 users: limited external validity; potential sampling bias.
+\item
+  Short horizon: temporal stability not assessed.
+\item
+  Device and environment variability not controlled across diverse
+  hardware.
+\end{itemize}
+
+\subsection{Ethical and Privacy
+Considerations}\label{ethical-and-privacy-considerations}
+
+\begin{itemize}
+\tightlist
+\item
+  Avoid logging content; focus on dynamics and coarse context.
+\item
+  Consider consent, transparency, and data minimization.
+\item
+  Explore privacy-preserving training (federated learning, DP
+  mechanisms).
+\end{itemize}
+
+\subsection{Future Work}\label{future-work}
+
+\begin{itemize}
+\tightlist
+\item
+  Scale to larger, longitudinal datasets.
+\item
+  Robustness: domain adaptation across devices and tasks.
+\item
+  Multi-modal fusion with keystroke dynamics and application context.
+\item
+  Real-time deployment studies; calibration for false positive control.
+\item
+  Explainability: feature attribution to validate behavioral hypotheses.
+\end{itemize}
+
+\subsection{Limitations}\label{limitations-1}
+
+\begin{itemize}
+\tightlist
+\item
+  Small number of users limits generalization.
+\item
+  Short collection period precludes longitudinal stability analysis.
+\item
+  Hardware variance and environment factors are not exhaustively
+  controlled.
+\end{itemize}
+
+\subsection{Ethics and Privacy}\label{ethics-and-privacy}
+
+We minimize privacy risk by focusing on motion dynamics rather than
+content. Participants should be informed about collection and usage.
+Access controls and retention limits reduce risk. Future directions
+include on-device processing and privacy-preserving learning techniques.
+
+\section{Conclusion}\label{conclusion}
+
+This thesis demonstrates that mouse tracking behavioral features support
+both user identification and anomaly detection. On a dataset of 76,693
+segments from four users, Random Forest achieved 85.36\% accuracy for
+classification. One-Class SVM and Isolation Forest produced expected
+\textasciitilde5\% anomaly rates on self-tests and revealed meaningful
+cross-user differences, with Isolation Forest generally more sensitive.
+
+These results support the viability of continuous, unobtrusive
+behavioral authentication. With larger and more diverse datasets,
+multi-modal fusion, and longitudinal evaluation, mouse dynamics can
+contribute to practical, privacy-conscious security systems.
+
+\section{Appendix A: Dataset Details}\label{appendix-a-dataset-details}
+
+\begin{itemize}
+\tightlist
+\item
+  Users: atiq, masum, rakib, zia.
+\item
+  Segmentation: 50 events per segment.
+\item
+  Total segments: 76,693.
+\item
+  Per-user distribution provided in \texttt{results/results.md}.
+\item
+  Event definitions: DM, VM, HM, LD/LU, RD/RU, MW.
+\item
+  Collection environments: Windows and Linux/Wayland collectors.
+\end{itemize}
+
+Notes:
+
+\begin{itemize}
+\tightlist
+\item
+  Day Time is encoded as 5-minute buckets (0--287).
+\item
+  On Linux/Wayland, WindowTitle is 0 due to lack of API access.
+\end{itemize}
+
+\section{Appendix B: Reproducibility}\label{appendix-b-reproducibility}
+
+\subsection{Environment}\label{environment}
+
+\begin{itemize}
+\tightlist
+\item
+  Python 3.13
+\item
+  Key libraries: scikit-learn, pandas, numpy, joblib, xgboost,
+  (optional) PyTorch.
+\item
+  Install with \texttt{pip\ install\ -r\ requirements.txt} in a virtual
+  environment.
+\end{itemize}
+
+\subsection{Steps}\label{steps}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Collect raw CSVs with the OS-specific collectors.
+\item
+  Run \texttt{collection/preprocess.py} to generate
+  \texttt{processed/\textless{}username\textgreater{}.csv}.
+\item
+  For classification: prepare \texttt{processed/features.csv} with
+  multiple users.
+\item
+  Run scripts in \texttt{classification/} to train and evaluate
+  classifiers.
+\item
+  For anomaly detection: run \texttt{abnormal/one\_class\_svm.py} and
+  \texttt{abnormal/isolation\_forest.py} per user, then
+  \texttt{predict\_*} scripts for evaluation.
+\item
+  Real-time: run \texttt{AnomalyDetectorApp/main\_app.py} on Windows
+  with a trained SVM model and scaler.
+\end{enumerate}
+
+\subsection{Models and Artifacts}\label{models-and-artifacts}
+
+\begin{itemize}
+\tightlist
+\item
+  Models saved in \texttt{models/svm/} and
+  \texttt{models/isolation\_forest/}.
+\item
+  Scalers saved in \texttt{models/scalers/}.
+\item
+  Results summarized in \texttt{results/}.
+\end{itemize}
+
+\subsection{Notes}\label{notes}
+
+\begin{itemize}
+\tightlist
+\item
+  Keep feature lists and scaler alignment consistent between training
+  and inference.
+\item
+  Random seeds are set where applicable for repeatability.
+\end{itemize}
+
+\section{Appendix C: Ethics and
+Privacy}\label{appendix-c-ethics-and-privacy}
+
+\begin{itemize}
+\tightlist
+\item
+  Data minimization: store only motion dynamics and coarse context.
+\item
+  Consent and transparency: inform participants of collection and usage.
+\item
+  Access control and retention: restrict who can access raw logs; set
+  deletion policies.
+\item
+  Safeguards: consider anonymization of window titles via hashing;
+  prefer on-device processing.
+\item
+  Compliance: align with institutional review processes and applicable
+  regulations.
+\end{itemize}
+
+\end{document}
