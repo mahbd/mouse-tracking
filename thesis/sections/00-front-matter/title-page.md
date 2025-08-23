@@ -2,7 +2,7 @@
 \thispagestyle{empty}
 
 \begin{center}
-\vspace\*{2cm}
+\vspace*{2cm}
 
 \textbf{UNDERGRADUATE THESIS}\\[2cm]
 
@@ -34,7 +34,7 @@ Begum Rokeya University, Rangpur\\[1.5cm]
 
 \textbf{August 2025}
 
-\vspace\*{\fill}
+\vspace*{\fill}
 \end{center}
 
 \newpage

@@ -2,11 +2,11 @@
 \thispagestyle{plain}
 
 \begin{center}
-\vspace\*{2cm}
+\vspace*{2cm}
 \textbf{\Large ACKNOWLEDGEMENTS}
 \end{center}
 
-\vspace{2cm}
+\vspace*{2cm}
 
 We express our deepest gratitude to the Almighty Allah for blessing us with the strength, wisdom, and perseverance to successfully complete this undergraduate thesis work. Without His divine guidance and blessings, this endeavor would not have been possible.
 
@@ -26,7 +26,7 @@ We also acknowledge the institutional support provided by \textbf{Begum Rokeya U
 
 Finally, we thank everyone who directly or indirectly contributed to the successful completion of this thesis work. Your support and encouragement have been invaluable to us.
 
-\vspace{2cm}
+\vspace*{2cm}
 
 \begin{flushright}
 \textbf{Mahmudul Alam}\\

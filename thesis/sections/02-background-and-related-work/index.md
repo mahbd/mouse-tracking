@@ -2,7 +2,7 @@
 \thispagestyle{plain}
 
 \begin{center}
-\vspace\*{2cm}
+\vspace*{2cm}
 \textbf{\Large CHAPTER 2}\\[0.5cm]
 \textbf{\Large BACKGROUND AND RELATED WORK}
 \end{center}

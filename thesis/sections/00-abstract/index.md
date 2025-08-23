@@ -2,11 +2,11 @@
 \thispagestyle{plain}
 
 \begin{center}
-\vspace\*{2cm}
+\vspace*{2cm}
 \textbf{\Large ABSTRACT}
 \end{center}
 
-\vspace{2cm}
+\vspace*{2cm}
 
 In the contemporary digital landscape, traditional authentication mechanisms such as passwords and PINs are increasingly vulnerable to various security threats including social engineering, brute force attacks, and credential theft. This has necessitated the development of more robust and continuous authentication systems that can verify user identity transparently without disrupting user workflow. Behavioral biometrics, which analyzes the unique patterns in how individuals interact with computing devices, presents a promising solution to these challenges.
 

@@ -2,11 +2,11 @@
 \thispagestyle{plain}
 
 \begin{center}
-\vspace\*{2cm}
+\vspace*{2cm}
 \textbf{\Large DECLARATION}
 \end{center}
 
-\vspace{2cm}
+\vspace*{2cm}
 
 We, \textbf{Mahmudul Alam} (Student ID: 1905023, Registration No.: 000012751) and \textbf{Atiqur Rahman} (Student ID: 1905005, Registration No.: 000012733), hereby solemnly declare that the work presented in this undergraduate thesis titled \textit{"Mouse Tracking for Behavioral Biometrics and Anomaly Detection: A Comprehensive Study of User Identification and Continuous Authentication"} is the result of our own investigation and research carried out under the direct supervision of Professor Sabuj Shamsuzaman, Department of Computer Science and Engineering, Begum Rokeya University, Rangpur.
 
@@ -26,7 +26,7 @@ We further declare that:
 \item We take full responsibility for the accuracy and authenticity of the content presented in this thesis.
 \end{enumerate}
 
-\vspace{3cm}
+\vspace*{3cm}
 
 \begin{tabular}{p{6cm} p{6cm}}
 \textbf{Mahmudul Alam} & \textbf{Atiqur Rahman} \\

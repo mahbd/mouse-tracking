@@ -2,11 +2,11 @@
 \thispagestyle{plain}
 
 \begin{center}
-\vspace\*{2cm}
+\vspace*{2cm}
 \textbf{\Large SUPERVISOR'S CERTIFICATE}
 \end{center}
 
-\vspace{2cm}
+\vspace*{2cm}
 
 This is to certify that the undergraduate thesis entitled \textit{"Mouse Tracking for Behavioral Biometrics and Anomaly Detection: A Comprehensive Study of User Identification and Continuous Authentication"} submitted by \textbf{Mahmudul Alam} (Student ID: 1905023, Registration No.: 000012751) and \textbf{Atiqur Rahman} (Student ID: 1905005, Registration No.: 000012733) to the Department of Computer Science and Engineering, Begum Rokeya University, Rangpur, in partial fulfillment of the requirements for the degree of Bachelor of Science in Computer Science and Engineering, has been carried out under my direct supervision and guidance.
 
@@ -30,7 +30,7 @@ I hereby certify that:
 
 I recommend this thesis for evaluation and consideration for the award of the Bachelor of Science degree in Computer Science and Engineering.
 
-\vspace{3cm}
+\vspace*{3cm}
 
 \begin{center}
 \textbf{Professor Sabuj Shamsuzaman}\\
@@ -39,11 +39,11 @@ Department of Computer Science and Engineering\\
 Begum Rokeya University, Rangpur\\
 Rangpur-5400, Bangladesh\\
 
-\vspace{1.5cm}
+\vspace*{1.5cm}
 
 Signature: \rule{5cm}{0.5pt}\\
 
-\vspace{0.5cm}
+\vspace*{0.5cm}
 
 Date: \rule{3cm}{0.5pt}
 \end{center}

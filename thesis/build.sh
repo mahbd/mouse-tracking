@@ -70,7 +70,6 @@ common_args=(
   --citeproc
   --resource-path=.
   --bibliography=references.bib
-  --filter=pandoc-crossref
   "${sections[@]}"
 )
 
@@ -82,11 +81,6 @@ case "$ext" in
       --pdf-engine="$engine" \
       -V classoption=openright \
       -V classoption=twoside \
-      --template=eisvogel \
-      -o "$out" || \
-    pandoc \
-      "${common_args[@]}" \
-      --pdf-engine="$engine" \
       -o "$out"
     ;;
   tex)

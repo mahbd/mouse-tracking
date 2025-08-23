@@ -2,7 +2,7 @@
 \thispagestyle{plain}
 
 \begin{center}
-\vspace\*{2cm}
+\vspace*{2cm}
 \textbf{\Large CHAPTER 1}\\[0.5cm]
 \textbf{\Large INTRODUCTION}
 \end{center}

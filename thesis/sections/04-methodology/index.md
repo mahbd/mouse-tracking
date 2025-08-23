@@ -2,7 +2,7 @@ ewpage
 hispagestyle{plain}
 
 \begin{center}
-\vspace\*{2cm}
+\vspace*{2cm}
 extbf{\Large CHAPTER 4}\[0.5cm]
 extbf{\Large METHODOLOGY}
 \end{center}
