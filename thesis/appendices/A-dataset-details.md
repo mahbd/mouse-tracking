@@ -1,58 +1,26 @@
-# Appendix A: Comprehensive Dataset Details
+# Appendix A: Dataset Details
 
-## A.1 Dataset Overview and Scope
+## A.1 Dataset Overview
 
-This appendix provides comprehensive technical details about the mouse dynamics dataset collected and analyzed in this research. The dataset represents one of the more substantial behavioral biometric corpora in the mouse dynamics literature, encompassing 76,693 behavioral segments collected from four participants over extended periods during natural computer usage.
+76,693 behavioral segments from 4 participants during natural computer usage. Cross-platform collection (Windows/Linux) with standard hardware configurations over multi-week periods.
 
-### A.1.1 Data Collection Infrastructure
+## A.2 Participant Information
 
-**Hardware Environment**: Data collection was conducted using standard desktop computing configurations with optical mice and LCD displays. The diversity of hardware configurations across participants provides insights into the robustness of behavioral patterns across different equipment setups.
+- **atiq**: 18,957 segments, software development usage, moderate movement speed
+- **masum**: 19,384 segments, academic research usage, highly distinctive patterns
+- **rakib**: 19,156 segments, mixed development/browsing usage, variable patterns
+- **zia**: 19,196 segments, general office usage, distinctive acceleration patterns
 
-**Software Environment**: The collection system operated across Windows and Linux operating systems, demonstrating cross-platform consistency in behavioral pattern capture. The native implementation approach ensured minimal system overhead while maintaining high-precision event capture.
+## A.3 Event Structure
 
-**Temporal Scope**: Data collection extended over multiple weeks for each participant, capturing behavioral patterns across different usage sessions, times of day, and application contexts. The extended collection period enables analysis of both short-term behavioral consistency and longer-term stability patterns.
+**Event Types**: DM (Drag Move), VM (Vertical Move), HM (Horizontal Move), LD/LU (Left Down/Up), RD/RU (Right Down/Up), MW (Mouse Wheel)
 
-## A.2 Detailed Participant Information
+**Attributes**: Timestamps, coordinates, event state, time differences, anonymized application context
 
-### A.2.1 User: atiq
+## A.4 Data Processing
 
-- **Total Segments**: 18,957 behavioral segments
-- **Data Collection Period**: Multiple weeks with daily usage sessions
-- **Primary Usage Patterns**: Software development, document editing, web browsing
-- **Behavioral Characteristics**: Moderate movement speed with consistent acceleration patterns
-- **Data Quality**: High-quality data with minimal collection artifacts
+50-event segmentation windows, feature extraction yielding 36 features reduced to 16 core features for modeling.
 
-### A.2.2 User: masum
-
-- **Total Segments**: 19,384 behavioral segments
-- **Data Collection Period**: Extended collection with regular usage patterns
-- **Primary Usage Patterns**: Academic research, document preparation, data analysis
-- **Behavioral Characteristics**: Highly distinctive movement patterns with consistent spatial preferences
-- **Data Quality**: Excellent data quality with comprehensive coverage of interaction types
-
-### A.2.3 User: rakib
-
-- **Total Segments**: 19,156 behavioral segments
-- **Data Collection Period**: Consistent daily usage across multiple weeks
-- **Primary Usage Patterns**: Mixed usage including development, browsing, and multimedia
-- **Behavioral Characteristics**: Variable movement patterns with moderate distinctiveness
-- **Data Quality**: Good data quality with representative usage patterns
-
-### A.2.4 User: zia
-
-- **Total Segments**: 19,196 behavioral segments
-- **Data Collection Period**: Regular usage sessions with diverse applications
-- **Primary Usage Patterns**: General computer usage including office applications and browsing
-- **Behavioral Characteristics**: Distinctive acceleration patterns with consistent timing characteristics
-- **Data Quality**: High-quality data with good temporal coverage
-
-## A.3 Raw Event Structure and Encoding
-
-### A.3.1 Event Type Definitions
-
-**Movement Events**:
-
-- **DM (Drag Move)**: Mouse movement events occurring while a button is pressed, typically during drag operations or text selection
 - **VM (Vertical Move)**: Predominantly vertical mouse movements with minimal horizontal component
 - **HM (Horizontal Move)**: Predominantly horizontal mouse movements with minimal vertical component
 

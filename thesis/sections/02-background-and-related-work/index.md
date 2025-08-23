@@ -9,79 +9,19 @@
 
 \newpage
 
-## 2.1 Introduction to Behavioral Biometrics
+## 2.1 Behavioral Biometrics
 
-Behavioral biometrics represents a sophisticated approach to human identification and authentication that leverages the unique patterns inherent in how individuals perform various activities. Unlike physiological biometrics such as fingerprints, facial recognition, or iris scanning, which rely on relatively static physical characteristics, behavioral biometrics focuses on dynamic patterns that emerge from human actions and interactions. This fundamental distinction provides behavioral biometrics with several unique advantages and characteristics that make them particularly suitable for continuous authentication applications.
+Behavioral biometrics leverage unique interaction patterns, unlike physiological biometrics relying on static characteristics. Key principles include distinctiveness (unique patterns), consistency (stability over time), collectability (natural interactions), and measurability (quantifiable characteristics).
 
-The theoretical foundation of behavioral biometrics rests on the premise that individuals develop distinctive patterns in their interactions with technology that are sufficiently consistent to enable identification while remaining difficult to replicate by unauthorized users. These patterns emerge from a complex interplay of factors including motor control capabilities, cognitive processing styles, learned habits, physical characteristics, and environmental adaptations. The resulting behavioral signatures are typically more dynamic and adaptive than physiological characteristics, allowing them to accommodate gradual changes in user behavior over time.
+Categories include keystroke dynamics, mouse dynamics, gait analysis, voice patterns, signature dynamics, and touch gestures.
 
-### 2.1.1 Fundamental Principles
+## 2.2 Mouse Dynamics
 
-The effectiveness of behavioral biometrics relies on several fundamental principles that distinguish individual users based on their interaction patterns:
+Mouse dynamics research evolved from simple proof-of-concept studies (Gamboa and Fred, 2004) to sophisticated real-time systems. Key developments include naturalistic data collection (Pusara and Brodley, 2004), statistical summarization (Ahmed and Traore, 2007), and multi-modal integration (Zheng et al., 2011).
 
-**Distinctiveness**: Each individual exhibits unique behavioral patterns that result from their specific combination of physical capabilities, cognitive processes, and learned behaviors. These patterns manifest in measurable characteristics such as timing, rhythm, pressure, movement dynamics, and sequence preferences that can be quantified and analyzed.
+**Technical Characteristics**: Events include movements, clicks, scrolling with millisecond precision in 2D coordinate systems within application contexts.
 
-**Consistency**: While behavioral patterns exhibit natural variation, they maintain sufficient consistency over time to enable reliable identification and authentication. This consistency emerges from the underlying physiological and cognitive factors that influence behavior, creating stable signatures that persist across different interaction sessions.
-
-**Collectability**: Behavioral biometric data can be collected through natural user interactions without requiring specialized hardware or explicit user cooperation. This characteristic is particularly important for continuous authentication applications where transparent monitoring is essential for maintaining user productivity and acceptance.
-
-**Measurability**: Behavioral patterns can be quantified using various metrics and features that capture the essential characteristics of individual behavior. These measurements provide the foundation for machine learning algorithms that can learn to distinguish between different users and detect anomalous patterns.
-
-### 2.1.2 Categories of Behavioral Biometrics
-
-Behavioral biometrics encompasses several distinct categories based on the type of human activity being monitored:
-
-**Keystroke Dynamics**: Analysis of typing patterns including keystroke timing, pressure variations, and rhythm characteristics. This modality has received extensive research attention due to the ubiquity of keyboard interactions and the rich behavioral signals available in typing patterns.
-
-**Mouse Dynamics**: Examination of cursor movement patterns, click behaviors, scrolling activities, and spatial interaction preferences. Mouse dynamics offer advantages for continuous monitoring due to the high frequency of mouse events during typical computer usage.
-
-**Gait Analysis**: Study of walking patterns including stride length, timing, pressure distribution, and movement coordination. Gait analysis is particularly relevant for mobile device authentication and physical access control applications.
-
-**Voice and Speech Patterns**: Analysis of vocal characteristics including speaking rhythm, intonation, pronunciation patterns, and linguistic preferences. Voice biometrics combine physiological characteristics (vocal tract configuration) with behavioral elements (speaking style and habits).
-
-**Signature Dynamics**: Examination of handwriting and signature patterns including pressure, timing, acceleration, and geometric characteristics. This traditional biometric modality has been enhanced through digital capture technologies that provide richer behavioral information.
-
-**Touch and Gesture Dynamics**: Analysis of touchscreen interaction patterns including pressure, timing, movement trajectories, and gesture preferences. This category has gained importance with the proliferation of mobile devices and touch-based interfaces.
-
-## 2.2 Mouse Dynamics in Behavioral Biometrics
-
-Mouse dynamics represents one of the most promising modalities within behavioral biometrics due to the ubiquity of mouse-based interactions in desktop computing environments and the rich behavioral signals available in cursor movement patterns. The field of mouse dynamics research has evolved significantly over the past two decades, progressing from simple proof-of-concept studies to sophisticated systems capable of real-time behavioral analysis and authentication.
-
-### 2.2.1 Historical Development
-
-The earliest research in mouse dynamics focused primarily on demonstrating the feasibility of user identification based on cursor movement patterns. Gamboa and Fred (2004) conducted one of the pioneering studies in this area, investigating the use of mouse movement trajectories for user authentication in controlled experimental settings. Their work established fundamental concepts including the importance of movement velocity profiles and the potential for continuous authentication based on natural user interactions.
-
-Subsequent research by Pusara and Brodley (2004) expanded the scope of mouse dynamics analysis to include free-form interactions during normal computer usage, moving beyond constrained experimental tasks to real-world application scenarios. This shift toward naturalistic data collection represented a significant advancement in practical applicability, though it also introduced new challenges related to behavioral variability and feature extraction from unconstrained interaction patterns.
-
-The work of Ahmed and Traore (2007) introduced more sophisticated feature engineering approaches that captured both temporal and spatial characteristics of mouse movements. Their research demonstrated the importance of statistical summarization techniques for extracting meaningful behavioral signatures from raw movement data, establishing methodological foundations that continue to influence current research.
-
-More recent work by Zheng et al. (2011) and Shen et al. (2013) has explored the integration of mouse dynamics with other behavioral modalities, investigating the potential for multi-modal behavioral authentication systems that combine cursor movements with keystroke dynamics, application usage patterns, and other behavioral signals.
-
-### 2.2.2 Technical Characteristics
-
-Mouse dynamics analysis involves several technical considerations that distinguish it from other behavioral biometric modalities:
-
-**Event Types**: Mouse interactions encompass various event types including movements, clicks (left, right, middle), scrolling (vertical, horizontal), hover patterns, and drag-and-drop operations. Each event type provides different behavioral information, with movements offering rich kinematic data and clicks providing timing and precision characteristics.
-
-**Temporal Resolution**: Mouse events can be captured at very high temporal resolution, typically with millisecond precision, providing detailed information about movement dynamics and timing patterns. This high resolution enables analysis of subtle behavioral characteristics that may not be apparent at coarser temporal scales.
-
-**Spatial Characteristics**: Mouse movements occur within a two-dimensional coordinate system that provides spatial context for behavioral analysis. The spatial dimension enables analysis of movement trajectories, directional preferences, and spatial distribution patterns that reflect individual behavioral characteristics.
-
-**Interaction Context**: Mouse interactions occur within specific application contexts that can influence behavioral patterns. Understanding and accounting for contextual factors such as application type, task requirements, and interface design is important for developing robust behavioral models.
-
-### 2.2.3 Feature Engineering Approaches
-
-The transformation of raw mouse event data into meaningful behavioral features represents one of the most critical aspects of mouse dynamics research. Various approaches have been developed to extract behavioral signatures from cursor movement patterns:
-
-**Kinematic Features**: Analysis of movement velocity, acceleration, and jerk (rate of change of acceleration) provides information about individual motor control characteristics and movement smoothness. These features capture fundamental aspects of human motor behavior that are difficult to consciously control or replicate.
-
-**Geometric Features**: Examination of movement trajectories including path length, straightness, curvature, and directional changes reveals spatial preferences and navigation strategies that vary between individuals. Geometric features provide information about spatial cognition and interface interaction preferences.
-
-**Temporal Features**: Analysis of timing patterns including pause durations, movement durations, and rhythm characteristics captures temporal aspects of behavioral signatures. Temporal features reflect cognitive processing styles and decision-making patterns that are characteristic of individual users.
-
-**Statistical Features**: Computation of statistical summaries including means, standard deviations, skewness, and kurtosis provides compact representations of behavioral distributions that capture essential characteristics while reducing dimensionality for machine learning applications.
-
-**Frequency Domain Features**: Application of spectral analysis techniques to extract frequency domain characteristics of movement patterns. These features can reveal periodic patterns and oscillatory behaviors that may not be apparent in time domain analysis.
+**Feature Engineering**: Kinematic features (velocity, acceleration), geometric features (path characteristics), temporal features (timing patterns), statistical features (distributions), and frequency domain analysis.
 
 ## 2.3 Anomaly Detection in Behavioral Biometrics
 

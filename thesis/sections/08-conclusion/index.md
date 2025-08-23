@@ -9,45 +9,29 @@
 
 \newpage
 
-## 8.1 Research Summary and Key Findings
+## 8.1 Research Summary
 
-This thesis has presented a comprehensive investigation into mouse tracking as a behavioral biometric modality for user identification and continuous authentication applications. Through systematic feature engineering, rigorous experimental evaluation, and practical system implementation, we have demonstrated the viability and effectiveness of mouse dynamics for behavioral authentication while addressing important considerations of privacy, security, and practical deployment.
+This thesis demonstrated mouse tracking viability for behavioral biometric authentication through systematic feature engineering, experimental evaluation, and practical implementation.
 
-### 8.1.1 Technical Achievements
+**Technical Achievements**: Comprehensive feature framework encompassing temporal, spatial, kinematic, and contextual dimensions. Random Forest achieved 85.36% classification accuracy. Anomaly detection showed 5% self-test rates and up to 31.6% cross-user rates, confirming behavioral distinctiveness.
 
-Our research has successfully addressed the fundamental technical challenges of transforming raw mouse interaction data into reliable behavioral signatures suitable for machine learning applications. The comprehensive feature engineering framework developed in this work encompasses temporal, spatial, kinematic, and contextual dimensions of mouse behavior, providing rich behavioral characterization while maintaining computational efficiency and privacy preservation.
+**Methodological Contributions**: Rigorous experimental design, comprehensive algorithm comparison, and dual focus on identification and anomaly detection. Open-source end-to-end system implementation bridges research and practical deployment.
 
-The experimental evaluation of six different machine learning algorithms for user identification has revealed that ensemble methods, particularly Random Forest, provide superior performance for behavioral classification tasks. The achieved classification accuracy of 85.36% demonstrates that mouse dynamics can provide reliable user identification comparable to other behavioral biometric modalities, while the detailed per-user analysis reveals both the strengths and limitations of the approach across different individual behavioral patterns.
+## 8.2 Key Findings
 
-The anomaly detection evaluation has demonstrated the effectiveness of both One-Class SVM and Isolation Forest algorithms for continuous authentication applications. The observed self-test anomaly rates of approximately 5% confirm proper model calibration, while the substantial cross-user anomaly rates (up to 31.6%) demonstrate significant behavioral distinctiveness that supports practical continuous authentication deployment.
+**Performance**: 85.36% accuracy suffices for practical applications, especially when integrated with other authentication factors. Performance variations across users suggest adaptive authentication opportunities.
 
-### 8.1.2 Methodological Contributions
+**Features**: Kinematic features most effective, confirming motor control importance. Statistical summarization enables privacy-preserving authentication.
 
-The research methodology employed in this study represents a significant contribution to the behavioral biometrics field through its emphasis on rigorous experimental design, comprehensive algorithm comparison, and detailed analysis of behavioral distinctiveness. The systematic approach to feature engineering, the comprehensive evaluation framework, and the attention to statistical validity provide a template for future research in behavioral authentication.
+**Algorithms**: Ensemble methods (Random Forest) outperform individual classifiers. Both One-Class SVM and Isolation Forest effective for anomaly detection.
 
-The dual focus on both user identification and anomaly detection provides comprehensive coverage of the primary application scenarios for behavioral biometrics, while the detailed cross-user analysis offers novel insights into the fundamental discriminative power available in mouse dynamics. The integration of privacy and ethical considerations throughout the research process demonstrates a responsible approach to behavioral monitoring research that can inform policy and deployment decisions.
+## 8.3 Future Work
 
-### 8.1.3 Practical Implementation
-
-The complete end-to-end system implementation represents a significant practical contribution that bridges the gap between research prototypes and deployable systems. The cross-platform data collection capabilities, robust preprocessing pipelines, comprehensive model training frameworks, and real-time analysis components provide a solid foundation for practical deployment while serving as a reference implementation for future research.
-
-The open-source nature of our implementation facilitates independent validation, extension, and adaptation to different application scenarios. The modular architecture and comprehensive documentation enable researchers and practitioners to build upon our work while adapting to specific deployment requirements and constraints.
-
-## 8.2 Implications for Behavioral Biometrics
-
-The findings of this research have several important implications for the broader field of behavioral biometrics and continuous authentication systems.
-
-### 8.2.1 Feasibility and Performance
-
-The demonstrated classification accuracy of 85.36% and effective anomaly detection capabilities confirm that mouse dynamics provides a viable foundation for behavioral authentication systems. This performance level is sufficient for many practical applications, particularly when integrated with other authentication factors or deployed in scenarios where continuous monitoring provides added security value.
-
-The observed performance variations across different users highlight the importance of user-specific adaptation and threshold setting in practical deployments. The finding that some users exhibit highly distinctive behavioral patterns while others show more similarity to other users suggests opportunities for adaptive authentication systems that adjust security policies based on individual behavioral distinctiveness.
-
-### 8.2.2 Feature Engineering Insights
-
-The systematic feature engineering approach developed in this research provides insights into the behavioral characteristics that contribute most significantly to user discrimination. The effectiveness of kinematic features (velocity and acceleration statistics) confirms the importance of motor control characteristics in behavioral authentication, while the contribution of spatial and temporal features demonstrates the value of comprehensive behavioral characterization.
-
-The successful abstraction of behavioral patterns while preserving privacy demonstrates the feasibility of privacy-preserving behavioral authentication systems. The statistical summarization approach developed in this work provides a template for extracting behavioral signatures while minimizing privacy exposure in other behavioral biometric modalities.
+**Scalability**: Larger, longitudinal datasets with temporal stability assessment
+**Robustness**: Cross-device and cross-task domain adaptation  
+**Integration**: Multi-modal fusion with keystroke dynamics
+**Deployment**: Real-time studies with false positive control
+**Privacy**: Federated learning and differential privacy mechanisms
 
 ### 8.2.3 Algorithmic Considerations
 

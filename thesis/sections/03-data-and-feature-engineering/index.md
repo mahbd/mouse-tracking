@@ -9,92 +9,38 @@
 
 \newpage
 
-## 3.1 Introduction to Data and Feature Engineering
+## 3.1 Data Collection and Processing
 
-Data and feature engineering represents the foundation of any successful behavioral biometric system. The transformation of raw mouse event streams into meaningful behavioral signatures requires careful consideration of temporal dynamics, statistical summarization techniques, and privacy-preserving abstraction methods. This chapter provides a comprehensive treatment of our approach to collecting, processing, and transforming mouse interaction data into features suitable for machine learning applications.
+Raw mouse events are transformed into behavioral signatures through systematic feature engineering. Our approach emphasizes behavioral relevance, statistical robustness, privacy preservation, computational efficiency, and interpretability.
 
-The significance of effective feature engineering in behavioral biometrics cannot be overstated. Unlike traditional biometric modalities where features may be more directly interpretable (such as ridge patterns in fingerprints), behavioral biometrics requires sophisticated abstraction techniques that capture the essential characteristics of human behavior while remaining robust to natural variations and environmental factors.
+## 3.2 Event Structure
 
-Our feature engineering approach is guided by several key principles:
+**Event Types**: Movement (cursor changes), clicks (button press/release), scrolling (wheel events), hover/dwell (stability periods).
 
-**Behavioral Relevance**: Features should capture aspects of mouse interaction that reflect individual behavioral characteristics rather than environmental or contextual factors that may vary independently of user identity.
+**Attributes**: Temporal (timestamps, intervals), spatial (X/Y coordinates), behavioral (event classifications), contextual (anonymized application data).
 
-**Statistical Robustness**: Features should be computed using statistical techniques that provide stable estimates even in the presence of natural behavioral variability and measurement noise.
+**Quality Assurance**: Temporal consistency, spatial validity, sequence validation, completeness monitoring.
 
-**Privacy Preservation**: Features should abstract away from specific content or detailed activity information while preserving the behavioral characteristics necessary for authentication applications.
+## 3.3 Feature Engineering
 
-**Computational Efficiency**: Features should be computable in real-time with reasonable computational overhead to support continuous authentication applications.
+**Segmentation**: 50-event windows providing consistent behavioral data.
 
-**Interpretability**: Where possible, features should have clear interpretations that enable understanding of their behavioral significance and facilitate system debugging and optimization.
+**Feature Categories**:
 
-## 3.2 Raw Mouse Event Data Structure
+- **Temporal**: Segment duration, inter-event intervals, rhythm patterns
+- **Spatial**: Total distance, path straightness, movement range
+- **Kinematic**: Velocity statistics (mean, median, max, std dev, skewness, kurtosis)
+- **Statistical**: Distribution characteristics and higher-order patterns
 
-The foundation of our behavioral analysis begins with the careful design of raw event data collection and representation. Understanding the structure and characteristics of raw mouse events is essential for developing effective preprocessing and feature extraction pipelines.
+**Core Features**: From 36 engineered features, 16 selected based on discrimination power: segment_duration_ms, total_distance_pixels, path_straightness, mean_speed, median_speed, max_speed, std_dev_speed, skewness_speed, kurtosis_speed, plus temporal and spatial statistics.
 
-### 3.2.1 Event Type Taxonomy
+**Fixed-Time Windows**: Consistent temporal scope but variable behavioral data amounts.
 
-Our data collection system captures a comprehensive range of mouse interaction events, each providing different types of behavioral information:
+**Fixed-Event Windows**: Consistent behavioral data but variable temporal scope.
 
-**Movement Events**: Cursor position changes represent the most frequent type of mouse event and provide rich information about individual movement patterns, navigation strategies, and motor control characteristics. Movement events include both active movements (when the user is actively moving the mouse) and passive movements (small adjustments or tremor-like motions).
+**Activity-Based Segmentation**: Natural behavioral units requiring sophisticated detection.
 
-**Click Events**: Mouse button press and release events provide information about timing precision, click duration preferences, and interaction patterns. We distinguish between left clicks (LD/LU), right clicks (RD/RU), and middle button clicks, each of which may exhibit different behavioral characteristics.
-
-**Scroll Events**: Mouse wheel events (MW) capture scrolling behavior including scroll direction, magnitude, timing, and rhythm patterns. Scrolling behavior often reflects reading patterns, content consumption preferences, and navigation strategies.
-
-**Hover and Dwell Events**: Periods of relative cursor stability provide information about attention patterns, decision-making processes, and interface interaction strategies. These events are often indicative of cognitive processing time and visual attention allocation.
-
-### 3.2.2 Event Attribute Structure
-
-Each raw mouse event is captured with a comprehensive set of attributes that provide temporal, spatial, and contextual information:
-
-**Temporal Attributes**:
-
-- **Timestamp**: High-precision timestamp (millisecond resolution) enabling detailed temporal analysis
-- **Time Diff**: Inter-event interval providing information about interaction rhythm and timing patterns
-- **Day Time**: Discretized time-of-day information (5-minute bins) capturing temporal usage patterns while preserving privacy
-
-**Spatial Attributes**:
-
-- **X Position**: Horizontal cursor coordinate enabling spatial analysis and movement characterization
-- **Y Position**: Vertical cursor coordinate providing complementary spatial information
-- **Screen Resolution**: Context information enabling normalization across different display configurations
-
-**Behavioral Attributes**:
-
-- **Event State**: Categorized event type (DM=Drag Move, VM=Vertical Move, HM=Horizontal Move, LD=Left Down, LU=Left Up, RD=Right Down, RU=Right Up, MW=Mouse Wheel) providing behavioral context
-
-**Contextual Attributes**:
-
-- **Window Title Hash**: Anonymized application context information enabling application-aware analysis while preserving privacy
-- **Session Information**: Session identifiers enabling temporal segmentation and analysis
-
-### 3.2.3 Data Quality and Validation
-
-Ensuring high data quality is crucial for reliable behavioral analysis. Our data collection system incorporates several validation and quality assurance mechanisms:
-
-**Temporal Consistency**: Validation of timestamp ordering and interval reasonableness to detect and correct timing anomalies that may result from system performance issues or clock adjustments.
-
-**Spatial Validity**: Validation of cursor coordinates within expected screen boundaries and detection of impossible spatial transitions that may indicate data collection errors.
-
-**Event Sequence Validation**: Analysis of event sequences to detect and correct anomalous patterns such as missing button release events or impossible state transitions.
-
-**Data Completeness**: Monitoring of data collection completeness to ensure consistent sampling across different users and time periods.
-
-## 3.3 Temporal Segmentation Strategy
-
-The temporal segmentation of continuous mouse event streams into discrete behavioral units represents a critical design decision that significantly impacts the effectiveness of subsequent feature extraction and machine learning processes.
-
-### 3.3.1 Segmentation Approaches
-
-Several approaches to temporal segmentation have been explored in the behavioral biometrics literature, each with distinct advantages and limitations:
-
-**Fixed-Time Windows**: Segmentation based on fixed temporal intervals (e.g., 30-second windows) provides consistent temporal scope but may result in variable amounts of behavioral data depending on user activity levels.
-
-**Fixed-Event Windows**: Segmentation based on fixed numbers of events (e.g., 50-event windows) provides consistent amounts of behavioral data but may result in variable temporal scope depending on user interaction speed.
-
-**Activity-Based Segmentation**: Segmentation based on detected activity patterns or task boundaries provides natural behavioral units but requires sophisticated activity detection algorithms and may result in highly variable segment characteristics.
-
-**Adaptive Segmentation**: Segmentation strategies that adapt to observed behavioral patterns or context changes provide optimal behavioral units but introduce additional complexity in implementation and evaluation.
+**Adaptive Segmentation**: Optimal behavioral units with implementation complexity.
 
 ### 3.3.2 Fixed-Event Window Approach
 
@@ -127,106 +73,38 @@ Understanding the characteristics of the resulting behavioral segments is import
 **Temporal Duration Distribution**: Analysis of segment duration distributions reveals the natural temporal scope of behavioral segments across different users and contexts. Our 50-event segments typically span 10-60 seconds depending on user interaction patterns.
 
 **Event Type Distribution**: Analysis of event type distributions within segments provides insights into the behavioral richness captured by each segment and the consistency of interaction patterns.
-
-**Spatial Coverage**: Analysis of spatial extent and coverage within segments reveals the scope of behavioral patterns captured and the representativeness of each segment for overall behavioral characterization.
+We selected 50-event windows providing consistent behavioral data for analysis. This approach balances temporal consistency with sufficient behavioral information capture.
 
 ## 3.4 Comprehensive Feature Engineering Framework
 
-The transformation of raw mouse event sequences into meaningful behavioral features represents the core technical contribution of our feature engineering approach. Our framework encompasses multiple dimensions of behavioral characterization to create a comprehensive representation of individual interaction patterns.
+Our framework transforms raw mouse events into meaningful behavioral features across multiple dimensions:
 
-### 3.4.1 Feature Categories Overview
+### 3.4.1 Feature Categories
 
-Our feature engineering framework organizes features into several conceptually distinct categories, each capturing different aspects of behavioral signatures:
+**Temporal Features**: Timing patterns, interaction rhythm, temporal dynamics
+**Spatial Features**: Movement patterns, spatial preferences, geometric properties  
+**Kinematic Features**: Velocity, acceleration, movement dynamics
+**Contextual Features**: Application usage, environmental factors
+**Statistical Features**: Distribution characteristics and higher-order patterns
 
-**Temporal Features**: Characteristics related to timing patterns, interaction rhythm, and temporal dynamics
-**Spatial Features**: Characteristics related to movement patterns, spatial preferences, and geometric properties
-**Kinematic Features**: Characteristics related to velocity, acceleration, and movement dynamics
-**Contextual Features**: Characteristics related to application usage, environmental factors, and interaction context
-**Statistical Features**: Higher-order statistical properties that capture distribution characteristics and patterns
+### 3.4.2 Key Features
 
-### 3.4.2 Temporal Feature Engineering
+**Temporal**: Segment duration (segment_duration_ms), average inter-event intervals, temporal variance and stability
 
-Temporal features capture the rhythm and timing characteristics that are fundamental to individual behavioral signatures.
+**Spatial**: Total distance traveled (total_distance_pixels), path straightness (ratio of straight-line to actual distance), movement range and distribution
 
-#### Basic Temporal Characteristics
+**Kinematic**: Mean/median/max/min speed, velocity standard deviation, acceleration patterns, movement smoothness indicators
 
-**Segment Duration (segment_duration_ms)**: The total temporal span of each behavioral segment provides basic information about interaction speed and activity level. Computed as the difference between the last and first event timestamps within each segment.
+**Statistical**: Velocity skewness/kurtosis indicating movement distribution characteristics
 
-```
-segment_duration_ms = timestamp_last - timestamp_first
-```
+### 3.4.3 Feature Selection
 
-This feature captures individual differences in interaction speed and provides normalization context for other temporal features.
+From 36 engineered features, we selected 16 core features based on discrimination power and stability:
 
-**Average Inter-Event Interval**: The mean time interval between consecutive events within a segment, providing information about average interaction rhythm.
-
-```
-avg_interval = segment_duration_ms / (event_count - 1)
-```
-
-#### Advanced Temporal Analysis
-
-**Temporal Variance and Stability**: Statistical measures of timing consistency including standard deviation, coefficient of variation, and autocorrelation of inter-event intervals.
-
-**Rhythm Pattern Analysis**: Fourier analysis of inter-event interval sequences to identify periodic patterns and rhythm characteristics that may be distinctive for individual users.
-
-**Pause Detection and Analysis**: Identification and characterization of pause periods (intervals exceeding threshold values) including pause frequency, duration distributions, and relationships to subsequent movements.
-
-### 3.4.3 Spatial Feature Engineering
-
-Spatial features capture the geometric and spatial characteristics of mouse movement patterns that reflect individual navigation preferences and spatial cognition patterns.
-
-#### Movement Distance and Path Characteristics
-
-**Total Distance Traveled (total_distance_pixels)**: The cumulative Euclidean distance of all movements within a segment, computed as:
-
-```
-total_distance = Σ sqrt((x_i+1 - x_i)² + (y_i+1 - y_i)²)
-```
-
-This feature provides a basic measure of movement extent and activity level.
-
-**Path Straightness (path_straightness)**: The ratio of straight-line distance to actual path length, indicating movement efficiency and navigation directness:
-
-```
-path_straightness = straight_line_distance / total_distance
-```
-
-Values approaching 1.0 indicate highly direct movements, while lower values indicate more circuitous or exploratory movement patterns.
-
-#### Spatial Distribution Analysis
-
-**Movement Range**: Analysis of cursor position distributions including range, variance, and coverage patterns that reflect individual spatial preferences and interface usage patterns.
-
-**Spatial Clustering**: Analysis of spatial clustering patterns in cursor positions using techniques such as k-means clustering or density-based clustering to identify preferred interaction regions.
-
-**Directional Preferences**: Analysis of movement direction distributions using circular statistics to identify individual preferences for specific movement directions or patterns.
-
-### 3.4.4 Kinematic Feature Engineering
-
-Kinematic features capture the movement dynamics that reflect individual motor control characteristics and are among the most discriminative features in mouse dynamics analysis.
-
-#### Velocity Analysis
-
-The velocity analysis framework computes instantaneous velocities for each movement segment and then analyzes the statistical distribution of these velocities:
-
-**Velocity Computation**: For each pair of consecutive position samples:
-
-```
-velocity_i = distance_i / time_interval_i
-where distance_i = sqrt((x_i+1 - x_i)² + (y_i+1 - y_i)²)
-      time_interval_i = timestamp_i+1 - timestamp_i
-```
-
-**Statistical Velocity Features**:
-
-- **Mean Speed (mean_speed)**: Average velocity across all movements in the segment
-- **Median Speed (median_speed)**: Median velocity providing robust central tendency estimate
-- **Standard Deviation (std_dev_speed)**: Velocity variability indicating movement consistency
-- **Skewness (skewness_speed)**: Distribution asymmetry indicating tendency toward fast or slow movements
-- **Kurtosis (kurtosis_speed)**: Distribution peakedness indicating presence of extreme velocity values
-- **Maximum Speed (max_speed)**: Peak velocity indicating maximum movement capability
-- **Minimum Speed (min_speed)**: Minimum non-zero velocity indicating baseline movement speed
+- Temporal: segment_duration_ms, time-based statistics
+- Spatial: total_distance_pixels, path_straightness
+- Kinematic: mean_speed, median_speed, max_speed, std_dev_speed, skewness_speed, kurtosis_speed
+- Additional: movement smoothness, pause characteristics, directional preferences
 
 #### Acceleration Analysis
 

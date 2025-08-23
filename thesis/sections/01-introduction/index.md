@@ -9,45 +9,27 @@
 
 \newpage
 
-In the rapidly evolving landscape of digital security, traditional authentication mechanisms are facing unprecedented challenges. Password-based systems, despite their widespread adoption, suffer from numerous vulnerabilities including weak password selection, password reuse across multiple platforms, susceptibility to social engineering attacks, and the growing threat of automated brute-force attacks. Multi-factor authentication, while providing additional security layers, often introduces friction in user workflows and may not be suitable for continuous verification scenarios where users require seamless, uninterrupted access to computing resources.
+Traditional password-based authentication suffers from vulnerabilities including weak passwords and social engineering attacks. Behavioral biometrics offer user-friendly authentication leveraging unique human-computer interaction patterns, providing continuous monitoring without interrupting normal activities.
 
-The emergence of behavioral biometrics represents a paradigm shift toward more sophisticated, user-friendly authentication systems that leverage the unique patterns inherent in human-computer interaction. Unlike traditional physiological biometrics such as fingerprints, iris patterns, or facial recognition, behavioral biometrics focus on how individuals perform specific actions rather than their physical characteristics. This approach offers several compelling advantages: behavioral patterns can be monitored continuously without explicit user action, they adapt naturally to gradual changes in user behavior over time, and they provide a transparent authentication experience that does not interrupt normal computing activities.
+Mouse tracking generates continuous behavioral data through natural interactions without additional hardware, making it broadly applicable across desktop environments.
 
-Mouse tracking, as a behavioral biometric modality, presents particularly attractive characteristics for practical implementation. Every computer interaction involving graphical user interfaces generates a continuous stream of mouse events including movements, clicks, scrolls, and hover patterns. These interactions occur naturally during normal computer usage, requiring no additional hardware or explicit user cooperation. The ubiquity of mouse-based interfaces across desktop computing platforms makes this approach broadly applicable across diverse computing environments.
+## 1.1 Research Context
 
-## 1.1 Research Context and Motivation
-
-The motivation for this research stems from several converging trends in cybersecurity and human-computer interaction. First, the increasing sophistication of cyber attacks has highlighted the inadequacy of perimeter-based security models that rely solely on initial authentication. Advanced persistent threats, insider attacks, and account takeover scenarios require continuous monitoring and verification capabilities that can detect unauthorized access even after initial authentication has been completed.
-
-Second, the growing emphasis on user experience in security design has created demand for transparent authentication methods that provide strong security without impeding productivity. Traditional security measures often create a trade-off between security strength and usability, leading to user resistance and potential circumvention of security controls. Behavioral biometrics offers the possibility of maintaining high security standards while preserving, or even enhancing, user experience.
-
-Third, the proliferation of remote work and distributed computing environments has expanded the attack surface and reduced the effectiveness of traditional network-based security controls. In scenarios where users access sensitive resources from various locations and devices, continuous authentication becomes essential for maintaining security assurance throughout computing sessions.
-
-The specific focus on mouse dynamics is motivated by several technical and practical considerations. Mouse interactions generate rich behavioral signals that encompass spatial, temporal, and kinematic characteristics. The frequency of mouse events during typical computer usage provides sufficient data density for real-time analysis and decision-making. Additionally, mouse tracking can be implemented using standard operating system interfaces without requiring specialized hardware or significant system modifications.
+Advanced cyber attacks require continuous monitoring beyond initial authentication. Behavioral biometrics maintain high security while preserving user experience. Mouse dynamics provide rich spatial, temporal, and kinematic characteristics for real-time analysis.
 
 ## 1.2 Problem Statement
 
-This research addresses two fundamental challenges in behavioral biometrics: user identification and anomaly detection. The user identification problem seeks to determine "who is currently using the system" based on observed behavioral patterns. This capability supports applications such as user-specific interface customization, personalized security policies, and multi-user systems where explicit user identification may be impractical or undesirable.
-
-The anomaly detection problem focuses on identifying when observed behavior deviates significantly from an established baseline for a known user, answering the question "is the current behavior consistent with the expected user's normal patterns?" This capability is crucial for detecting unauthorized access, account compromise, or other security incidents that occur after initial authentication.
-
-Both problems present unique technical challenges. User identification requires developing features and models that capture consistent behavioral signatures while remaining robust to natural variations in user behavior. Anomaly detection demands establishing reliable behavioral baselines and setting appropriate thresholds that balance security (detecting genuine threats) with usability (minimizing false alarms).
+This research addresses user identification ("who is using the system") and anomaly detection ("is behavior consistent with expected patterns"). Both require features capturing consistent behavioral signatures while remaining robust to variations.
 
 ## 1.3 Research Objectives
 
-The primary objective of this research is to investigate the feasibility and effectiveness of mouse tracking as a behavioral biometric for continuous authentication applications. This broad objective encompasses several specific research goals:
+**System Implementation**: Develop end-to-end mouse-based behavioral biometric systems with cross-platform data collection and preprocessing.
 
-**1.3.1 System Design and Implementation**
-Develop a comprehensive end-to-end system for mouse-based behavioral biometrics, including cross-platform data collection components, robust preprocessing pipelines, and practical deployment considerations. This includes creating native data collectors for both Windows and Linux environments, ensuring compatibility across diverse operating system configurations.
+**Feature Engineering**: Design feature sets capturing essential behavioral characteristics for optimal user discrimination.
 
-**1.3.2 Feature Engineering and Analysis**
-Design and evaluate a comprehensive feature set that captures the essential behavioral characteristics present in mouse interaction patterns. This involves investigating various approaches to temporal segmentation, exploring different statistical summarization techniques, and identifying features that provide optimal discrimination between users while maintaining stability over time.
+**Classification**: Evaluate machine learning algorithms for user identification, comparing traditional and ensemble approaches.
 
-**1.3.3 Multi-User Classification**
-Evaluate the effectiveness of various machine learning algorithms for user identification based on mouse behavioral features. This includes comparing traditional machine learning approaches with more advanced ensemble methods and neural networks, analyzing feature importance, and investigating the impact of different preprocessing and feature selection strategies.
-
-**1.3.4 Anomaly Detection**
-Implement and evaluate algorithms for single-user anomaly detection, focusing on establishing reliable behavioral baselines and detecting deviations that may indicate unauthorized access or behavioral changes. This includes investigating different anomaly detection paradigms and analyzing their suitability for real-time deployment scenarios.
+**Anomaly Detection**: Implement algorithms for detecting behavioral deviations indicating unauthorized access.
 
 **1.3.5 Cross-User Analysis**
 Conduct comprehensive analysis of behavioral distinctiveness across different users, quantifying the degree to which individual behavioral patterns can be distinguished from one another. This analysis provides insights into the fundamental discriminative power of mouse dynamics and informs threshold setting for practical deployments.

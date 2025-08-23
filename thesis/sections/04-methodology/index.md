@@ -1,65 +1,42 @@
-ewpage
-hispagestyle{plain}
+\newpage
+\thispagestyle{plain}
 
 \begin{center}
 \vspace*{2cm}
-extbf{\Large CHAPTER 4}\[0.5cm]
-extbf{\Large METHODOLOGY}
+\textbf{\Large CHAPTER 4}\\[0.5cm]
+\textbf{\Large METHODOLOGY}
 \end{center}
 
-ewpage
+\newpage
 
-## 4.1 Introduction to Experimental Methodology
+## 4.1 Experimental Approach
 
-The experimental methodology employed in this research is designed to provide rigorous, reproducible, and comprehensive evaluation of mouse-based behavioral biometrics for both user identification and anomaly detection applications. Our methodological approach emphasizes statistical rigor, practical applicability, and transparent reporting to ensure that findings can inform both academic research and practical deployment decisions.
+Rigorous evaluation of mouse-based behavioral biometrics for user identification and anomaly detection, emphasizing scientific rigor, practical relevance, comprehensive coverage, reproducibility, and statistical validity.
 
-The design of our experimental methodology is guided by several key principles:
+## 4.2 Problem Formulation
 
-**Scientific Rigor**: All experimental procedures are designed to meet high standards of scientific methodology including appropriate controls, statistical validation, and reproducible procedures.
+### 4.2.1 Multi-User Classification
 
-**Practical Relevance**: Experimental conditions are designed to reflect realistic deployment scenarios rather than artificial laboratory conditions, ensuring that findings are applicable to real-world implementations.
+**Objective**: Predict user identity from behavioral features
+**Formal Definition**: Given segment $X = \{x_1, ..., x_n\}$, predict user $y \in \{u_1, ..., u_k\}$
+**Questions**: Classification accuracy, algorithm effectiveness, feature importance, performance consistency, error sources
 
-**Comprehensive Coverage**: The methodology encompasses both user identification and anomaly detection tasks, multiple machine learning algorithms, and various evaluation metrics to provide comprehensive assessment of system capabilities.
+### 4.2.2 Anomaly Detection
 
-**Reproducibility**: All experimental procedures, parameter settings, and evaluation protocols are fully documented to enable independent reproduction and validation of results.
+**Objective**: Detect behavioral deviations from user baselines
+**Formal Definition**: Given model $M_u$ and segment $X$, determine normal vs. anomalous behavior
+**Questions**: Detection effectiveness, cross-user distinctiveness, algorithm comparison, threshold settings, temporal stability
 
-**Statistical Validity**: Appropriate statistical techniques are employed throughout the evaluation process to ensure reliable conclusions and appropriate interpretation of results.
+## 4.3 Experimental Design
 
-## 4.2 Problem Formulation and Research Questions
+**Algorithms Evaluated**:
 
-Our experimental methodology addresses two fundamental problems in behavioral biometrics, each requiring distinct approaches and evaluation strategies.
+- Classification: Random Forest, Decision Tree, KNN, MLP, Naive Bayes, PCA+XGBoost
+- Anomaly Detection: One-Class SVM, Isolation Forest
 
-### 4.2.1 Multi-User Classification Problem
+**Evaluation Metrics**: Accuracy, precision, recall, F1-score, confusion matrices, anomaly rates
 
-The user identification problem seeks to determine which of several known users is currently interacting with the system based on observed behavioral patterns. This represents a supervised learning problem where behavioral features serve as input variables and user identity serves as the target variable.
-
-**Formal Problem Definition**: Given a behavioral segment $X = \{x_1, x_2, ..., x_n\}$ where each $x_i$ represents a behavioral feature, predict the user identity $y \in \{u_1, u_2, ..., u_k\}$ where $k$ is the number of known users.
-
-**Research Questions**:
-
-1. What level of classification accuracy can be achieved using mouse behavioral features for user identification?
-2. Which machine learning algorithms are most effective for this task?
-3. Which behavioral features contribute most significantly to classification performance?
-4. How consistent is classification performance across different users?
-5. What are the primary sources of classification errors and confusion between users?
-
-### 4.2.2 Single-User Anomaly Detection Problem
-
-The anomaly detection problem focuses on identifying when observed behavior deviates significantly from an established baseline for a known user, enabling detection of unauthorized access or behavioral changes.
-
-**Formal Problem Definition**: Given a trained model $M_u$ representing normal behavioral patterns for user $u$, and a new behavioral segment $X$, determine whether $X$ represents normal behavior for user $u$ or anomalous behavior that may indicate unauthorized access.
-
-**Research Questions**:
-
-1. How effectively can anomaly detection algorithms distinguish between normal and anomalous behavior for individual users?
-2. What level of cross-user behavioral distinctiveness can be achieved (how often do other users' behaviors appear anomalous)?
-3. How do different anomaly detection algorithms compare in terms of sensitivity and specificity?
-4. What are appropriate threshold settings for practical deployment scenarios?
-5. How stable are anomaly detection models over time and across different usage contexts?
-
-## 4.3 Experimental Design Framework
-
-Our experimental design employs a comprehensive framework that addresses both classification and anomaly detection tasks while ensuring statistical validity and practical relevance.
+**Validation**: Cross-validation, per-user analysis, statistical significance testing
 
 ### 4.3.1 Dataset Organization and Partitioning
 
