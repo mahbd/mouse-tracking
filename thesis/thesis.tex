@@ -40,10 +40,66 @@
 \makeatother
 \usepackage{xcolor}
 \usepackage[margin=0.6in]{geometry}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{5}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
 \ifLuaTeX
   \usepackage{selnolig}  % disable illegal ligatures
 \fi
@@ -61,7 +117,7 @@
 
 \renewcommand*\contentsname{TABLE OF CONTENTS}
 {
-\setcounter{tocdepth}{2}
+\setcounter{tocdepth}{3}
 \tableofcontents
 }
 \setstretch{1.1}
@@ -499,1356 +555,159 @@ future developments in transparent security systems.
 \newpage
 
 \newpage
-\thispagestyle{plain}
+
+hispagestyle\{plain\}
 
 \begin{center}
 \vspace*{2cm}
-\textbf{\Large CHAPTER 2}\\[0.5cm]
-\textbf{\Large BACKGROUND AND RELATED WORK}
+    extbf{\Large CHAPTER 2}\\[0.5cm]
+    extbf{\Large BACKGROUND AND RELATED WORK}
 \end{center}
 
 \newpage
 
-\subsection{2.1 Behavioral Biometrics}\label{behavioral-biometrics}
-
-\subsubsection{2.1.1 Fundamental
-Principles}\label{fundamental-principles}
-
-Behavioral biometrics leverage unique interaction patterns, unlike
-physiological biometrics relying on static characteristics. Key
-principles include distinctiveness (unique patterns), consistency
-(stability over time), collectability (natural interactions), and
-measurability (quantifiable characteristics).
-
-\subsubsection{2.1.2 Categories}\label{categories}
-
-Categories include keystroke dynamics, mouse dynamics, gait analysis,
-voice patterns, signature dynamics, and touch gestures.
-
-\subsection{2.2 Mouse Dynamics}\label{mouse-dynamics}
-
-\subsubsection{2.2.1 Historical
-Development}\label{historical-development}
-
-Mouse dynamics research evolved from simple proof-of-concept studies
-(Gamboa and Fred, 2004) to sophisticated real-time systems. Key
-developments include naturalistic data collection (Pusara and Brodley,
-2004), statistical summarization (Ahmed and Traore, 2007), and
-multi-modal integration (Zheng et al., 2011).
-
-\subsubsection{2.2.2 Technical
-Characteristics}\label{technical-characteristics}
-
-Events include movements, clicks, scrolling with millisecond precision
-in 2D coordinate systems within application contexts.
-
-\subsubsection{2.2.3 Feature Engineering
-Approaches}\label{feature-engineering-approaches}
-
-Kinematic features (velocity, acceleration), geometric features (path
-characteristics), temporal features (timing patterns), statistical
-features (distributions), and frequency domain analysis.
-
-\subsection{2.3 Anomaly Detection in Behavioral
-Biometrics}\label{anomaly-detection-in-behavioral-biometrics}
-
-Anomaly detection represents a fundamental challenge in behavioral
-biometrics that differs significantly from traditional classification
-problems. While classification seeks to identify which of several known
-classes a sample belongs to, anomaly detection aims to determine whether
-a sample represents normal or abnormal behavior for a specific
-individual. This distinction is crucial for continuous authentication
-applications where the goal is to detect unauthorized access or
-behavioral changes rather than identifying specific users.
-
-\subsubsection{2.3.1 Theoretical Framework}\label{theoretical-framework}
-
-The theoretical foundation of anomaly detection in behavioral biometrics
-rests on the assumption that each individual exhibits a characteristic
-behavioral pattern that can be learned from historical data. Deviations
-from this learned pattern may indicate several scenarios:
-
-\textbf{Unauthorized Access}: An impostor attempting to use the system
-may exhibit behavioral patterns that differ significantly from the
-legitimate user's established baseline, enabling detection of
-unauthorized access attempts.
-
-\textbf{Behavioral Change}: Legitimate users may experience changes in
-their behavioral patterns due to factors such as fatigue, stress,
-physical conditions, or environmental changes. Detecting these changes
-enables adaptive authentication systems that can accommodate natural
-behavioral evolution.
-
-\textbf{System Compromise}: Malicious software or hardware modifications
-may alter the characteristics of captured behavioral data, potentially
-enabling detection of system tampering through behavioral pattern
-analysis.
-
-\textbf{Context Changes}: Changes in task requirements, application
-contexts, or interface configurations may influence behavioral patterns
-in predictable ways, enabling context-aware authentication systems.
-
-\subsubsection{2.3.2 Algorithmic
-Approaches}\label{algorithmic-approaches}
-
-Several classes of algorithms have been applied to anomaly detection in
-behavioral biometrics, each with distinct characteristics and
-application scenarios:
-
-\textbf{One-Class Support Vector Machines (OC-SVM)}: One-Class SVM
-algorithms learn a decision boundary that encapsulates normal behavioral
-patterns for a specific user. The algorithm maps behavioral features
-into a high-dimensional space using kernel functions and constructs a
-hyperplane that separates normal patterns from outliers. The key
-advantage of OC-SVM is its solid theoretical foundation based on
-statistical learning theory and its ability to handle non-linear
-behavioral patterns through kernel transformations.
-
-The RBF (Radial Basis Function) kernel is commonly used in behavioral
-biometric applications due to its ability to capture complex, non-linear
-relationships between behavioral features. The key hyperparameters
-include the regularization parameter (C or nu) that controls the
-trade-off between model complexity and training error, and the kernel
-parameters that determine the shape of the decision boundary.
-
-\textbf{Isolation Forest}: The Isolation Forest algorithm takes a
-fundamentally different approach to anomaly detection by explicitly
-isolating outliers rather than profiling normal behavior. The algorithm
-constructs random decision trees that recursively partition the feature
-space, with the insight that anomalies require fewer partitions to
-isolate compared to normal samples.
-
-The key advantage of Isolation Forest is its computational efficiency
-and its reduced sensitivity to feature scaling compared to
-distance-based methods. The algorithm is particularly effective when
-normal behavioral patterns exhibit complex, multi-modal distributions
-that are difficult to model with parametric approaches.
-
-\textbf{Statistical Methods}: Traditional statistical approaches to
-anomaly detection include methods based on probability density
-estimation, hypothesis testing, and control charts. These approaches
-assume specific statistical distributions for behavioral features and
-detect anomalies as samples that fall outside expected statistical
-bounds.
-
-Gaussian Mixture Models (GMM) and Hidden Markov Models (HMM) have been
-applied to behavioral biometrics to model the temporal evolution of
-behavioral patterns and detect anomalies as deviations from expected
-temporal sequences.
-
-\textbf{Neural Network Approaches}: Autoencoders and other neural
-network architectures have been investigated for behavioral anomaly
-detection. These approaches learn compressed representations of normal
-behavioral patterns and detect anomalies as samples that cannot be
-accurately reconstructed from the learned representation.
-
-Recurrent Neural Networks (RNNs) and Long Short-Term Memory (LSTM)
-networks have been applied to capture temporal dependencies in
-behavioral sequences, enabling detection of anomalies in temporal
-patterns and sequences.
-
-\subsubsection{2.3.3 Evaluation Challenges}\label{evaluation-challenges}
-
-Evaluating anomaly detection systems in behavioral biometrics presents
-several unique challenges compared to traditional classification
-problems:
-
-\textbf{Ground Truth Establishment}: Determining what constitutes truly
-anomalous behavior is inherently challenging, particularly in scenarios
-involving gradual behavioral changes or context-dependent variations.
-The lack of clearly defined anomaly labels complicates the evaluation of
-anomaly detection algorithms.
-
-\textbf{Imbalanced Data}: Anomalous events are typically rare compared
-to normal behavior, creating highly imbalanced datasets that can bias
-evaluation metrics and algorithmic performance. Traditional accuracy
-metrics may be misleading when applied to highly imbalanced anomaly
-detection problems.
-
-\textbf{Temporal Considerations}: Behavioral patterns may exhibit
-temporal dependencies and evolution that complicate the definition of
-anomalies. Short-term variations may be normal while longer-term trends
-may indicate meaningful behavioral changes.
-
-\textbf{Context Sensitivity}: Behavioral patterns may vary significantly
-across different contexts, applications, or tasks, requiring evaluation
-frameworks that account for contextual factors and their impact on
-behavioral variability.
-
-\subsection{2.4 User Classification in Behavioral
-Biometrics}\label{user-classification-in-behavioral-biometrics}
-
-User classification represents the traditional application of machine
-learning techniques to behavioral biometric data, where the goal is to
-identify which of several known users is currently interacting with the
-system. This problem formulation differs from anomaly detection in that
-it assumes a closed-world scenario with a finite set of known users and
-sufficient training data for each user.
-
-\subsubsection{2.4.1 Problem Formulation}\label{problem-formulation}
-
-The user classification problem in behavioral biometrics can be
-formulated as a supervised learning task where behavioral features serve
-as input variables and user identity serves as the target variable. The
-challenge lies in extracting features that capture individual behavioral
-characteristics while remaining robust to natural variations in behavior
-over time and across different contexts.
-
-\textbf{Feature Representation}: The choice of feature representation
-significantly impacts classification performance. Features must capture
-the essential characteristics that distinguish between users while
-remaining consistent enough to enable reliable classification. The
-dimensionality of the feature space must be balanced against the
-available training data to prevent overfitting.
-
-\textbf{Class Imbalance}: In practical deployments, different users may
-contribute varying amounts of training data, leading to imbalanced
-datasets that can bias classification algorithms toward users with more
-training examples. Addressing class imbalance requires careful
-consideration of sampling strategies, cost-sensitive learning
-approaches, or algorithmic modifications.
-
-\textbf{Temporal Stability}: User classification systems must account
-for potential changes in behavioral patterns over time. Models trained
-on historical data may become less accurate as user behavior evolves,
-requiring strategies for model updating and adaptation.
-
-\subsubsection{2.4.2 Machine Learning
-Approaches}\label{machine-learning-approaches}
-
-Various machine learning algorithms have been applied to user
-classification in behavioral biometrics, each with distinct strengths
-and limitations:
-
-\textbf{Random Forest}: Random Forest algorithms have proven
-particularly effective for behavioral biometric classification due to
-their ability to handle complex feature interactions, resistance to
-overfitting, and inherent feature importance analysis capabilities. The
-ensemble approach combines multiple decision trees trained on different
-subsets of features and samples, providing robust performance across
-diverse behavioral patterns.
-
-The key advantages of Random Forest for behavioral biometrics include
-its ability to handle non-linear relationships between features,
-automatic feature selection through random sampling, and
-interpretability through feature importance measures. The algorithm is
-also relatively insensitive to hyperparameter settings, making it
-suitable for practical deployments where extensive hyperparameter tuning
-may not be feasible.
-
-\textbf{Support Vector Machines (SVM)}: SVM algorithms with various
-kernel functions have been widely applied to behavioral biometric
-classification. The RBF kernel is particularly popular due to its
-ability to capture non-linear relationships between behavioral features.
-SVMs provide strong theoretical foundations and good generalization
-performance, particularly in scenarios with limited training data.
-
-The key considerations for SVM application include kernel selection,
-regularization parameter tuning, and feature scaling requirements. SVMs
-can be sensitive to the choice of hyperparameters and may require
-careful tuning for optimal performance.
-
-\textbf{Neural Networks}: Multi-Layer Perceptron (MLP) networks and more
-advanced architectures such as Convolutional Neural Networks (CNNs) and
-Recurrent Neural Networks (RNNs) have been investigated for behavioral
-biometric classification. Neural networks offer the potential for
-automatic feature learning and can capture complex patterns in
-behavioral data.
-
-However, neural networks typically require larger training datasets
-compared to traditional machine learning approaches and may be prone to
-overfitting in scenarios with limited behavioral data. The
-interpretability of neural network models is also limited compared to
-tree-based or linear models.
-
-\textbf{k-Nearest Neighbors (KNN)}: KNN algorithms classify samples
-based on the majority class among the k nearest neighbors in the feature
-space. This approach is conceptually simple and can capture complex
-decision boundaries without making strong assumptions about the
-underlying data distribution.
-
-The key considerations for KNN include the choice of distance metric,
-the value of k, and computational efficiency for real-time applications.
-KNN can be sensitive to the curse of dimensionality and may require
-careful feature selection or dimensionality reduction for optimal
-performance.
-
-\textbf{Naive Bayes}: Naive Bayes classifiers assume conditional
-independence between features given the class label, enabling efficient
-computation of class probabilities. Despite the strong independence
-assumption, Naive Bayes often performs surprisingly well in practice and
-provides probabilistic outputs that can be useful for confidence
-estimation.
-
-The key limitations of Naive Bayes include the independence assumption,
-which may not hold for behavioral features that exhibit complex
-dependencies, and sensitivity to feature scaling and distribution
-assumptions.
-
-\subsubsection{2.4.3 Performance
-Evaluation}\label{performance-evaluation}
-
-Evaluating user classification performance in behavioral biometrics
-requires careful consideration of appropriate metrics and evaluation
-protocols:
-
-\textbf{Accuracy Metrics}: Overall classification accuracy provides a
-general measure of system performance but may be misleading in scenarios
-with imbalanced user data. Per-class precision, recall, and F1-scores
-provide more detailed information about performance for individual
-users.
-
-\textbf{Cross-Validation}: Rigorous cross-validation protocols are
-essential for obtaining reliable performance estimates and preventing
-overfitting. Stratified cross-validation ensures that each fold
-maintains the original class distribution, while temporal
-cross-validation can assess the stability of models over time.
-
-\textbf{Confusion Matrix Analysis}: Detailed analysis of confusion
-matrices reveals patterns in classification errors and can provide
-insights into which users are most difficult to distinguish. This
-information can guide feature engineering efforts and identify users who
-may require additional training data or specialized models.
-
-\textbf{Statistical Significance}: Appropriate statistical tests should
-be employed to assess the significance of performance differences
-between algorithms and to establish confidence intervals for performance
-estimates.
-
-\subsection{2.5 Privacy and Security
-Considerations}\label{privacy-and-security-considerations}
-
-The deployment of behavioral biometric systems raises important privacy
-and security considerations that must be addressed for responsible
-implementation. These considerations encompass data collection
-practices, storage and processing requirements, user consent and
-transparency, and potential vulnerabilities to various attack scenarios.
-
-\subsubsection{2.5.1 Privacy Implications}\label{privacy-implications}
-
-Behavioral biometric data inherently contains information about user
-activities and preferences that may be considered privacy-sensitive.
-Unlike traditional authentication credentials such as passwords,
-behavioral patterns cannot be easily changed if compromised, making
-privacy protection particularly important.
-
-\textbf{Data Minimization}: Effective privacy protection requires
-collecting only the minimum amount of behavioral data necessary for
-authentication purposes. This includes focusing on statistical summaries
-rather than detailed event logs, limiting the temporal scope of data
-retention, and avoiding collection of application content or detailed
-activity information.
-
-\textbf{Anonymization and Pseudonymization}: Behavioral data should be
-processed using techniques that protect user identity while preserving
-behavioral discrimination capability. This may include hashing of
-identifiers, statistical aggregation, and removal of directly
-identifying information.
-
-\textbf{Consent and Transparency}: Users should be fully informed about
-behavioral data collection practices, including what data is collected,
-how it is processed, where it is stored, and how it is used. Consent
-mechanisms should provide meaningful choice and control over behavioral
-monitoring.
-
-\textbf{Purpose Limitation}: Behavioral data collected for
-authentication purposes should not be used for other purposes without
-explicit user consent. This includes restrictions on behavioral
-profiling for marketing, performance monitoring, or other non-security
-applications.
-
-\subsubsection{2.5.2 Security
-Vulnerabilities}\label{security-vulnerabilities}
-
-Behavioral biometric systems face several categories of security
-vulnerabilities that must be considered in system design and deployment:
-
-\textbf{Replay Attacks}: Attackers may attempt to replay previously
-captured behavioral data to circumvent authentication systems.
-Protection against replay attacks requires temporal freshness checks,
-challenge-response mechanisms, or other techniques to ensure behavioral
-data corresponds to real-time user interactions.
-
-\textbf{Behavioral Spoofing}: Sophisticated attackers may attempt to
-mimic legitimate user behavioral patterns to bypass authentication
-systems. This threat is particularly concerning for behavioral
-biometrics since behavioral patterns may be observable and potentially
-learnable by attackers with sufficient access.
-
-\textbf{Model Inversion}: Attackers with access to behavioral biometric
-models may attempt to extract information about training data or
-reconstruct behavioral patterns through model inversion attacks.
-Protection against these attacks requires careful model design and
-deployment practices.
-
-\textbf{Side-Channel Attacks}: Behavioral biometric systems may be
-vulnerable to side-channel attacks where attackers gain information
-about behavioral patterns through indirect channels such as network
-traffic analysis, timing attacks, or electromagnetic emanations.
-
-\subsubsection{2.5.3 Regulatory and Compliance
-Considerations}\label{regulatory-and-compliance-considerations}
-
-The deployment of behavioral biometric systems must comply with relevant
-privacy regulations and industry standards:
-
-\textbf{General Data Protection Regulation (GDPR)}: In European
-contexts, behavioral biometric data is considered personal data subject
-to GDPR requirements including lawful basis for processing, data subject
-rights, privacy by design principles, and data protection impact
-assessments.
-
-\textbf{Biometric Information Privacy Acts}: Various jurisdictions have
-specific regulations governing biometric data collection and processing
-that may apply to behavioral biometric systems. These regulations often
-include requirements for consent, data retention limitations, and
-disclosure restrictions.
-
-\textbf{Industry Standards}: Relevant industry standards such as ISO/IEC
-27001 for information security management and ISO/IEC 29100 for privacy
-frameworks provide guidance for implementing privacy and security
-controls in behavioral biometric systems.
-
-\subsection{2.6 Related Work in Mouse
-Dynamics}\label{related-work-in-mouse-dynamics}
-
-The literature on mouse dynamics for behavioral biometrics has grown
-substantially over the past two decades, encompassing various approaches
-to feature extraction, machine learning algorithms, and application
-scenarios. This section provides a comprehensive review of the most
-relevant and influential work in the field.
-
-\subsubsection{2.6.1 Early Foundational
-Work}\label{early-foundational-work}
-
-Ahmed and Traore (2007) conducted one of the most comprehensive early
-studies of mouse dynamics for user authentication. Their work introduced
-several important concepts including the use of statistical features to
-characterize mouse movement patterns, the importance of movement
-velocity and acceleration profiles, and the potential for continuous
-authentication based on natural user interactions. They demonstrated
-classification accuracies of approximately 85\% using neural network
-classifiers on a dataset of 22 users, establishing a performance
-baseline that has influenced subsequent research.
-
-Pusara and Brodley (2004) focused specifically on anomaly detection
-applications of mouse dynamics, investigating the use of statistical
-outlier detection techniques to identify unusual behavioral patterns.
-Their work demonstrated the feasibility of detecting intrusions based on
-deviations from established user behavioral baselines, achieving
-detection rates of approximately 90\% with false positive rates below
-5\%.
-
-Gamboa and Fred (2004) explored the use of hidden Markov models for
-modeling temporal dependencies in mouse movement patterns. Their
-approach captured sequential information in cursor trajectories and
-demonstrated improved performance compared to static feature-based
-approaches, particularly for users with consistent movement patterns.
-
-\subsubsection{2.6.2 Advanced Feature
-Engineering}\label{advanced-feature-engineering}
-
-Zheng et al.~(2011) introduced sophisticated feature engineering
-approaches that combined spatial, temporal, and frequency domain
-characteristics of mouse movements. Their work demonstrated the
-importance of multi-dimensional feature representations and established
-several feature categories that continue to be used in current research:
-
-\begin{itemize}
-\tightlist
-\item
-  Kinematic features including velocity, acceleration, and jerk
-  statistics
-\item
-  Geometric features including path length, curvature, and straightness
-  measures
-\item
-  Temporal features including pause durations and movement timing
-  patterns
-\item
-  Frequency domain features derived from spectral analysis of movement
-  signals
-\end{itemize}
-
-Their experimental results showed classification accuracies exceeding
-90\% on datasets with 20+ users, demonstrating the effectiveness of
-comprehensive feature engineering approaches.
-
-Shen et al.~(2013) extended feature engineering to include contextual
-information such as application usage patterns and task-specific
-behavioral characteristics. Their work showed that incorporating
-contextual features could improve classification performance by 5-10\%
-compared to purely kinematic approaches, though with increased
-complexity in feature extraction and model training.
-
-\subsubsection{2.6.3 Large-Scale Evaluation
-Studies}\label{large-scale-evaluation-studies}
-
-Feher et al.~(2012) conducted one of the largest-scale evaluations of
-mouse dynamics authentication, involving over 100 users and extended
-data collection periods. Their study provided important insights into
-the temporal stability of mouse behavioral patterns and demonstrated
-that classification performance could be maintained over periods of
-several months with appropriate model updating strategies.
-
-The work revealed significant individual differences in behavioral
-stability, with some users exhibiting highly consistent patterns over
-time while others showed more variability. This finding highlighted the
-importance of user-specific adaptation strategies in practical
+\subsection{2.1 Behavioral Biometrics
+(condensed)}\label{behavioral-biometrics-condensed}
+
+Behavioral biometrics use measurable interaction patterns (e.g.,
+keystrokes, mouse movement, touch) to identify or re‑authenticate users
+(Traore and Ahmed 2012; Bailey, Okolica, and Peterson 2014). Their
+advantages are unobtrusive collection and continuous monitoring; primary
+challenges are intra‑user variability, class imbalance, and privacy. Key
+properties are distinctiveness, stability, collectability, and
+measurability.
+
+\subsection{2.2 Mouse Dynamics
+(condensed)}\label{mouse-dynamics-condensed}
+
+Mouse dynamics capture cursor trajectories, clicks and scrolls at
+millisecond resolution. Common feature families are temporal (timing,
+pauses), spatial (path length, straightness), kinematic (velocity,
+acceleration, jerk), and statistical summaries (moments, percentiles)
+(Gamboa and Fred 2004, 2004). Early work established feasibility (Pusara
+and Brodley 2004; Brodley and Pusara 2003), while later studies refined
+feature sets and demonstrated robust verification systems (Zheng et al.
+2011; Shen et al. 2013; Mondal and Bours 2015).
+
+\subsection{2.3 Anomaly Detection \& User Classification
+(condensed)}\label{anomaly-detection-user-classification-condensed}
+
+Anomaly detection learns per‑user baselines (OC‑SVM, Isolation Forest,
+autoencoders) to flag deviations (Ahmed and Traore 2004; Pusara and
+Brodley 2004). User classification treats the problem as multi‑class
+supervised learning (Random Forest, SVM, MLP, KNN) and requires careful
+cross‑validation, class‑balanced metrics (precision/recall/F1), and
+temporal testing to assess stability (Eberz et al. 2017).
+
+\subsection{2.4 Privacy and Security
+(condensed)}\label{privacy-and-security-condensed}
+
+Behavioral data is sensitive: minimize raw logging, anonymize context
+(hash window titles), store aggregated summaries, and obtain informed
+consent. Threats include replay, spoofing, and model inversion;
+mitigations are freshness checks, model hardening, and strict access
+controls. Compliance with GDPR and industry standards is required for
 deployments.
 
-Bours and Fullu (2009) investigated the impact of various factors on
-mouse dynamics performance including data collection duration, feature
-selection strategies, and classification algorithms. Their systematic
-comparison of different approaches provided practical guidance for
-system design and highlighted the importance of feature selection for
-achieving optimal performance.
+\subsection{2.5 Selected Related Work
+(highlights)}\label{selected-related-work-highlights}
 
-\subsubsection{2.6.4 Real-Time Implementation
-Studies}\label{real-time-implementation-studies}
+\begin{itemize}
+\tightlist
+\item
+  Pusara \& Brodley (2004): early re‑authentication via statistical
+  outlier detection.
+\item
+  Ahmed \& Traore (2007): comprehensive feature-based identification
+  study.
+\item
+  Zheng et al.~(2011), Shen et al.~(2013), Mondal \& Bours (2015):
+  advanced feature engineering and continuous authentication approaches.
+\end{itemize}
 
-Several studies have focused specifically on the challenges of
-implementing mouse dynamics systems in real-time operational
-environments:
+\subsection{2.6 Gaps and Opportunities
+(condensed)}\label{gaps-and-opportunities-condensed}
 
-Mondal and Bours (2013) developed a real-time mouse dynamics
-authentication system and evaluated its performance under realistic
-usage conditions. Their work demonstrated that real-time systems could
-achieve performance comparable to offline analysis while maintaining
-acceptable computational overhead.
-
-Antal and Egedi (2019) investigated the use of mobile devices for mouse
-dynamics authentication, adapting traditional desktop-based approaches
-to touchpad and touch screen interfaces. Their work showed that similar
-behavioral discrimination could be achieved on mobile platforms with
-appropriate feature adaptations.
-
-\subsubsection{2.6.5 Multi-Modal
-Integration}\label{multi-modal-integration}
-
-Recent work has explored the integration of mouse dynamics with other
-behavioral biometric modalities:
-
-Teh et al.~(2013) investigated the combination of mouse dynamics with
-keystroke dynamics for enhanced authentication performance. Their fusion
-approach achieved classification accuracies exceeding 95\% by leveraging
-the complementary information provided by different behavioral
-modalities.
-
-Crawford and Ahmad (2011) explored the integration of mouse dynamics
-with application usage patterns and demonstrated that incorporating
-higher-level behavioral information could improve both classification
-accuracy and anomaly detection performance.
-
-\subsection{2.7 Gaps in Current
-Research}\label{gaps-in-current-research}
-
-Despite the substantial body of work in mouse dynamics behavioral
-biometrics, several important gaps remain that motivate the current
-research:
-
-\subsubsection{2.7.1 Limited Cross-User
-Analysis}\label{limited-cross-user-analysis}
-
-Most previous studies focus primarily on classification accuracy metrics
-without providing detailed analysis of cross-user behavioral
-distinctiveness. Understanding the degree to which different users
-exhibit distinguishable behavioral patterns is crucial for setting
-appropriate thresholds in anomaly detection systems and assessing the
-fundamental limits of behavioral discrimination.
-
-\subsubsection{2.7.2 Incomplete System
-Implementation}\label{incomplete-system-implementation}
-
-Many studies focus on algorithmic aspects while providing limited
-information about practical implementation challenges including
-cross-platform data collection, real-time processing requirements, and
-integration with existing security infrastructure. This gap makes it
-difficult to assess the practical viability of proposed approaches.
-
-\subsubsection{2.7.3 Privacy and Ethics
-Treatment}\label{privacy-and-ethics-treatment}
-
-The literature provides limited treatment of privacy and ethical
-considerations in behavioral biometric deployment. Most studies focus on
-technical performance without addressing the important privacy
-implications of continuous behavioral monitoring or providing practical
-frameworks for privacy-preserving implementation.
-
-\subsubsection{2.7.4 Limited Temporal
-Analysis}\label{limited-temporal-analysis}
-
-Most studies collect data over relatively short time periods and provide
-limited analysis of long-term temporal stability of behavioral patterns.
-Understanding how behavioral patterns evolve over time is crucial for
-developing adaptive authentication systems that can accommodate natural
-behavioral changes.
-
-\subsubsection{2.7.5 Evaluation
-Methodology}\label{evaluation-methodology}
-
-The literature lacks standardized evaluation protocols and datasets,
-making it difficult to compare different approaches and assess progress
-in the field. Most studies use different experimental setups, feature
-sets, and evaluation metrics, complicating direct comparison of results.
-
-\subsection{2.8 Summary}\label{summary-1}
-
-This comprehensive review of behavioral biometrics and mouse dynamics
-research provides the foundation for our investigation. The literature
-demonstrates the theoretical viability of mouse-based behavioral
-authentication while highlighting several important gaps that our
-research addresses. The combination of comprehensive system
-implementation, rigorous experimental evaluation, detailed cross-user
-analysis, and attention to privacy considerations positions our work to
-make significant contributions to the field.
-
-The evolution of mouse dynamics research from early proof-of-concept
-studies to sophisticated real-time systems demonstrates the maturity of
-the field and the readiness for practical deployment. However, the gaps
-identified in current research highlight the need for more comprehensive
-approaches that address both technical performance and practical
-deployment considerations.
-
-Our research builds on the strong foundation provided by previous work
-while addressing these gaps through comprehensive system implementation,
-rigorous evaluation, and detailed analysis of behavioral distinctiveness
-and privacy implications. The following chapters detail our approach to
-these challenges and present evidence supporting the practical viability
-of mouse-based continuous authentication systems.
+Existing gaps include limited cross‑user analysis at scale, inconsistent
+evaluation protocols, practical deployment details (real‑time capture,
+cross‑platform collection), and limited treatment of privacy-preserving
+operational practices---areas this thesis targets.
 
 \newpage
 
 \newpage
-\thispagestyle{plain}
+
+hispagestyle\{plain\}
 
 \begin{center}
 \vspace*{2cm}
-\textbf{\Large CHAPTER 3}\\[0.5cm]
-\textbf{\Large DATA AND FEATURE ENGINEERING}
+    extbf{\Large CHAPTER 3}\\[0.5cm]
+    extbf{\Large DATA AND FEATURE ENGINEERING}
 \end{center}
 
 \newpage
 
-\subsection{3.1 Data Collection and
-Processing}\label{data-collection-and-processing}
+\subsection{3.1 Data and Event Overview
+(condensed)}\label{data-and-event-overview-condensed}
 
-Raw mouse events are transformed into behavioral signatures through
-systematic feature engineering. Our approach emphasizes behavioral
-relevance, statistical robustness, privacy preservation, computational
-efficiency, and interpretability.
-
-\subsection{3.2 Event Structure}\label{event-structure}
-
-\subsubsection{3.2.1 Event Types}\label{event-types}
-
-Movement (cursor changes), clicks (button press/release), scrolling
-(wheel events), hover/dwell (stability periods).
-
-\subsubsection{3.2.2 Event Attributes}\label{event-attributes}
-
-Temporal (timestamps, intervals), spatial (X/Y coordinates), behavioral
-(event classifications), contextual (anonymized application data).
-
-\subsubsection{3.2.3 Quality Assurance}\label{quality-assurance}
-
-Temporal consistency, spatial validity, sequence validation,
-completeness monitoring.
-
-\subsection{3.3 Feature Engineering}\label{feature-engineering}
-
-\subsubsection{3.3.1 Segmentation Strategy}\label{segmentation-strategy}
-
-50-event windows providing consistent behavioral data.
-
-\subsubsection{3.3.2 Feature Categories}\label{feature-categories}
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Temporal}: Segment duration, inter-event intervals, rhythm
-  patterns
-\item
-  \textbf{Spatial}: Total distance, path straightness, movement range
-\item
-  \textbf{Kinematic}: Velocity statistics (mean, median, max, std dev,
-  skewness, kurtosis)
-\item
-  \textbf{Statistical}: Distribution characteristics and higher-order
-  patterns
-\end{itemize}
-
-\subsubsection{3.3.3 Core Feature Set}\label{core-feature-set}
-
-From 36 engineered features, 16 selected based on discrimination power:
-segment\_duration\_ms, total\_distance\_pixels, path\_straightness,
-mean\_speed, median\_speed, max\_speed, std\_dev\_speed,
-skewness\_speed, kurtosis\_speed, plus temporal and spatial statistics.
-
-\textbf{Fixed-Time Windows}: Consistent temporal scope but variable
-behavioral data amounts.
-
-\textbf{Fixed-Event Windows}: Consistent behavioral data but variable
-temporal scope.
-
-\textbf{Activity-Based Segmentation}: Natural behavioral units requiring
-sophisticated detection.
-
-\textbf{Adaptive Segmentation}: Optimal behavioral units with
-implementation complexity.
-
-\subsubsection{3.3.2 Fixed-Event Window
-Approach}\label{fixed-event-window-approach}
-
-For this research, we adopt a fixed-event window approach with 50
-consecutive mouse events per behavioral segment. This choice is
-motivated by several important considerations:
-
-\textbf{Behavioral Consistency}: Fixed-event windows ensure that each
-behavioral segment contains the same amount of interaction data,
-facilitating direct comparison between segments and consistent feature
+Raw mouse events (movements, clicks, scrolls) are captured with
+timestamps and X/Y coordinates and converted into fixed-length segments
+(50 events) for analysis. Segments balance temporal context and
+computational tractability while enabling consistent feature
 computation.
 
-\textbf{Temporal Adaptivity}: By focusing on event count rather than
-time duration, the segmentation naturally adapts to individual
-interaction speeds and activity levels, capturing behavioral patterns at
-the natural temporal scale of each user.
-
-\textbf{Computational Efficiency}: Fixed-event windows simplify
-real-time processing by providing predictable computational loads and
-memory requirements for feature extraction and classification.
-
-\textbf{Literature Compatibility}: The 50-event window size is
-consistent with previous research in mouse dynamics, enabling comparison
-with published results and leveraging established best practices.
-
-\subsubsection{3.3.3 Segmentation
-Implementation}\label{segmentation-implementation}
-
-The implementation of fixed-event segmentation requires careful
-consideration of several technical details:
-
-\textbf{Window Boundaries}: Segments are constructed using strict event
-ordering without overlap, ensuring that each event contributes to
-exactly one behavioral segment. This approach prevents information
-leakage between segments while maximizing data utilization.
-
-\textbf{Session Handling}: Segment boundaries are not permitted to cross
-user session boundaries, ensuring that behavioral segments represent
-coherent interaction periods rather than artifacts of data collection
-scheduling.
-
-\textbf{Quality Filtering}: Segments containing anomalous events
-(invalid coordinates, timing errors, etc.) are excluded from analysis to
-prevent data quality issues from affecting behavioral modeling.
-
-\textbf{Buffer Management}: Real-time implementation requires efficient
-buffer management to maintain sliding windows of events for continuous
-segmentation and feature extraction.
-
-\subsubsection{3.3.4 Segment Characteristics
-Analysis}\label{segment-characteristics-analysis}
-
-Understanding the characteristics of the resulting behavioral segments
-is important for interpreting feature extraction results and assessing
-the appropriateness of the segmentation strategy:
-
-\textbf{Temporal Duration Distribution}: Analysis of segment duration
-distributions reveals the natural temporal scope of behavioral segments
-across different users and contexts. Our 50-event segments typically
-span 10-60 seconds depending on user interaction patterns.
-
-\textbf{Event Type Distribution}: Analysis of event type distributions
-within segments provides insights into the behavioral richness captured
-by each segment and the consistency of interaction patterns. We selected
-50-event windows providing consistent behavioral data for analysis. This
-approach balances temporal consistency with sufficient behavioral
-information capture.
-
-\subsection{3.4 Comprehensive Feature Engineering
-Framework}\label{comprehensive-feature-engineering-framework}
-
-Our framework transforms raw mouse events into meaningful behavioral
-features across multiple dimensions:
-
-\subsubsection{3.4.1 Feature Categories}\label{feature-categories-1}
-
-\textbf{Temporal Features}: Timing patterns, interaction rhythm,
-temporal dynamics \textbf{Spatial Features}: Movement patterns, spatial
-preferences, geometric properties\\
-\textbf{Kinematic Features}: Velocity, acceleration, movement dynamics
-\textbf{Contextual Features}: Application usage, environmental factors
-\textbf{Statistical Features}: Distribution characteristics and
-higher-order patterns
-
-\subsubsection{3.4.2 Key Features}\label{key-features}
-
-\textbf{Temporal}: Segment duration (segment\_duration\_ms), average
-inter-event intervals, temporal variance and stability
-
-\textbf{Spatial}: Total distance traveled (total\_distance\_pixels),
-path straightness (ratio of straight-line to actual distance), movement
-range and distribution
-
-\textbf{Kinematic}: Mean/median/max/min speed, velocity standard
-deviation, acceleration patterns, movement smoothness indicators
-
-\textbf{Statistical}: Velocity skewness/kurtosis indicating movement
-distribution characteristics
-
-\subsubsection{3.4.3 Feature Selection}\label{feature-selection}
-
-From 36 engineered features, we selected 16 core features based on
-discrimination power and stability:
-
-\begin{itemize}
-\tightlist
-\item
-  Temporal: segment\_duration\_ms, time-based statistics
-\item
-  Spatial: total\_distance\_pixels, path\_straightness
-\item
-  Kinematic: mean\_speed, median\_speed, max\_speed, std\_dev\_speed,
-  skewness\_speed, kurtosis\_speed
-\item
-  Additional: movement smoothness, pause characteristics, directional
-  preferences
-\end{itemize}
-
-\paragraph{Acceleration Analysis}\label{acceleration-analysis}
-
-Acceleration features provide information about movement smoothness and
-control characteristics:
-
-\textbf{Acceleration Computation}: For each velocity measurement:
-
-\begin{verbatim}
-acceleration_i = (velocity_i+1 - velocity_i) / time_interval_i
-\end{verbatim}
-
-\textbf{Statistical Acceleration Features}:
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Mean Acceleration (mean\_acceleration)}: Average acceleration
-  indicating typical acceleration patterns
-\item
-  \textbf{Standard Deviation (std\_dev\_acceleration)}: Acceleration
-  variability indicating smoothness of movement control
-\item
-  \textbf{Maximum Acceleration (max\_acceleration)}: Peak acceleration
-  indicating maximum control capability
-\end{itemize}
-
-\paragraph{Advanced Kinematic
-Analysis}\label{advanced-kinematic-analysis}
-
-\textbf{Jerk Analysis}: Computation of jerk (rate of change of
-acceleration) to capture movement smoothness and neuromotor control
-characteristics.
-
-\textbf{Movement Phase Analysis}: Segmentation of movements into
-acceleration, constant velocity, and deceleration phases with analysis
-of phase characteristics and transitions.
-
-\textbf{Ballistic vs.~Corrective Movement Analysis}: Classification of
-movements into ballistic (rapid, ballistic movements) and corrective
-(slower, guided movements) categories with separate analysis of each
-category.
-
-\subsubsection{3.4.5 Contextual Feature
-Engineering}\label{contextual-feature-engineering}
-
-Contextual features capture information about the interaction
-environment and usage patterns while maintaining privacy through
-statistical abstraction.
-
-\paragraph{Application Context
-Features}\label{application-context-features}
-
-\textbf{Window Title Analysis}: Statistical analysis of application
-usage patterns through hashed window titles:
-
-\textbf{Most Common Window Title Hash
-(most\_common\_window\_title\_hash)}: The most frequently occurring
-application context within each segment, providing information about
-primary application usage.
-
-\textbf{Application Diversity}: Measures of application switching
-frequency and diversity within segments, indicating multitasking
-patterns and interface navigation behavior.
-
-\paragraph{Temporal Context Features}\label{temporal-context-features}
-
-\textbf{Time-of-Day Analysis}: Analysis of interaction patterns relative
-to time-of-day:
-
-\textbf{Most Common Day Time Bin (most\_common\_daytime\_bin)}: The most
-frequent time-of-day category (5-minute bins) within each segment.
-
-\textbf{Day Time Standard Deviation (std\_dev\_daytime\_bin)}:
-Variability in time-of-day within segments, indicating session temporal
-consistency.
-
-\textbf{Circadian Pattern Analysis}: Analysis of behavioral variations
-across different times of day to capture individual circadian behavioral
-patterns.
-
-\subsubsection{3.4.6 Event Pattern
-Features}\label{event-pattern-features}
-
-Event pattern features analyze the distribution and sequencing of
-different types of mouse events to capture individual interaction style
-preferences.
-
-\paragraph{Event Type Distribution}\label{event-type-distribution}
-
-\textbf{Movement Event Ratios}: Proportions of different movement types
-within each segment:
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Ratio DM (ratio\_DM)}: Proportion of drag movement events
-\item
-  \textbf{Ratio VM (ratio\_VM)}: Proportion of vertical movement events
-\item
-  \textbf{Ratio HM (ratio\_HM)}: Proportion of horizontal movement
-  events
-\end{itemize}
-
-These ratios capture individual preferences for different types of
-movement patterns and interaction styles.
-
-\textbf{Click Event Analysis}: Analysis of clicking patterns including
-click frequency, timing, and coordination with movement events.
-
-\textbf{Scroll Event Analysis}: Analysis of scrolling behavior including
-scroll frequency, direction preferences, and rhythm patterns.
-
-\paragraph{Event Sequence Analysis}\label{event-sequence-analysis}
-
-\textbf{Transition Pattern Analysis}: Analysis of event type transitions
-using techniques such as Markov chain analysis to capture sequential
-dependencies in interaction patterns.
-
-\textbf{Event Clustering}: Temporal clustering of similar events to
-identify burst patterns and interaction rhythms that may be
-characteristic of individual users.
-
-\subsubsection{3.4.7 Statistical Summary
-Features}\label{statistical-summary-features}
-
-Statistical summary features provide higher-order characterizations of
-behavioral distributions that capture subtle individual differences in
-interaction patterns.
-
-\paragraph{Distribution Shape
-Analysis}\label{distribution-shape-analysis}
-
-\textbf{Skewness Analysis}: Computation of skewness for various
-behavioral measures to capture distribution asymmetry patterns that may
-be characteristic of individual users.
-
-\textbf{Kurtosis Analysis}: Computation of kurtosis for behavioral
-measures to capture distribution peakedness and tail characteristics.
-
-\textbf{Percentile Analysis}: Computation of various percentiles (10th,
-25th, 75th, 90th) for behavioral measures to capture distribution shape
-characteristics.
-
-\paragraph{Correlation and Dependency
-Analysis}\label{correlation-and-dependency-analysis}
-
-\textbf{Feature Correlation Analysis}: Analysis of correlations between
-different behavioral measures within each segment to capture
-coordination patterns and dependencies.
-
-\textbf{Temporal Autocorrelation}: Analysis of temporal dependencies
-within behavioral sequences to capture rhythm and pattern
-characteristics.
-
-\subsection{3.5 Feature Selection and
-Optimization}\label{feature-selection-and-optimization}
-
-The comprehensive feature engineering framework produces a total of 36
-distinct features across all categories. However, practical machine
-learning applications often benefit from feature selection that focuses
-on the most discriminative and stable features while reducing
-computational complexity.
-
-\subsubsection{3.5.1 Feature Selection
-Criteria}\label{feature-selection-criteria}
-
-Our feature selection process is guided by several important criteria:
-
-\textbf{Discriminative Power}: Features should demonstrate strong
-ability to distinguish between different users in preliminary analysis
-and have high information content for classification tasks.
-
-\textbf{Stability}: Features should exhibit reasonable consistency
-within users over time while maintaining distinctiveness between users.
-
-\textbf{Independence}: Selected features should provide complementary
-information rather than redundant characterizations of the same
-behavioral aspects.
-
-\textbf{Interpretability}: Where possible, selected features should have
-clear behavioral interpretations that enable system understanding and
-debugging.
-
-\textbf{Computational Efficiency}: Selected features should be
-computable with reasonable computational overhead for real-time
-applications.
-
-\subsubsection{3.5.2 Core Feature Set
-Selection}\label{core-feature-set-selection}
-
-Based on extensive preliminary analysis and literature review, we
-identify a core set of 16 features that provide optimal balance between
-discrimination capability and practical implementation requirements:
-
-\paragraph{Temporal Features (1)}\label{temporal-features-1}
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{segment\_duration\_ms}: Basic temporal scope normalization
-\end{itemize}
-
-\paragraph{Spatial Features (2)}\label{spatial-features-2}
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{total\_distance\_pixels}: Movement extent characterization
-\item
-  \textbf{path\_straightness}: Navigation efficiency analysis
-\end{itemize}
-
-\paragraph{Kinematic Features (10)}\label{kinematic-features-10}
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{mean\_speed}: Central tendency of velocity distribution
-\item
-  \textbf{std\_dev\_speed}: Velocity consistency characterization
-\item
-  \textbf{median\_speed}: Robust central tendency estimate
-\item
-  \textbf{skewness\_speed}: Velocity distribution asymmetry
-\item
-  \textbf{kurtosis\_speed}: Velocity distribution peakedness
-\item
-  \textbf{max\_speed}: Peak movement capability
-\item
-  \textbf{min\_speed}: Baseline movement speed
-\item
-  \textbf{mean\_acceleration}: Acceleration tendency characterization
-\item
-  \textbf{std\_dev\_acceleration}: Acceleration consistency analysis
-\item
-  \textbf{max\_acceleration}: Peak acceleration capability
-\end{itemize}
-
-\paragraph{Event Pattern Features (3)}\label{event-pattern-features-3}
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{ratio\_DM}: Drag movement preference
-\item
-  \textbf{ratio\_VM}: Vertical movement preference
-\item
-  \textbf{ratio\_HM}: Horizontal movement preference
-\end{itemize}
-
-This core feature set provides comprehensive coverage of the most
-important behavioral dimensions while maintaining computational
-efficiency and interpretability.
-
-\subsubsection{3.5.3 Feature Exclusion
-Strategy}\label{feature-exclusion-strategy}
-
-Certain features are systematically excluded from the core set for
-specific reasons:
-
-\textbf{Direct Identity Features}: Features such as explicit user
-identifiers are excluded to focus on pure behavioral characteristics
-rather than direct identity cues.
-
-\textbf{Event Count Features}: Raw event counts are excluded because
-they are inherently constant due to our fixed-event segmentation
-strategy and provide no discriminative information.
-
-\textbf{Highly Contextual Features}: Features that are strongly
-dependent on specific applications or environmental factors are excluded
-to improve generalizability across different usage scenarios.
-
-\textbf{Redundant Features}: Features that provide essentially the same
-information as other selected features are excluded to reduce
-dimensionality and prevent multicollinearity issues.
-
-\subsection{3.6 Preprocessing and
-Normalization}\label{preprocessing-and-normalization}
-
-Effective preprocessing and normalization of features is crucial for
-ensuring optimal performance of machine learning algorithms and
-maintaining consistency across different experimental conditions.
-
-\subsubsection{3.6.1 Data Cleaning and
-Validation}\label{data-cleaning-and-validation}
-
-The preprocessing pipeline begins with comprehensive data cleaning and
-validation procedures:
-
-\textbf{Missing Value Handling}: Detection and appropriate handling of
-missing values that may result from data collection issues or
-computation errors. Our approach uses domain-specific imputation
-strategies rather than generic missing value techniques.
-
-\textbf{Outlier Detection}: Identification and handling of extreme
-outliers that may result from data collection errors or unusual
-behavioral circumstances. We employ statistical outlier detection based
-on inter-quartile range analysis combined with domain knowledge
-constraints.
-
-\textbf{Data Type Validation}: Ensuring appropriate data types for all
-features and correcting type conversion issues that may arise during
-data collection or processing.
-
-\textbf{Range Validation}: Validation that all feature values fall
-within expected ranges based on domain knowledge and detection of
-impossible values that indicate computation errors.
-
-\subsubsection{3.6.2 Feature Scaling and
-Normalization}\label{feature-scaling-and-normalization}
-
-Different features in our framework exhibit vastly different scales and
-distributions, making normalization essential for many machine learning
-algorithms:
-
-\textbf{StandardScaler Application}: We employ scikit-learn's
-StandardScaler to transform features to have zero mean and unit
-variance:
-
-\begin{verbatim}
-scaled_feature = (feature - mean) / standard_deviation
-\end{verbatim}
-
-This transformation ensures that all features contribute equally to
-distance-based algorithms and prevents features with larger scales from
-dominating the analysis.
-
-\textbf{Scaling Procedure}: The scaling transformation is fit on
-training data only and then applied to both training and validation data
-to prevent information leakage that could bias performance estimates.
-
-\textbf{Scaler Persistence}: Trained scalers are saved alongside trained
-models to ensure consistent preprocessing during inference and
-deployment.
-
-\subsubsection{3.6.3 Feature Distribution
-Analysis}\label{feature-distribution-analysis}
-
-Understanding the statistical properties of engineered features is
-important for algorithm selection and performance interpretation:
-
-\textbf{Distribution Shape Analysis}: Analysis of feature distributions
-to identify skewness, kurtosis, and other characteristics that may
-affect algorithm performance or require specialized handling.
-
-\textbf{Correlation Analysis}: Computation of feature correlation
-matrices to identify highly correlated features that may cause
-multicollinearity issues in some algorithms.
-
-\textbf{Class Separability Analysis}: Analysis of feature distributions
-across different user classes to identify the most discriminative
-features and understand the behavioral basis for classification
-performance.
-
-\subsection{3.7 Privacy and Ethical
-Considerations}\label{privacy-and-ethical-considerations}
-
-The design of our feature engineering framework incorporates important
-privacy and ethical considerations that are essential for responsible
-deployment of behavioral biometric systems.
-
-\subsubsection{3.7.1 Data Minimization
-Principles}\label{data-minimization-principles}
-
-\textbf{Content Abstraction}: Our features focus on movement dynamics
-and statistical patterns rather than specific content or detailed
-activity information, minimizing privacy exposure while preserving
-behavioral discrimination capability.
-
-\textbf{Temporal Abstraction}: Time-of-day information is discretized
-into coarse bins rather than precise timestamps, providing contextual
-information while reducing temporal tracking capabilities.
-
-\textbf{Spatial Abstraction}: Spatial features focus on movement
-patterns rather than specific screen locations or content positions,
-preserving behavioral information while minimizing location tracking.
-
-\textbf{Application Abstraction}: Application context is captured
-through statistical usage patterns rather than detailed application
-monitoring, providing contextual information while preserving activity
-privacy.
-
-\subsubsection{3.7.2 Anonymization
-Strategies}\label{anonymization-strategies}
-
-\textbf{Hash-Based Anonymization}: Window titles and other potentially
-identifying information are processed through cryptographic hashing to
-prevent direct identification while preserving statistical analysis
-capabilities.
-
-\textbf{Statistical Aggregation}: Individual events are aggregated into
-statistical summaries that preserve behavioral patterns while preventing
-reconstruction of specific interaction sequences.
-
-\textbf{Identifier Removal}: Direct user identifiers are separated from
-behavioral features and handled through secure key management procedures
-to prevent accidental linkage.
-
-\subsubsection{3.7.3 Consent and
-Transparency}\label{consent-and-transparency}
-
-\textbf{Informed Consent}: Data collection procedures incorporate
-comprehensive informed consent processes that clearly explain what
-behavioral information is collected and how it is used.
-
-\textbf{Data Usage Transparency}: Clear documentation of data usage,
-retention periods, and sharing policies ensures that users understand
-how their behavioral information is handled.
-
-\textbf{Control Mechanisms}: Provision of user controls for data
-collection preferences, retention periods, and deletion requests
-supports user autonomy and privacy management.
-
-\subsection{3.8 Implementation
-Architecture}\label{implementation-architecture}
-
-The technical implementation of our feature engineering framework
-emphasizes efficiency, maintainability, and extensibility to support
-both research and practical deployment scenarios.
-
-\subsubsection{3.8.1 Software Architecture}\label{software-architecture}
-
-\textbf{Modular Design}: The feature engineering pipeline is implemented
-using a modular architecture that separates data loading, preprocessing,
-feature extraction, and output formatting into distinct components.
-
-\textbf{Configuration Management}: Comprehensive configuration
-management enables easy adjustment of feature selection, processing
-parameters, and output formats without code modifications.
-
-\textbf{Error Handling}: Robust error handling and logging capabilities
-ensure reliable operation and facilitate debugging in both development
-and production environments.
-
-\textbf{Performance Optimization}: Implementation optimizations
-including vectorized computation, efficient data structures, and memory
-management ensure acceptable performance for real-time applications.
-
-\subsubsection{3.8.2 Data Flow
-Architecture}\label{data-flow-architecture}
-
-\textbf{Stream Processing}: The architecture supports both batch
-processing for training data and stream processing for real-time
-applications, ensuring consistency between training and inference
-pipelines.
-
-\textbf{Quality Assurance}: Integrated quality assurance checks at each
-stage of the pipeline ensure data integrity and feature quality
-throughout the processing workflow.
-
-\textbf{Monitoring and Logging}: Comprehensive monitoring and logging
-capabilities enable performance tracking, error detection, and system
-optimization in operational deployments.
-
-\subsubsection{3.8.3 Extensibility and
-Maintenance}\label{extensibility-and-maintenance}
-
-\textbf{Feature Framework}: The modular feature framework enables easy
-addition of new features and modification of existing features without
-affecting other system components.
-
-\textbf{Version Management}: Versioning of feature definitions and
-processing procedures ensures reproducibility and enables controlled
-evolution of the feature engineering approach.
-
-\textbf{Documentation}: Comprehensive documentation of feature
-definitions, computation procedures, and implementation details
-facilitates maintenance and knowledge transfer.
-
-\subsection{3.9 Validation and Quality
-Assurance}\label{validation-and-quality-assurance}
-
-Ensuring the quality and correctness of engineered features is crucial
-for reliable behavioral analysis and system performance.
-
-\subsubsection{3.9.1 Feature Validation
-Procedures}\label{feature-validation-procedures}
-
-\textbf{Mathematical Validation}: Verification that feature computations
-produce mathematically correct results through unit testing, boundary
-condition analysis, and comparison with manual calculations.
-
-\textbf{Behavioral Validation}: Verification that features capture
-intended behavioral characteristics through analysis of feature values
-for known behavioral patterns and correlation with expected behavioral
-differences.
-
-\textbf{Consistency Validation}: Verification that features produce
-consistent results across different processing runs, data orderings, and
-computational environments.
-
-\subsubsection{3.9.2 Cross-Validation and
-Reproducibility}\label{cross-validation-and-reproducibility}
-
-\textbf{Reproducible Processing}: Implementation of deterministic
-processing procedures that produce identical results given identical
-inputs, supporting reproducible research and reliable deployment.
-
-\textbf{Cross-Platform Validation}: Validation of feature computation
-across different operating systems and hardware configurations to ensure
-consistent behavioral analysis capabilities.
-
-\textbf{Version Control Integration}: Integration with version control
-systems to track changes in feature definitions and ensure
-reproducibility of experimental results.
-
-\subsection{3.10 Dataset Characteristics and
-Statistics}\label{dataset-characteristics-and-statistics}
-
-Understanding the characteristics of our processed dataset provides
-important context for interpreting experimental results and assessing
-the generalizability of our findings.
-
-\subsubsection{3.10.1 Dataset Scale and
-Scope}\label{dataset-scale-and-scope}
-
-\textbf{Total Segments}: Our processed dataset comprises 76,693
-behavioral segments across all users, representing a substantial corpus
-for behavioral analysis.
-
-\textbf{User Distribution}: The dataset includes contributions from four
-users (atiq, masum, rakib, zia) with varying levels of data contribution
-reflecting natural differences in computer usage patterns.
-
-\textbf{Temporal Scope}: Data collection spans multiple sessions and
-time periods for each user, providing insights into both short-term
-behavioral consistency and longer-term patterns.
-
-\textbf{Behavioral Diversity}: The dataset encompasses diverse
-interaction patterns including different applications, tasks, and usage
-scenarios, enhancing the ecological validity of our analysis.
-
-\subsubsection{3.10.2 Feature Distribution
-Analysis}\label{feature-distribution-analysis-1}
+\subsection{3.2 Feature Families
+(condensed)}\label{feature-families-condensed}
+
+We extract compact, interpretable features grouped as: - Temporal:
+segment duration, inter-event intervals, pause rates. - Spatial: total
+distance, path straightness, movement range. - Kinematic:
+mean/median/max speed, acceleration statistics, jerk. - Statistical:
+skewness, kurtosis, percentiles, and event‑type ratios.
+
+From an initial set of \textasciitilde36 engineered features, a core
+subset (\textasciitilde16) was selected by mutual information,
+stability, and cross‑validation performance to reduce redundancy and
+computational cost. These selection and aggregation practices follow
+common procedures in mouse dynamics research and continuous
+authentication literature (Zheng et al. 2011; Shen et al. 2013).
+
+\subsection{3.3 Preprocessing and Scaling
+(condensed)}\label{preprocessing-and-scaling-condensed}
+
+Pipeline steps: data cleaning, missing value handling, outlier filtering
+(IQR‑based), and StandardScaler normalization fit on training data only.
+Scalers and feature definitions are persisted with models to ensure
+consistent inference. These preprocessing steps mirror established
+pipelines for behavioral biometric datasets and help reduce
+session-level variability and measurement noise (Gamboa and Fred 2004;
+Pusara and Brodley 2004).
+
+\subsection{3.4 Privacy and Contextual Features
+(condensed)}\label{privacy-and-contextual-features-condensed}
+
+To reduce identifiability we aggregate events into summaries, hash
+window titles for coarse application context, discretize time‑of‑day
+into bins, and avoid raw location storage. Consent and secure storage
+policies are enforced.
+
+\subsection{3.5 Dataset Snapshot
+(condensed)}\label{dataset-snapshot-condensed}
+
+Dataset includes contributions from four users with thousands of
+segments (example: atiq ≈5k, masum ≈4k). Segments average
+\textasciitilde50 events and cover diverse tasks and sessions, enabling
+both within‑user and cross‑user evaluation.
+
+\subsection{3.6 Implementation Notes
+(condensed)}\label{implementation-notes-condensed}
+
+The feature pipeline is modular for batch and streaming modes,
+implemented with vectorized operations for speed, and versioned to
+ensure reproducibility. Unit tests validate key computations (e.g.,
+distance, velocity, acceleration).
+
+\newpage
 
 \textbf{Statistical Summaries}: Comprehensive statistical summaries of
 all engineered features including means, standard deviations, ranges,
@@ -1922,577 +781,81 @@ future research and development in this area.
 \newpage
 
 \newpage
-\thispagestyle{plain}
+
+hispagestyle\{plain\}
 
 \begin{center}
 \vspace*{2cm}
-\textbf{\Large CHAPTER 4}\\[0.5cm]
-\textbf{\Large METHODOLOGY}
+    extbf{\Large CHAPTER 4}\\[0.5cm]
+    extbf{\Large METHODOLOGY}
 \end{center}
 
 \newpage
 
-\subsection{4.1 Experimental Approach}\label{experimental-approach}
+\subsection{4.1 Overview (condensed)}\label{overview-condensed}
 
-Rigorous evaluation of mouse-based behavioral biometrics for user
-identification and anomaly detection, emphasizing scientific rigor,
-practical relevance, comprehensive coverage, reproducibility, and
-statistical validity.
+This chapter outlines a reproducible experimental framework for (a)
+multi‑user classification and (b) per‑user anomaly detection using the
+engineered features. Emphasis is on fair evaluation, statistical rigor,
+and practical deployment concerns (Brodley and Pusara 2003; Ahmed and
+Traore 2004).
 
-\subsection{4.2 Problem Formulation}\label{problem-formulation-1}
-
-\subsubsection{4.2.1 Multi-User
-Classification}\label{multi-user-classification}
-
-\textbf{Objective}: Predict user identity from behavioral features
-\textbf{Formal Definition}: Given segment \(X = \{x_1, ..., x_n\}\),
-predict user \(y \in \{u_1, ..., u_k\}\) \textbf{Questions}:
-Classification accuracy, algorithm effectiveness, feature importance,
-performance consistency, error sources
-
-\subsubsection{4.2.2 Anomaly Detection}\label{anomaly-detection}
-
-\textbf{Objective}: Detect behavioral deviations from user baselines
-\textbf{Formal Definition}: Given model \(M_u\) and segment \(X\),
-determine normal vs.~anomalous behavior \textbf{Questions}: Detection
-effectiveness, cross-user distinctiveness, algorithm comparison,
-threshold settings, temporal stability
-
-\subsection{4.3 Experimental Design}\label{experimental-design}
-
-\subsubsection{4.3.1 Algorithm Evaluation}\label{algorithm-evaluation}
+\subsection{4.2 Problem Definitions
+(condensed)}\label{problem-definitions-condensed}
 
 \begin{itemize}
 \tightlist
 \item
-  Classification: Random Forest, Decision Tree, KNN, MLP, Naive Bayes,
-  PCA+XGBoost
+  Classification: Given a segment X, predict user y among known users.
+  Evaluation uses stratified cross‑validation and per‑class metrics.
 \item
-  Anomaly Detection: One-Class SVM, Isolation Forest
+  Anomaly detection: Train a per‑user model M\_u (OC‑SVM / Isolation
+  Forest / Autoencoder) on user data and flag out‑of‑baseline segments;
+  evaluate self and cross‑user anomaly rates.
 \end{itemize}
 
-\subsubsection{4.3.2 Evaluation Metrics}\label{evaluation-metrics}
-
-Accuracy, precision, recall, F1-score, confusion matrices, anomaly rates
-
-\subsubsection{4.3.3 Validation Strategy}\label{validation-strategy}
-
-Cross-validation, per-user analysis, statistical significance testing
-
-\subsubsection{4.3.4 Dataset Organization}\label{dataset-organization}
-
-User-stratified approach with 5-fold stratified cross-validation,
-temporal considerations, and strict data partitioning to prevent
-information leakage.
-
-\subsubsection{4.3.5 Feature Engineering
-Integration}\label{feature-engineering-integration}
-
-Consistent feature pipeline, feature selection validation within
-cross-validation folds, and proper scaling and normalization procedures.
-
-\subsubsection{4.3.6 Algorithm
-Configuration}\label{algorithm-configuration}
-
-Comprehensive algorithm coverage, systematic hyperparameter
-optimization, and baseline comparisons for performance context.
-
-\subsection{4.4 User Classification
-Methodology}\label{user-classification-methodology}
-
-The user classification methodology encompasses algorithm selection,
-training procedures, evaluation metrics, and analysis approaches
-specifically designed for multi-user identification tasks.
-
-\subsubsection{4.4.1 Algorithm Selection and
-Rationale}\label{algorithm-selection-and-rationale}
-
-We evaluate six distinct machine learning algorithms that represent
-different approaches to classification and have proven effective in
-behavioral biometric applications:
-
-\paragraph{Random Forest}\label{random-forest}
-
-\textbf{Algorithm Overview}: Random Forest constructs multiple decision
-trees using random subsets of features and training samples, then
-combines their predictions through majority voting.
-
-\textbf{Rationale for Inclusion}: Random Forest has demonstrated
-excellent performance in behavioral biometric applications due to its
-ability to handle complex feature interactions, resistance to
-overfitting, and inherent feature importance analysis capabilities.
-
-\textbf{Configuration}: We optimize the number of estimators (50-200),
-maximum depth (5-20), and maximum features (auto, sqrt, log2) using grid
-search cross-validation.
-
-\paragraph{Decision Trees}\label{decision-trees}
-
-\textbf{Algorithm Overview}: Single decision trees create hierarchical
-rules based on feature values to classify samples into user categories.
-
-\textbf{Rationale for Inclusion}: Decision trees provide highly
-interpretable models that can reveal the most important behavioral
-discriminators and decision patterns.
-
-\textbf{Configuration}: We optimize maximum depth (5-20), minimum
-samples split (2-10), and minimum samples leaf (1-5) parameters.
-
-\paragraph{k-Nearest Neighbors (KNN)}\label{k-nearest-neighbors-knn}
-
-\textbf{Algorithm Overview}: KNN classifies samples based on the
-majority class among the k nearest neighbors in the feature space.
-
-\textbf{Rationale for Inclusion}: KNN provides a non-parametric approach
-that can capture complex decision boundaries without making strong
-distributional assumptions.
-
-\textbf{Configuration}: We optimize k (3-15), distance metrics
-(Euclidean, Manhattan), and weighting schemes (uniform, distance-based).
-
-\paragraph{Naive Bayes}\label{naive-bayes}
-
-\textbf{Algorithm Overview}: Naive Bayes applies Bayes' theorem with
-independence assumptions between features to compute class
-probabilities.
-
-\textbf{Rationale for Inclusion}: Naive Bayes provides a probabilistic
-baseline and performs surprisingly well despite strong independence
-assumptions.
-
-\textbf{Configuration}: We evaluate Gaussian Naive Bayes with default
-parameters and assess performance sensitivity to feature scaling.
-
-\paragraph{Principal Component Analysis +
-XGBoost}\label{principal-component-analysis-xgboost}
-
-\textbf{Algorithm Overview}: Dimensionality reduction through PCA
-followed by gradient boosting classification using XGBoost.
-
-\textbf{Rationale for Inclusion}: This combination addresses potential
-curse of dimensionality issues while leveraging the strong performance
-of gradient boosting methods.
-
-\textbf{Configuration}: We optimize the number of PCA components (5-15)
-and XGBoost parameters including learning rate, max depth, and
-regularization terms.
-
-\paragraph{Multi-Layer Perceptron
-(MLP)}\label{multi-layer-perceptron-mlp}
-
-\textbf{Algorithm Overview}: Neural network with multiple hidden layers
-trained using backpropagation to learn complex non-linear mappings.
-
-\textbf{Rationale for Inclusion}: Neural networks provide automatic
-feature learning capabilities and can potentially capture complex
-behavioral patterns.
-
-\textbf{Configuration}: We optimize network architecture (hidden layer
-sizes), learning rate, regularization parameters, and activation
-functions.
-
-\subsubsection{4.4.2 Training and Validation
-Procedures}\label{training-and-validation-procedures}
-
-\textbf{Cross-Validation Protocol}: 5-fold stratified cross-validation
-ensures that each fold maintains the original user distribution while
-providing robust performance estimates across different data partitions.
-
-\textbf{Stratification Procedure}: Stratification is performed at the
-user level to ensure balanced representation of all users in each
-training and validation fold.
-
-\textbf{Hyperparameter Optimization}: Grid search cross-validation is
-employed within each training fold to select optimal hyperparameters
-without introducing bias from validation data.
-
-\textbf{Model Persistence}: Trained models and associated preprocessing
-components (scalers, feature selectors) are saved for each fold to
-enable reproducible evaluation and error analysis.
-
-\subsubsection{4.4.3 Performance Evaluation
-Metrics}\label{performance-evaluation-metrics}
-
-\textbf{Overall Accuracy}: The proportion of correctly classified
-samples provides a general measure of system performance:
-\[ ext{Accuracy} = \frac{ ext{Correct Predictions}}{ ext{Total Predictions}}\]
-
-\textbf{Per-Class Precision}: The proportion of correct predictions for
-each user class:
-\[ ext{Precision}\_u = \frac{ ext{True Positives}\_u}{ ext{True Positives}\_u + ext{False Positives}\_u}\]
-
-\textbf{Per-Class Recall}: The proportion of actual instances correctly
-identified for each user:
-\[ ext{Recall}\_u = \frac{ ext{True Positives}\_u}{ ext{True Positives}\_u + ext{False Negatives}\_u}\]
-
-\textbf{F1-Score}: The harmonic mean of precision and recall for each
-user:
-\[ ext{F1-Score}\_u = 2 imes \frac{ ext{Precision}\_u imes ext{Recall}\_u}{ ext{Precision}\_u + ext{Recall}\_u}\]
-
-\textbf{Confusion Matrix Analysis}: Detailed analysis of classification
-errors to identify patterns in misclassification and user pairs that are
-difficult to distinguish.
-
-\subsubsection{4.4.4 Statistical Significance
-Testing}\label{statistical-significance-testing}
-
-\textbf{Performance Comparison}: Statistical significance testing using
-paired t-tests or non-parametric alternatives to assess whether
-performance differences between algorithms are statistically
-significant.
-
-\textbf{Confidence Intervals}: Computation of confidence intervals for
-performance metrics to quantify uncertainty in performance estimates.
-
-\textbf{Effect Size Analysis}: Assessment of practical significance
-alongside statistical significance to determine whether performance
-differences are meaningful for practical applications.
-
-\subsection{4.5 Anomaly Detection
-Methodology}\label{anomaly-detection-methodology}
-
-The anomaly detection methodology addresses the unique challenges of
-single-class learning and threshold setting for continuous
-authentication applications.
-
-\subsubsection{4.5.1 Anomaly Detection Algorithm
-Selection}\label{anomaly-detection-algorithm-selection}
-
-\paragraph{One-Class Support Vector Machine
-(OC-SVM)}\label{one-class-support-vector-machine-oc-svm}
-
-\textbf{Algorithm Overview}: OC-SVM learns a decision boundary that
-encapsulates normal behavioral patterns using an RBF kernel, with the nu
-parameter controlling the expected fraction of anomalies.
-
-\textbf{Rationale for Inclusion}: OC-SVM provides a solid theoretical
-foundation based on statistical learning theory and has demonstrated
-effectiveness in behavioral anomaly detection applications.
-
-\textbf{Configuration}: We use RBF kernel with nu=0.05 (expecting 5\%
-anomalies) and optimize gamma parameter through cross-validation.
-
-\paragraph{Isolation Forest}\label{isolation-forest}
-
-\textbf{Algorithm Overview}: Isolation Forest isolates anomalies by
-constructing random decision trees that partition the feature space,
-with anomalies requiring fewer partitions to isolate.
-
-\textbf{Rationale for Inclusion}: Isolation Forest provides
-computational efficiency and reduced sensitivity to feature scaling
-compared to distance-based methods.
-
-\textbf{Configuration}: We use 100 estimators, contamination=0.05
-(expecting 5\% anomalies), and random\_state=42 for reproducibility.
-
-\subsubsection{4.5.2 Training and Validation
-Procedures}\label{training-and-validation-procedures-1}
-
-\textbf{Individual User Models}: Separate anomaly detection models are
-trained for each user using only their behavioral data to establish
-personalized behavioral baselines.
-
-\textbf{Self-Validation}: Each user's model is validated on a held-out
-portion of their own data to assess calibration and confirm expected
-anomaly rates.
-
-\textbf{Cross-User Validation}: Each user's model is tested on other
-users' data to assess cross-user behavioral distinctiveness and
-threshold sensitivity.
-
-\textbf{Threshold Analysis}: Systematic analysis of decision thresholds
-to understand the trade-off between false positive and false negative
-rates.
-
-\subsubsection{4.5.3 Evaluation Metrics for Anomaly
-Detection}\label{evaluation-metrics-for-anomaly-detection}
-
-\textbf{Self-Test Anomaly Rate}: The proportion of a user's own data
-flagged as anomalous by their trained model:
-\[ ext{Self-Anomaly Rate}\_u = \frac{ ext{Anomalous Predictions on User}\_u}{ ext{Total Predictions for User}\_u}\]
-
-\textbf{Cross-User Anomaly Rate}: The proportion of other users' data
-flagged as anomalous by a user's model:
-
-\[
-    ext{Cross-Anomaly Rate}_{u
-ightarrow v} = \frac{   ext{Anomalous Predictions on User}_v}{  ext{Total Predictions for User}_v}
-\]
-
-\textbf{Calibration Assessment}: Comparison of observed anomaly rates
-with expected rates based on algorithm configuration to assess model
-calibration.
-
-\textbf{Distinctiveness Analysis}: Analysis of the distribution of
-cross-user anomaly rates to quantify behavioral distinctiveness and
-identify users with highly distinctive patterns.
-
-\subsection{4.6 Feature Analysis
-Methodology}\label{feature-analysis-methodology}
-
-Understanding the contribution and importance of different behavioral
-features is crucial for system optimization and behavioral
-interpretation.
-
-\subsubsection{4.6.1 Feature Importance
-Analysis}\label{feature-importance-analysis}
-
-\textbf{Random Forest Feature Importance}: Utilization of Random
-Forest's built-in feature importance measures based on impurity
-reduction to identify the most discriminative behavioral features.
-
-\textbf{Permutation Importance}: Assessment of feature importance
-through permutation testing, measuring the decrease in model performance
-when each feature is randomly shuffled.
-
-\textbf{Correlation Analysis}: Analysis of feature correlations to
-identify redundant features and understand relationships between
-different behavioral characteristics.
-
-\subsubsection{4.6.2 Ablation Studies}\label{ablation-studies}
-
-\textbf{Feature Category Ablation}: Systematic removal of different
-feature categories (temporal, spatial, kinematic, contextual) to assess
-their individual contributions to classification and anomaly detection
-performance.
-
-\textbf{Individual Feature Analysis}: Analysis of individual feature
-contributions through systematic inclusion and exclusion studies.
-
-\textbf{Minimal Feature Set Identification}: Identification of the
-smallest feature set that maintains acceptable performance for practical
-applications with computational constraints.
-
-\subsubsection{4.6.3 Behavioral
-Interpretation}\label{behavioral-interpretation}
-
-\textbf{Feature Distribution Analysis}: Analysis of feature
-distributions across different users to understand the behavioral basis
-for discrimination.
-
-\textbf{Pattern Recognition}: Identification of behavioral patterns that
-distinguish between users and contribute to classification performance.
-
-\textbf{Contextual Analysis}: Investigation of how behavioral features
-vary across different contexts and usage scenarios.
-
-\subsection{4.7 Validation and Reproducibility
-Framework}\label{validation-and-reproducibility-framework}
-
-Ensuring the validity and reproducibility of experimental results is
-fundamental to scientific methodology and practical applicability.
-
-\subsubsection{4.7.1 Experimental Controls}\label{experimental-controls}
-
-\textbf{Consistent Preprocessing}: All algorithms receive identically
-preprocessed data to ensure fair comparison and eliminate
-preprocessing-related performance differences.
-
-\textbf{Standardized Evaluation}: All algorithms are evaluated using
-identical metrics, cross-validation procedures, and statistical tests to
-enable direct performance comparison.
-
-\textbf{Parameter Documentation}: Complete documentation of all
-algorithmic parameters, random seeds, and configuration settings to
-enable exact reproduction of results.
-
-\subsubsection{4.7.2 Bias Prevention and
-Mitigation}\label{bias-prevention-and-mitigation}
-
-\textbf{Data Leakage Prevention}: Strict procedures to prevent
-information leakage between training and validation data, including
-proper scaling, feature selection, and cross-validation procedures.
-
-\textbf{Selection Bias Mitigation}: Systematic evaluation of multiple
-algorithms and parameter settings to prevent cherry-picking of favorable
-results.
-
-\textbf{Reporting Bias Prevention}: Comprehensive reporting of all
-experimental results, including negative results and performance
-limitations.
-
-\subsubsection{4.7.3 Statistical Rigor}\label{statistical-rigor}
-
-\textbf{Multiple Comparison Correction}: Application of appropriate
-statistical corrections when conducting multiple comparisons to prevent
-inflated Type I error rates.
-
-\textbf{Effect Size Reporting}: Reporting of effect sizes alongside
-statistical significance to assess practical importance of observed
-differences.
-
-\textbf{Confidence Interval Estimation}: Provision of confidence
-intervals for all performance estimates to quantify uncertainty and
-enable risk assessment.
-
-\subsection{4.8 Threats to Validity and Mitigation
-Strategies}\label{threats-to-validity-and-mitigation-strategies}
-
-Acknowledging and addressing potential threats to validity is essential
-for reliable experimental conclusions and appropriate interpretation of
-results.
-
-\subsubsection{4.8.1 Internal Validity
-Threats}\label{internal-validity-threats}
-
-\textbf{Selection Bias}: The limited number of participants (four users)
-may not be representative of broader user populations.
-\emph{Mitigation}: Transparent reporting of participant characteristics
-and limitations; detailed analysis of individual user patterns to
-understand variability.
-
-\textbf{Temporal Bias}: Data collection over relatively short time
-periods may not capture longer-term behavioral evolution.
-\emph{Mitigation}: Analysis of available temporal patterns; framework
-design for future longitudinal evaluation.
-
-\textbf{Environmental Bias}: Data collection in controlled environments
-may not reflect real-world usage variability. \emph{Mitigation}:
-Collection during natural computer usage; documentation of environmental
-factors; discussion of generalizability limitations.
-
-\subsubsection{4.8.2 External Validity
-Threats}\label{external-validity-threats}
-
-\textbf{Population Generalizability}: Findings may not generalize to
-users with different demographic characteristics, technical expertise,
-or usage patterns. \emph{Mitigation}: Detailed documentation of
-participant characteristics; discussion of generalizability limitations;
-framework for future diverse population studies.
-
-\textbf{Technology Generalizability}: Results may not generalize to
-different hardware configurations, operating systems, or software
-environments. \emph{Mitigation}: Multi-platform data collection;
-documentation of technical environments; analysis of cross-platform
-consistency.
-
-\textbf{Task Generalizability}: Behavioral patterns may vary
-significantly across different computing tasks and applications.
-\emph{Mitigation}: Collection during diverse usage scenarios; analysis
-of contextual factors; discussion of task-dependent limitations.
-
-\subsubsection{4.8.3 Construct Validity
-Threats}\label{construct-validity-threats}
-
-\textbf{Feature Validity}: Engineered features may not accurately
-capture the intended behavioral characteristics. \emph{Mitigation}:
-Comprehensive feature validation; comparison with literature benchmarks;
-behavioral interpretation analysis.
-
-\textbf{Model Validity}: Machine learning models may not accurately
-represent the underlying behavioral patterns. \emph{Mitigation}:
-Multiple algorithm evaluation; model interpretation analysis;
-performance validation across different conditions.
-
-\subsection{4.9 Ethical Considerations in Experimental
-Design}\label{ethical-considerations-in-experimental-design}
-
-The experimental methodology incorporates important ethical
-considerations that are essential for responsible research in behavioral
-biometrics.
-
-\subsubsection{4.9.1 Informed Consent}\label{informed-consent}
-
-\textbf{Comprehensive Disclosure}: Participants receive complete
-information about data collection procedures, intended uses, and
-potential risks.
-
-\textbf{Voluntary Participation}: All participation is voluntary with
-the right to withdraw at any time without penalty.
-
-\textbf{Ongoing Consent}: Participants are informed of any changes to
-data usage or research procedures.
-
-\subsubsection{4.9.2 Privacy Protection}\label{privacy-protection}
-
-\textbf{Data Minimization}: Collection is limited to the minimum
-behavioral information necessary for research objectives.
-
-\textbf{Anonymization}: Personal identifiers are separated from
-behavioral data and protected through secure procedures.
-
-\textbf{Secure Storage}: All data is stored using appropriate security
-measures and access controls.
-
-\subsubsection{4.9.3 Risk Mitigation}\label{risk-mitigation}
-
-\textbf{Minimal Risk Design}: Experimental procedures are designed to
-minimize potential risks to participants.
-
-\textbf{Confidentiality Protection}: Strong confidentiality measures
-protect participant privacy and prevent unauthorized disclosure.
-
-\textbf{Responsible Reporting}: Research results are reported in ways
-that protect participant privacy and prevent potential misuse.
-
-\subsection{4.10 Implementation and Computational
-Considerations}\label{implementation-and-computational-considerations}
-
-The practical implementation of our experimental methodology requires
-careful attention to computational efficiency, reproducibility, and
-maintainability.
-
-\subsubsection{4.10.1 Computational
-Architecture}\label{computational-architecture}
-
-\textbf{Modular Implementation}: Experimental code is organized into
-modular components that enable independent testing and validation of
-different algorithmic approaches.
-
-\textbf{Parallel Processing}: Where appropriate, parallel processing
-techniques are employed to accelerate experimental evaluation while
-maintaining reproducibility.
-
-\textbf{Resource Management}: Efficient memory and storage management
-enables handling of large datasets and complex experimental
-configurations.
-
-\subsubsection{4.10.2 Reproducibility
-Infrastructure}\label{reproducibility-infrastructure}
-
-\textbf{Version Control}: All experimental code, configuration files,
-and documentation are maintained under version control to enable exact
-reproduction of results.
-
-\textbf{Environment Management}: Computational environments are
-carefully documented and managed to ensure consistent execution across
-different systems.
-
-\textbf{Automated Testing}: Automated testing procedures validate the
-correctness of experimental implementations and detect potential
-regression errors.
-
-\subsubsection{4.10.3 Performance
-Optimization}\label{performance-optimization}
-
-\textbf{Algorithm Efficiency}: Implementation optimizations ensure
-acceptable computational performance for both training and inference
-phases.
-
-\textbf{Scalability Considerations}: Experimental frameworks are
-designed to accommodate larger datasets and more complex experimental
-configurations.
-
-\textbf{Real-Time Capability}: Where relevant, experimental
-implementations support real-time analysis suitable for practical
-deployment scenarios.
-
-\subsection{4.11 Summary and Methodological
-Contributions}\label{summary-and-methodological-contributions}
-
-This comprehensive experimental methodology provides a rigorous
-framework for evaluating mouse-based behavioral biometrics while
-addressing important considerations of validity, reproducibility, and
-ethical responsibility. The methodology makes several important
-contributions:
-
-\textbf{Comprehensive Evaluation Framework}: The dual focus on both
-classification and anomaly detection provides complete assessment of
-system capabilities for different application scenarios.
-
-\textbf{Statistical Rigor}: Careful attention to cross-validation,
-significance testing, and bias prevention ensures reliable and
-interpretable results.
+\subsection{4.3 Algorithms and Evaluation
+(condensed)}\label{algorithms-and-evaluation-condensed}
+
+Selected algorithms: Random Forest, SVM, KNN, MLP for classification;
+One‑Class SVM and Isolation Forest for anomaly detection (Brodley and
+Pusara 2003; Rahman and Basak 2021). Metrics: accuracy, precision,
+recall, F1, confusion matrices, ROC/AUC and anomaly rates. Validation:
+5‑fold stratified cross‑validation with hyperparameter tuning inside
+folds to avoid leakage (\textbf{varma2006?}).
+
+\subsection{4.4 Feature and Model Analysis
+(condensed)}\label{feature-and-model-analysis-condensed}
+
+We use feature importance (Random Forest impurity and permutation),
+mutual information, correlation analysis, and ablation studies to
+identify compact, stable feature sets. Ablations quantify the
+contribution of temporal, spatial, kinematic and contextual features.
+
+\subsection{4.5 Reproducibility and Controls
+(condensed)}\label{reproducibility-and-controls-condensed}
+
+All preprocessing is deterministic and applied identically across
+algorithms; scalers and model artifacts are versioned and saved.
+Experiments use fixed random seeds, documented parameter grids, and
+statistical tests (paired tests, confidence intervals) for comparisons.
+
+\subsection{4.6 Threats to Validity and Ethics
+(condensed)}\label{threats-to-validity-and-ethics-condensed}
+
+Key threats: small participant pool, temporal and environmental biases,
+and feature/model validity. Mitigations include transparent reporting,
+temporal analysis where possible, multi‑algorithm comparison, and strict
+privacy controls (anonymization, consent, limited retention).
+
+\subsection{4.7 Implementation Notes
+(condensed)}\label{implementation-notes-condensed-1}
+
+Experimental code is modular and tested; pipelines support batch and
+streaming modes. Resource settings (parallelism, memory) are documented
+to aid reproducibility.
+
+\newpage
 
 \textbf{Practical Relevance}: Experimental conditions and evaluation
 metrics are designed to reflect realistic deployment scenarios rather
@@ -2514,14 +877,23 @@ authentication.
 
 ewpage
 
-\section{System Implementation}\label{system-implementation}
+\newpage
+\thispagestyle{plain}
 
-\subsection{Overview}\label{overview}
+\begin{center}
+\vspace*{2cm}
+\textbf{\Large CHAPTER 5}\\[0.5cm]
+\textbf{\Large SYSTEM IMPLEMENTATION}
+\end{center}
+
+\newpage
+
+\subsection{5.1 Overview}\label{overview}
 
 The system integrates data collection, preprocessing/feature
 engineering, model training, and an optional real-time GUI app.
 
-\subsection{Collectors (C++)}\label{collectors-c}
+\subsection{5.2 Collectors (C++)}\label{collectors-c}
 
 \begin{itemize}
 \tightlist
@@ -2533,7 +905,7 @@ engineering, model training, and an optional real-time GUI app.
   libinput/udev; root privileges required.
 \end{itemize}
 
-\subsection{Preprocessing (Python)}\label{preprocessing-python}
+\subsection{5.3 Preprocessing (Python)}\label{preprocessing-python}
 
 \begin{itemize}
 \tightlist
@@ -2545,7 +917,7 @@ engineering, model training, and an optional real-time GUI app.
   user; merged \texttt{processed/features.csv} for classification.
 \end{itemize}
 
-\subsection{Modeling (Python)}\label{modeling-python}
+\subsection{5.4 Modeling (Python)}\label{modeling-python}
 
 \begin{itemize}
 \tightlist
@@ -2559,7 +931,7 @@ engineering, model training, and an optional real-time GUI app.
   Models and scalers saved to \texttt{models/} subfolders.
 \end{itemize}
 
-\subsection{Real-Time GUI}\label{real-time-gui}
+\subsection{5.5 Real-Time GUI}\label{real-time-gui}
 
 \begin{itemize}
 \tightlist
@@ -2572,17 +944,26 @@ engineering, model training, and an optional real-time GUI app.
   TRAINING\_FEATURES must match training setup.
 \end{itemize}
 
-\subsection{Project Structure}\label{project-structure}
+\subsection{5.6 Project Structure}\label{project-structure}
 
 See repository \texttt{README.md} for a detailed overview of folders and
 scripts.
 
-\section{Experiments and Results}\label{experiments-and-results}
+\newpage
+\thispagestyle{plain}
+
+\begin{center}
+\vspace*{2cm}
+\textbf{\Large CHAPTER 6}\\[0.5cm]
+\textbf{\Large EXPERIMENTS AND RESULTS}
+\end{center}
+
+\newpage
 
 This section consolidates findings from \texttt{results/results.md} and
 \texttt{results/training\_results.txt}.
 
-\subsection{Dataset Summary}\label{dataset-summary}
+\subsection{6.1 Dataset Summary}\label{dataset-summary}
 
 \begin{itemize}
 \tightlist
@@ -2594,7 +975,22 @@ This section consolidates findings from \texttt{results/results.md} and
   Segmentation: 50 events per segment.
 \end{itemize}
 
-\subsection{Classification
+\subsubsection{Dataset table}\label{dataset-table}
+
+\begin{longtable}[]{@{}rrl@{}}
+\toprule\noalign{}
+User & Segments & Notes \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+atiq & 20585 & multiple sessions, varied tasks \\
+masum & 13447 & shorter sessions, distinctive patterns \\
+rakib & 21269 & longer sessions, mixed tasks \\
+zia & 21392 & consistent sampling across sessions \\
+\end{longtable}
+
+\subsection{6.2 Classification
 Performance}\label{classification-performance}
 
 \begin{itemize}
@@ -2616,7 +1012,41 @@ Performance}\label{classification-performance}
 Per-user (Random Forest): masum highest precision/recall (≈98\%);
 rakib/zia show more confusion.
 
-\subsection{Anomaly Detection}\label{anomaly-detection-1}
+\subsubsection{Classification summary
+table}\label{classification-summary-table}
+
+\begin{longtable}[]{@{}rr@{}}
+\toprule\noalign{}
+Algorithm & Accuracy \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Random Forest & 85.36\% \\
+Decision Tree & 77.24\% \\
+PCA + XGBoost & 70.20\% \\
+KNN & 60.30\% \\
+MLP & 44.43\% \\
+Naive Bayes & 38.37\% \\
+\end{longtable}
+
+\subsubsection{Random Forest per-user
+table}\label{random-forest-per-user-table}
+
+\begin{longtable}[]{@{}crrr@{}}
+\toprule\noalign{}
+User & Precision & Recall & F1-Score \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+atiq & 0.89 & 0.86 & 0.87 \\
+masum & 0.98 & 0.98 & 0.98 \\
+rakib & 0.79 & 0.82 & 0.81 \\
+zia & 0.81 & 0.80 & 0.80 \\
+\end{longtable}
+
+\subsection{6.3 Anomaly Detection}\label{anomaly-detection}
 
 \begin{itemize}
 \tightlist
@@ -2639,10 +1069,71 @@ Cross-user anomaly rates (selected):
   Rakib/Zia: intermediate distinctiveness.
 \end{itemize}
 
+\subsubsection{Figures: Cross-user anomaly
+rates}\label{figures-cross-user-anomaly-rates}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth,height=\textheight]{figures/svm_cross_user_heatmap.png}
+\caption{One-Class SVM cross-user anomaly heatmap}
+\end{figure}
+
+Caption: One-Class SVM anomaly rates (\%) where rows = model user and
+columns = test user. Diagonal entries are self-test rates
+(\textasciitilde5\%).
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth,height=\textheight]{figures/iso_cross_user_heatmap.png}
+\caption{Isolation Forest cross-user anomaly heatmap}
+\end{figure}
+
+Caption: Isolation Forest anomaly rates (\%) where rows = model user and
+columns = test user. Isolation Forest shows higher cross-user
+sensitivity for some models.
+
 Isolation Forest generally yields higher cross-user anomaly rates than
 One-Class SVM, indicating greater sensitivity.
 
-\subsection{Key Findings}\label{key-findings}
+\subsubsection{Cross-user matrices
+(numeric)}\label{cross-user-matrices-numeric}
+
+\paragraph{One-Class SVM cross-user
+matrix}\label{one-class-svm-cross-user-matrix}
+
+\paragraph{Isolation Forest cross-user
+matrix}\label{isolation-forest-cross-user-matrix}
+
+\subsubsection{Additional Figures}\label{additional-figures}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.8\textwidth,height=\textheight]{figures/rf_confusion_matrix.png}
+\caption{Random Forest confusion matrix (test set)}
+\end{figure}
+
+Caption: Confusion matrix for Random Forest on held-out test data. The
+matrix shows most confusion between rakib and zia.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.8\textwidth,height=\textheight]{figures/rf_top12_feature_importances.png}
+\caption{Top 12 Random Forest feature importances}
+\end{figure}
+
+Caption: Feature importances (gini importance) from Random Forest. Mean
+speed and path straightness are among the most important features.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth,height=\textheight]{figures/top6_feature_violin_by_user.png}
+\caption{Top 6 features distribution by user}
+\end{figure}
+
+Caption: Violin plots of the top 6 features split by user to show
+distributional separability.
+
+\subsection{6.4 Key Findings}\label{key-findings}
 
 \begin{itemize}
 \tightlist
@@ -2656,7 +1147,7 @@ One-Class SVM, indicating greater sensitivity.
   data/tuning.
 \end{itemize}
 
-\subsection{Reproducibility}\label{reproducibility}
+\subsection{6.5 Reproducibility}\label{reproducibility}
 
 \begin{itemize}
 \tightlist
@@ -2665,7 +1156,7 @@ One-Class SVM, indicating greater sensitivity.
   script details.
 \end{itemize}
 
-\subsection{Additional Analyses
+\subsection{6.6 Additional Analyses
 (Placeholders)}\label{additional-analyses-placeholders}
 
 \subsubsection{Feature Distributions}\label{feature-distributions}
@@ -2690,9 +1181,18 @@ illustrate sensitivity (proxy ROC since labels are cross-user).
 Table: Impact of removing feature groups (speed stats, ratios,
 acceleration) on RF accuracy and ISO cross-user anomaly rates.
 
-\section{Discussion and Future Work}\label{discussion-and-future-work}
+\newpage
+\thispagestyle{plain}
 
-\subsection{Interpretation}\label{interpretation}
+\begin{center}
+\vspace*{2cm}
+\textbf{\Large CHAPTER 7}\\[0.5cm]
+\textbf{\Large DISCUSSION AND FUTURE WORK}
+\end{center}
+
+\newpage
+
+\subsection{7.1 Interpretation}\label{interpretation}
 
 \begin{itemize}
 \tightlist
@@ -2704,7 +1204,7 @@ acceleration) on RF accuracy and ISO cross-user anomaly rates.
   threshold selection.
 \end{itemize}
 
-\subsection{Limitations}\label{limitations}
+\subsection{7.2 Limitations}\label{limitations}
 
 \begin{itemize}
 \tightlist
@@ -2717,7 +1217,7 @@ acceleration) on RF accuracy and ISO cross-user anomaly rates.
   hardware.
 \end{itemize}
 
-\subsection{Ethical and Privacy
+\subsection{7.3 Ethical and Privacy
 Considerations}\label{ethical-and-privacy-considerations}
 
 \begin{itemize}
@@ -2731,7 +1231,7 @@ Considerations}\label{ethical-and-privacy-considerations}
   mechanisms).
 \end{itemize}
 
-\subsection{Future Work}\label{future-work}
+\subsection{7.4 Future Work}\label{future-work}
 
 \begin{itemize}
 \tightlist
@@ -2817,7 +1317,7 @@ techniques, particularly when training data is limited. This finding has
 important implications for computational requirements and deployment
 complexity in practical systems.
 
-\subsection{8.3 Contributions to Cybersecurity and Human-Computer
+\subsection{8.4 Contributions to Cybersecurity and Human-Computer
 Interaction}\label{contributions-to-cybersecurity-and-human-computer-interaction}
 
 The research presented in this thesis makes important contributions to
@@ -2871,7 +1371,7 @@ can be implemented without significant impact on system performance or
 user experience, supporting the adoption of continuous authentication in
 practical computing environments.
 
-\subsection{8.4 Limitations and Future Research
+\subsection{8.5 Limitations and Future Research
 Directions}\label{limitations-and-future-research-directions}
 
 While this research has made significant contributions to mouse-based
@@ -2926,7 +1426,7 @@ consideration that requires additional research into robust behavioral
 authentication architectures.
 
 \subsubsection{8.4.4 Multi-Modal
-Integration}\label{multi-modal-integration-1}
+Integration}\label{multi-modal-integration}
 
 The integration of mouse dynamics with other behavioral biometric
 modalities such as keystroke dynamics, application usage patterns, and
@@ -2940,7 +1440,7 @@ changing conditions and individual preferences while maintaining
 security effectiveness represents an important research challenge with
 significant practical implications.
 
-\subsection{8.5 Practical Deployment
+\subsection{8.6 Practical Deployment
 Recommendations}\label{practical-deployment-recommendations}
 
 Based on the findings of this research, several recommendations emerge
@@ -3007,7 +1507,7 @@ mechanisms for continuous learning and adaptation to accommodate gradual
 changes in user behavior while maintaining security against adversarial
 manipulation.
 
-\subsection{8.6 Broader Impact and Societal
+\subsection{8.7 Broader Impact and Societal
 Implications}\label{broader-impact-and-societal-implications}
 
 The development of effective behavioral authentication technologies has
@@ -3058,7 +1558,7 @@ and innovation in behavioral authentication while preventing
 monopolization of these important security technologies by individual
 organizations.
 
-\subsection{8.7 Final Reflections on Research
+\subsection{8.8 Final Reflections on Research
 Methodology}\label{final-reflections-on-research-methodology}
 
 The research methodology employed in this thesis demonstrates the
@@ -3105,7 +1605,7 @@ behavioral biometrics research. The complex sociotechnical nature of
 behavioral authentication systems requires expertise from multiple
 domains to ensure effective and responsible development.
 
-\subsection{8.8 Concluding Remarks}\label{concluding-remarks}
+\subsection{8.9 Concluding Remarks}\label{concluding-remarks}
 
 This thesis has demonstrated that mouse tracking provides a viable and
 effective foundation for behavioral biometric authentication systems.
@@ -3151,5 +1651,73 @@ technologies can contribute to a more secure digital future that
 enhances rather than impedes human productivity and digital inclusion.
 
 \newpage
+
+\phantomsection\label{refs}
+\begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-ahmed2004}
+Ahmed, Ahmed Awad E., and Issa Traore. 2004. {``Detecting Computer
+Intrusions Using Behavioral Biometrics.''} In. Victoria, B.C., Canada:
+Department of Electrical; Computer Engineering, University of Victoria.
+
+\bibitem[\citeproctext]{ref-bailey2014}
+Bailey, Kenneth O., James S. Okolica, and Gilbert L. Peterson. 2014.
+{``Continuous User Authentication via Mouse Movements.''}
+\emph{Computers \& Security} 39: 309--18.
+\url{https://doi.org/10.1016/j.cose.2013.02.004}.
+
+\bibitem[\citeproctext]{ref-brodley2003}
+Brodley, Carla E., and Maja Pusara. 2003. {``User Re-Authentication via
+Mouse Movements.''} \emph{Proceedings of the ACM Workshop on Privacy in
+the Electronic Society}.
+
+\bibitem[\citeproctext]{ref-eberz2017}
+Eberz, Simon, Kasper B. Rasmussen, Vincent Lenders, and Ivan Martinovic.
+2017. {``Evaluating Behavioral Biometrics for Continuous Authentication:
+Challenges and Metrics.''} In \emph{Proceedings of the 2017 ACM on Asia
+Conference on Computer and Communications Security}, 386--99. ACM.
+\url{https://doi.org/10.1145/3052973.3053032}.
+
+\bibitem[\citeproctext]{ref-gamboa2004}
+Gamboa, Hugo, and Ana Fred. 2004. {``On the Use of Mouse Movements as a
+Biometric.''} \emph{Proceedings of the International Conference on
+Computer Recognition Systems}, 352--59.
+
+\bibitem[\citeproctext]{ref-mondal2015}
+Mondal, Soumik, and Patrick Bours. 2015. {``Continuous Authentication
+Using Mouse Dynamics: A Pattern Growth Approach.''} \emph{IEEE
+Transactions on Information Forensics and Security} 10 (6): 1200--1212.
+\url{https://doi.org/10.1109/TIFS.2015.2398835}.
+
+\bibitem[\citeproctext]{ref-pusara2004}
+Pusara, Maja, and Carla E. Brodley. 2004. {``User Re-Authentication via
+Mouse Movements.''} \emph{Proceedings of the 2004 ACM Workshop on
+Visualization and Data Mining for Computer Security}, 1--8.
+\url{https://doi.org/10.1145/1029208.1029210}.
+
+\bibitem[\citeproctext]{ref-rahman2021}
+Rahman, Md Muhaimenur, and Sarnali Basak. 2021. {``Identifying User
+Authentication and Most Frequently Used Region Based on Mouse Movement
+Data: A Machine Learning Approach.''} In \emph{2021 IEEE 11th Annual
+Computing and Communication Workshop and Conference (CCWC)}, 1--6. Las
+Vegas, NV, USA: IEEE.
+\url{https://doi.org/10.1109/CCWC51732.2021.9376087}.
+
+\bibitem[\citeproctext]{ref-shen2013}
+Shen, Chao, Zhongmin Cai, Xiaohong Guan, Youtian Du, and Roy A. Maxion.
+2013. {``User Authentication Through Mouse Dynamics.''} \emph{IEEE
+Transactions on Information Forensics and Security} 8 (1): 16--30.
+\url{https://doi.org/10.1109/TIFS.2012.2223677}.
+
+\bibitem[\citeproctext]{ref-traore2012}
+Traore, Issa, and Ahmed Awad E Ahmed. 2012. {``Continuous Authentication
+Using Biometrics: Data, Models, and Metrics.''} \emph{IGI Global}.
+
+\bibitem[\citeproctext]{ref-zheng2011}
+Zheng, Nan, Kun Bai, Hai Huang, and Haining Wang. 2011. {``An Efficient
+User Verification System via Mouse Movements.''} \emph{Proceedings of
+the 18th ACM Conference on Computer and Communications Security},
+139--50. \url{https://doi.org/10.1145/2046707.2046725}.
+
+\end{CSLReferences}
 
 \end{document}

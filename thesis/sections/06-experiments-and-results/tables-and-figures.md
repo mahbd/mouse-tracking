@@ -22,11 +22,24 @@
 
 ## Anomaly Detection Cross-User Summary
 
-Isolation Forest generally shows higher anomaly rates than One-Class SVM.
+Isolation Forest generally shows higher anomaly rates than One-Class SVM. The numeric cross-user matrices follow.
 
-- Masum’s models: 11–31.6% anomalies on others.
-- Rakib’s models: 2–21.2%.
-- Zia’s models: 2–19%.
-- Atiq’s models: 1–5.3%.
+#### One-Class SVM cross-user matrix
+
+<!-- include: svm_cross_user_matrix.md -->
+
+#### Isolation Forest cross-user matrix
+
+<!-- include: iso_cross_user_matrix.md -->
+
+### Figures
+
+- `thesis/figures/svm_cross_user_heatmap.png` — One-Class SVM cross-user anomaly heatmap.
+- `thesis/figures/iso_cross_user_heatmap.png` — Isolation Forest cross-user anomaly heatmap.
+- `thesis/figures/svm_self_vs_cross.png` — SVM self vs mean cross bar chart.
+- `thesis/figures/iso_self_vs_cross.png` — ISO self vs mean cross bar chart.
+- `thesis/figures/rf_confusion_matrix.png` — Random Forest confusion matrix (test set).
+- `thesis/figures/rf_top12_feature_importances.png` — Top-12 RF feature importances.
+- `thesis/figures/top6_feature_violin_by_user.png` — Distributions of top 6 features by user.
 
 > Source: results/training_results.txt

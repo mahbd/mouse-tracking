@@ -39,7 +39,7 @@ The comparative evaluation of multiple machine learning algorithms provides prac
 
 The effective performance of relatively simple algorithms compared to more complex neural network approaches suggests that behavioral biometric applications may not require sophisticated deep learning techniques, particularly when training data is limited. This finding has important implications for computational requirements and deployment complexity in practical systems.
 
-## 8.3 Contributions to Cybersecurity and Human-Computer Interaction
+## 8.4 Contributions to Cybersecurity and Human-Computer Interaction
 
 The research presented in this thesis makes important contributions to both cybersecurity and human-computer interaction fields through its demonstration of transparent, continuous authentication capabilities.
 
@@ -61,7 +61,7 @@ The transparent nature of mouse-based behavioral authentication represents an im
 
 The demonstration of real-time analysis capabilities with acceptable computational overhead shows that transparent behavioral authentication can be implemented without significant impact on system performance or user experience, supporting the adoption of continuous authentication in practical computing environments.
 
-## 8.4 Limitations and Future Research Directions
+## 8.5 Limitations and Future Research Directions
 
 While this research has made significant contributions to mouse-based behavioral biometrics, several important limitations suggest directions for future investigation.
 
@@ -89,7 +89,7 @@ The integration of mouse dynamics with other behavioral biometric modalities suc
 
 The development of adaptive multi-modal systems that can adjust to changing conditions and individual preferences while maintaining security effectiveness represents an important research challenge with significant practical implications.
 
-## 8.5 Practical Deployment Recommendations
+## 8.6 Practical Deployment Recommendations
 
 Based on the findings of this research, several recommendations emerge for practical deployment of mouse-based behavioral authentication systems.
 
@@ -117,7 +117,7 @@ Based on the findings of this research, several recommendations emerge for pract
 
 **Continuous Learning**: Deployment strategies should incorporate mechanisms for continuous learning and adaptation to accommodate gradual changes in user behavior while maintaining security against adversarial manipulation.
 
-## 8.6 Broader Impact and Societal Implications
+## 8.7 Broader Impact and Societal Implications
 
 The development of effective behavioral authentication technologies has important implications beyond technical cybersecurity applications.
 
@@ -139,7 +139,7 @@ Effective behavioral authentication technologies have the potential to reduce th
 
 The open-source nature of our implementation supports broader adoption and innovation in behavioral authentication while preventing monopolization of these important security technologies by individual organizations.
 
-## 8.7 Final Reflections on Research Methodology
+## 8.8 Final Reflections on Research Methodology
 
 The research methodology employed in this thesis demonstrates the importance of comprehensive, rigorous approaches to behavioral biometrics research that integrate technical performance evaluation with privacy, ethical, and practical deployment considerations.
 
@@ -159,7 +159,7 @@ The transparent reporting of limitations, threats to validity, and negative resu
 
 The integration of technical computer science methods with considerations from psychology, human factors, privacy law, and ethics demonstrates the importance of interdisciplinary approaches to behavioral biometrics research. The complex sociotechnical nature of behavioral authentication systems requires expertise from multiple domains to ensure effective and responsible development.
 
-## 8.8 Concluding Remarks
+## 8.9 Concluding Remarks
 
 This thesis has demonstrated that mouse tracking provides a viable and effective foundation for behavioral biometric authentication systems. The achieved classification accuracy of 85.36%, effective anomaly detection capabilities, and practical system implementation confirm the technical feasibility of mouse-based continuous authentication while the comprehensive treatment of privacy and ethical considerations provides a framework for responsible deployment.
 

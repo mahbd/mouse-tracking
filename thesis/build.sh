@@ -48,8 +48,7 @@ common_args=(
   -V papersize=a4
   -V toc-title="TABLE OF CONTENTS"
   --toc
-  --toc-depth=2
-  --number-sections
+  --toc-depth=3
   --citeproc
   --resource-path=.
   --bibliography=references.bib
@@ -78,4 +77,3 @@ case "$ext" in
 esac
 
 echo "Built $out successfully!"
-echo "Thesis optimized for ~50 pages with compact formatting."
